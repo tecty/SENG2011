@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-
+from .models import Criteria, Post, Bid
 
 # serializer of user models
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -31,7 +31,7 @@ class CriteriaSerializer(serializers.HyperlinkedModelSerializer):
         model = Criteria
         fields = ('key','value')
 
-class TakerSerializer(serializers.HyperlinkedModelSerializer):
+class BidSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Taker 
+        model = Bid 
         fields = ('post','bidder','offer')

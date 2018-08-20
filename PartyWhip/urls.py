@@ -15,8 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url, include
 
 urlpatterns = [
+    # the endpoint for admin site
     path('admin/', admin.site.urls),
     # url(r'^api-auth/', include('rest_framework.urls')),
+
+    # register api authentication from rest framework 
+    url(r'^api-auth/', 
+        include('rest_framework.urls', namespace='rest_framework')),
+
+    #  include the url from whip app 
+    path('',include('whip.urls')),
 ]

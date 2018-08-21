@@ -1,5 +1,5 @@
 from django.conf.urls import url, include
-from .views import UserViewSet
+from .views import UserViewSet,PostViewSet, CriteriaViewSet, BidViewSet
 from rest_framework import routers
 
 # the urls in this app 
@@ -7,6 +7,9 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 # register viewset to router
 router.register(r'users', UserViewSet)
+router.register("posts", PostViewSet )
+router.register("criterias", CriteriaViewSet )
+router.register("bids", BidViewSet )
 
 
 # the url pattern for django 

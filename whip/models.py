@@ -7,12 +7,15 @@ class Criteria(models.Model):
     value = models.CharField(max_length = 1024)
     # soft delete the criteria 
     isDelete = models.BooleanField(default=False)
+    def __unicode__(self):
+        # function used to show the object's name in Django 
+        return "%s : %s" % (self.key, self.value)
 
 
 class Post(models.Model):
     # basic description of this event 
     title = models.CharField(max_length=255)
-    msg = models.CharField(max_length=1024, blank = True)
+    msg = models.CharField(max_length=1024, blank=True)
     # who post this event 
     poster = models.ForeignKey(User, models.PROTECT)
     # the time this event will be held 
@@ -29,15 +32,23 @@ class Post(models.Model):
     state = models.CharField(max_length=255)
     # not required criteria is added by relation of 
     # Criteria table 
-    extraCriteria = models.ManyToManyField(Criteria)
+    extraCriteria = models.ManyToManyField(Criteria,blank = True)
 
+    def __unicode__(self):
+        # function used to show the object's name in Django 
+        return self.title
 
 class Bid(models.Model):
     # which post is this bid for 
-    post = models.ForeignKey(Post, models.CASCADE)
+    post = models.ForeignKey(Post, on_delete = models.CASCADE)
+    # A message to have better chance to win
+    msg = models.CharField(max_length = 1024)
     # state of this event 
     state = models.CharField(max_length=255)
     # who bid this  
     bidder = models.ForeignKey(User, models.PROTECT)
     # what the prive this bidder offer 
     offer = models.DecimalField(max_digits=12, decimal_places=2)
+    def __unicode__(self):
+        # function used to show the object's name in Django 
+        return "%s bids %s" % (self.bidder, self.offer)

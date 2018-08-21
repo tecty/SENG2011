@@ -8,30 +8,37 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = ('url', 'username', 'email', 'is_staff')
 
-class PostSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Post
-        fields = (
-            'title',
-            "renovaters" ,
-            "date" ,
-            "eventType" ,
-            "location" ,
-            "peopleCount" ,
-            "ageProfolio" ,
-            "kitchenType" ,
-            "provideCookery" ,
-            "budget" ,
-            "extraCriteria",
-            "state"
-        )
 
 class CriteriaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Criteria
-        fields = ('key','value')
+        fields = ('key','value',"isDelete")
 
 class BidSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Bid 
-        fields = ('post','bidder','offer')
+        fields = ('post','bidder','offer',"state")
+    
+class PostSerializer(serializers.HyperlinkedModelSerializer):
+    # set the foreign stat sytle 
+    # extraCriteria =CriteriaSerializer(many = True,read_only = True)
+    # bids = BidSerializer(many = True, read_only = True)
+    bid = BidSerializer(many = True,read_only = True)
+    
+    class Meta:
+        model = Post
+        fields = (
+                "title",
+                "msg",
+                "poster",
+                "evenTime",
+                "bidClossingTime",
+                "location",
+                "peopleCount",
+                "budget",
+                "state",
+                "bid",
+                "extraCriteria",
+            )
+
+

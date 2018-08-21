@@ -14,7 +14,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class CriteriaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Criteria
-        fields = ('key', 'value', "isDelete")
+        # fields = ('key', 'value', "isDelete")
+        fields = ('key', 'value')
 
 
 class BidSerializer(serializers.HyperlinkedModelSerializer):
@@ -25,9 +26,9 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     # set the foreign stat sytle
-    # extraCriteria =CriteriaSerializer(many = True,read_only = True)
-    # bids = BidSerializer(many = True, read_only = True)
+    extraCriteria =CriteriaSerializer(many = True,read_only = True)
     bid_set = BidSerializer(many=True,read_only = True)
+    poster = serializers.StringRelatedField()
 
     class Meta:
         model = Post
@@ -74,8 +75,15 @@ class PostSerializer(serializers.ModelSerializer):
                 )
             criteriaDict[criteria.key] = criteria.value
 
-        # push back the extria criteria 
-        validated_data["extraCriteria"] = extraCriteria
-        return Post.objects.create(**validated_data)
+        # push back the Data (Many to many couldn't push back )
+        # validated_data["title"] = title
+        
+        ret = Post.objects.create(**validated_data)
+
+        # for criteria in extraCriteria:
+        ret.extraCriteria.set(extraCriteria)
+
+        return ret 
+
 
 

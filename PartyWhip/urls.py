@@ -27,5 +27,5 @@ urlpatterns = [
         include('rest_framework.urls', namespace='rest_framework')),
 
     #  include the url from whip app 
-    path('',include('whip.urls')),
+    path('api-v0/',include('whip.urls')),
 ]

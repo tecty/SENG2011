@@ -43,7 +43,7 @@ $ source venv/bin/activate
 (venv) $ pip install -r requirements.txt
 
 # setup the database
-(venv) $ ./manage.py migrate
+(venv) $ ./init_db.sh
 ```
 
 ### Run the Server
@@ -71,4 +71,5 @@ Tobe added
 URL | Detail
 :--- | :---
 http://127.0.0.1:8000/admin | Django admin
-http://127.0.0.1:8000/ | Index of party whip
+http://127.0.0.1:8000/api-v0/ | Index of party whip's api  
+http://127.0.0.1:8000/ | Index of party whip's  

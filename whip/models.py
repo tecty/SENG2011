@@ -7,10 +7,12 @@ class Criteria(models.Model):
     value = models.CharField(max_length = 1024)
     # soft delete the criteria 
     isDelete = models.BooleanField(default=False)
-    def __unicode__(self):
-        # function used to show the object's name in Django 
-        return "%s : %s" % (self.key, self.value)
 
+    # functions used to show the object's name in Django 
+    def __unicode__(self):
+        return "%s : %s" % (self.key, self.value)
+    def __str__(self):
+        return self.__unicode__()
 
 class Post(models.Model):
     # basic description of this event 
@@ -34,9 +36,11 @@ class Post(models.Model):
     # Criteria table 
     extraCriteria = models.ManyToManyField(Criteria,blank = True)
 
+    # functions used to show the object's name in Django 
     def __unicode__(self):
-        # function used to show the object's name in Django 
         return self.title
+    def __str__(self):
+        return self.__unicode__()
 
 class Bid(models.Model):
     # which post is this bid for 
@@ -49,6 +53,9 @@ class Bid(models.Model):
     bidder = models.ForeignKey(User, models.PROTECT)
     # what the prive this bidder offer 
     offer = models.DecimalField(max_digits=12, decimal_places=2)
+    
+    # functions used to show the object's name in Django 
     def __unicode__(self):
-        # function used to show the object's name in Django 
         return "%s bids %s" % (self.bidder, self.offer)
+    def __str__(self):
+        return self.__unicode__()

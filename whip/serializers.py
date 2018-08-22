@@ -26,9 +26,9 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     # set the foreign stat sytle
-    extraCriteria =CriteriaSerializer(many = True,read_only = True)
+    # extraCriteria =CriteriaSerializer(many = True,read_only = True)
     bid_set = BidSerializer(many=True,read_only = True)
-    poster = serializers.StringRelatedField()
+    # poster = serializers.StringRelatedField()
 
     class Meta:
         model = Post

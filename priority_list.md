@@ -1,0 +1,79 @@
+- [ ] [1]1.1. Posters can post one or more tasks requiring the provision of food  
+- [ ] [1]1.1.1. Posters must set basic parameters for tasks  
+- [ ] [1]1.1.1.1. Name and Message of the task  
+- [ ] [1]1.1.1.2. number of people  
+- [ ] [1]1.1.1.3. location  
+- [ ] [1]1.1.1.4. date and time  
+- [ ] [1]1.1.1.5. food types  
+- [ ] [1]1.1.1.6. the closing date of bids //couldn’t later than event time  
+- [ ] [1]1.1.1.7. budget for whole event  
+- [ ] [1]1.1.1.8. status of the task // change by the progress (incl.  
+- [ ] [1]1.2. Posters can view tasks they posted // Even it it finished  
+- [ ] [1]1.2.1. Posters can view all tasks they posted in a list // sorted by status  
+- [ ] [1]1.2.2. Posters can choose bidders for an open task // change state  
+- [ ] [1]1.2.3. Posters can manage tasks  
+- [ ] [1]1.2.3.1. Posters can cancel a processing or deal state task which  
+- [ ] [1]1.3. Posters can register and log in  
+- [ ] [1]2.1. Criteria can only be CRUD (Change Read Update Delete) by admin  
+- [ ] [1]2.1.1. criteria cannot be hard deleted // need to verify, inplement by a  
+- [ ] [1]3.1. Bidders can view a list of posted tasks  
+- [ ] [1]3.1.5. Bidders can bid for tasks  
+- [ ] [1]3.1.5.1. Bid need to provide the offer price, some message.  
+- [ ] [1]3.2. Bidders can register can log in  
+- [ ] [2]1.1.2. Posters can specify some other parametes by criteria  
+- [ ] [2]1.1.2.1. A post only can have exclusive criteria by key (Couldn’t have  
+- [ ] [2]1.1.2.2. Poster can see all the provided criteria.  
+- [ ] [2]1.2.1.2. Posters can filter tasks by status of tasks  
+- [ ] [2]1.2.2.1. bidders will be sorted based on price and time // sorting  
+- [ ] [2]1.2.2.2. Poster and see all bidders’ message  
+- [ ] [2]1.2.2.4. When a task is overdue, it should be automatically cancelled  
+- [ ] [2]1.2.3.2. Posters can edit details of a task created by himself and not  
+- [ ] [2]1.2.3.3. Posters can regret for choosing a bidder 6 hours before the  
+- [ ] [2]1.3.1. Posters can provide contact details  
+- [ ] [2]1.3.1.1. Phone number  
+- [ ] [2]1.3.1.2. Email  
+- [ ] [2]1.3.1.3. Name  
+- [ ] [2]2.2. Criteria would is key-value pair, including // created admin  
+- [ ] [2]2.2.1. nature of event  
+- [ ] [2]2.2.2. level of quality of food  
+- [ ] [2]2.2.3. diet  
+- [ ] [2]2.2.4. religious restriction  
+- [ ] [2]2.2.5. provision of alcohol  
+- [ ] [2]2.2.6. age profile  
+- [ ] [2]2.2.7. kitchen size  
+- [ ] [2]2.2.8. indoor/outdoor  
+- [ ] [2]3.1.1. Default list is sorted by relevant rate // need to verify  
+- [ ] [2]3.2.1. Bidder must have a profile  
+- [ ] [2]3.2.1.1. Bidder can edit their profiles // only bidder and poster can  
+- [ ] [2]3.2.1.2. including the contact details  
+- [ ] [2]3.2.1.3. including the information of restaurant (if applicable)  
+- [ ] [2]3.2.1.4. including the food types they can provide  
+- [ ] [2]3.2.2. Bidders can view poster’s contact information when they are  
+- [ ] [2]3.2.2.1. Only can vide the detail at Deal state of the corresponding  
+- [ ] [2]4.1. Admin can login to the system different from bidder and poster  
+- [ ] [2]4.2. Admin can CRUD all the post and bid  
+- [ ] [2]4.3. Admin can CRUD all the Criteria  
+- [ ] [3]1.2.1.1. Posters can sort the tasks by the date  
+- [ ] [3]1.2.2.3. Posters can view bidder’s information on bidder’s profile //  
+- [ ] [3]1.2.2.5. Posters can evaluate a bidder when a task has been  
+- [ ] [3]1.2.2.5.1. Posters can rate the bidder for this task  
+- [ ] [3]1.2.2.5.2. Posters can write comments to this bidder  
+- [ ] [3]1.3.1.4. Address  
+- [ ] [3]1.3.2. Posters can edit their profiles  
+- [ ] [3]1.3.2.1. Posters can provide default address for a event  
+- [ ] [3]1.3.2.2. Posters can add some personal information on profile  
+- [ ] [3]2.2.9. additional provision of crockery/glasses/cutlery/chairs  
+- [ ] [3]3.1.2. Bidders can sort taks  
+- [ ] [3]3.1.2.1. sort by last bid price  
+- [ ] [3]3.1.2.2. sort by last bid time  
+- [ ] [3]3.1.2.3. sort by relevant rate  
+- [ ] [3]3.1.3. Bidders can filter tasks  
+- [ ] [3]3.1.3.1. filter by food type  
+- [ ] [3]3.1.3.2. filter by region  
+- [ ] [3]3.1.3.3. filter by due time  
+- [ ] [3]3.1.3.4. filter by other parameters  
+- [ ] [3]3.2.1.6. including their prefer time for service.(help to match the post  
+- [ ] [4]1.2.1.3. Posters can sort the tasks by last bidding price  
+- [ ] [4]1.2.1.4. Posters can filter tasks by some other parameters  
+- [ ] [4]3.1.4. Bidders can only see tasks with food types they can provide  
+- [ ] [4]3.1.5.2. get notification when a bidding updates  

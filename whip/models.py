@@ -21,7 +21,7 @@ class Post(models.Model):
     # who post this event 
     poster = models.ForeignKey(User, models.PROTECT)
     # the time this event will be held 
-    evenTime = models.DateTimeField()
+    eventTime = models.DateTimeField()
     # the time need to close the bid 
     bidClossingTime = models.DateTimeField()
     # where is the event

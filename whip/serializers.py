@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User
-from rest_framework import serializers
+from rest_framework import serializers,validators
 from .models import Parameter, Post, Bid
 
 # serializer of user models
+# validators.UniqueValidator
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -19,7 +20,13 @@ class ParameterSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class BidSerializer(serializers.HyperlinkedModelSerializer):
-    bidder = UserSerializer(read_only = True)
+    # protect the state been modify by client 
+    # TODO: Provide another to post and change it 
+    state  = serializers.CharField(read_only = True)
+    bidder = UserSerializer(
+        read_only = True,
+        default = serializers.CurrentUserDefault()  
+    )
     class Meta:
         model = Bid
         fields = ('post', 'bidder', 'offer', "state")
@@ -28,8 +35,12 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     # set the foreign stat sytle
     # extraParameter =serializers.StringRelatedField(many = True)
+    state  = serializers.CharField(read_only = True)
     bid_set = BidSerializer(many=True,read_only = True)
-    poster = UserSerializer(read_only = True)
+    poster = UserSerializer(
+        read_only = True,
+        default = serializers.CurrentUserDefault()
+    )
 
     class Meta:
         model = Post
@@ -37,7 +48,7 @@ class PostSerializer(serializers.ModelSerializer):
             "title",
             "msg",
             "poster",
-            "evenTime",
+            "eventTime",
             "bidClossingTime",
             "location",
             "peopleCount",
@@ -53,15 +64,18 @@ class PostSerializer(serializers.ModelSerializer):
         # title = validated_data.pop("title")
         # msg = validated_data.pop("msg")
         # poster = validated_data.pop("poster")
-        # evenTime = validated_data.pop("evenTime")
-        # bidClossingTime = validated_data.pop("bidClossingTime")
+        eventTime = validated_data.pop("eventTime")
+        bidClossingTime = validated_data.pop("bidClossingTime")
         # location = validated_data.pop("location")
         # peopleCount = validated_data.pop("peopleCount")
         # budget = validated_data.pop("budget")
         # state = validated_data.pop("state")
         extraParameter = validated_data.pop("extraParameter")
 
-        # print("imhere")
+        if bidClossingTime >= eventTime:
+            raise serializers.ValidationError(
+                "Bid Clossing Time must be before the Event time ")
+
         # print(extraParameter)
 
         # create a dict to prevent collesion 
@@ -77,8 +91,10 @@ class PostSerializer(serializers.ModelSerializer):
             ParameterDict[Parameter.key] = Parameter.value
 
         # push back the Data (Many to many couldn't push back )
-        # validated_data["title"] = title
+        validated_data["eventTime"] = eventTime
+        validated_data["bidClossingTime"] = bidClossingTime
         
+        # create the new instance of this post  
         ret = Post.objects.create(**validated_data)
 
         # for Parameter in extraParameter:

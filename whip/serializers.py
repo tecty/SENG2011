@@ -17,7 +17,7 @@ class ParameterSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Parameter
         # fields = ('key', 'value', "isDelete")
-        fields = ('key', 'value')
+        fields = ('id','key', 'value')
 
 
 class BidSerializer(serializers.HyperlinkedModelSerializer):
@@ -26,7 +26,7 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
     state  = serializers.CharField(read_only = True)
     bidder = UserSerializer(
         read_only = True,
-        default = serializers.CurrentUserDefault()  
+        # default = serializers.CurrentUserDefault()  
     )
     class Meta:
         model = Bid
@@ -40,7 +40,7 @@ class PostSerializer(serializers.ModelSerializer):
     bid_set = BidSerializer(many=True,read_only = True)
     poster = UserSerializer(
         read_only = True,
-        default = serializers.CurrentUserDefault()
+        # default = serializers.CurrentUserDefault()
     )
 
     class Meta:

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .serializers import UserSerializer, User, \
     Post, PostSerializer, \
-    Criteria, CriteriaSerializer, \
+    Parameter, ParameterSerializer, \
     Bid, BidSerializer
 from rest_framework import viewsets
 
@@ -13,16 +13,27 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-class CriteriaViewSet(viewsets.ModelViewSet):
-    queryset = Criteria.objects.all()
-    serializer_class = CriteriaSerializer
+class ParameterViewSet(viewsets.ModelViewSet):
+    queryset = Parameter.objects.all()
+    serializer_class = ParameterSerializer
 
 
 class BidViewSet(viewsets.ModelViewSet):
     queryset = Bid.objects.all()
     serializer_class = BidSerializer
 
+    def perform_create(self,serializer):
+        # inject the current login user.
+        serializer.save(
+            poster = self.request.user,
+        )
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+    def perform_create(self,serializer):
+        # inject the current login user.
+        serializer.save(
+            poster = self.request.user,
+        )

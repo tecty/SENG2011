@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Criteria, Post, Bid
+from .models import Parameter, Post, Bid
 
 # serializer of user models
 
@@ -11,14 +11,15 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'username', 'email', 'is_staff')
 
 
-class CriteriaSerializer(serializers.HyperlinkedModelSerializer):
+class ParameterSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Criteria
+        model = Parameter
         # fields = ('key', 'value', "isDelete")
         fields = ('key', 'value')
 
 
 class BidSerializer(serializers.HyperlinkedModelSerializer):
+    bidder = UserSerializer(read_only = True)
     class Meta:
         model = Bid
         fields = ('post', 'bidder', 'offer', "state")
@@ -26,9 +27,9 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     # set the foreign stat sytle
-    # extraCriteria =CriteriaSerializer(many = True,read_only = True)
+    # extraParameter =serializers.StringRelatedField(many = True)
     bid_set = BidSerializer(many=True,read_only = True)
-    # poster = serializers.StringRelatedField()
+    poster = UserSerializer(read_only = True)
 
     class Meta:
         model = Post
@@ -43,7 +44,7 @@ class PostSerializer(serializers.ModelSerializer):
             "budget",
             "state",
             "bid_set",
-            "extraCriteria",
+            "extraParameter",
         )
 
     def create(self, validated_data):
@@ -58,30 +59,30 @@ class PostSerializer(serializers.ModelSerializer):
         # peopleCount = validated_data.pop("peopleCount")
         # budget = validated_data.pop("budget")
         # state = validated_data.pop("state")
-        extraCriteria = validated_data.pop("extraCriteria")
+        extraParameter = validated_data.pop("extraParameter")
 
         # print("imhere")
-        # print(extraCriteria)
+        # print(extraParameter)
 
         # create a dict to prevent collesion 
-        criteriaDict = {}
+        ParameterDict = {}
 
-        for criteria in extraCriteria:
+        for Parameter in extraParameter:
             # perform a check for duplicate key in the dictionary 
-            if criteria.key in  criteriaDict:
+            if Parameter.key in  ParameterDict:
                 # raise a validate error 
                 raise serializers.ValidationError(
-                    "Criteria must have unique key"
+                    "Parameter must have unique key"
                 )
-            criteriaDict[criteria.key] = criteria.value
+            ParameterDict[Parameter.key] = Parameter.value
 
         # push back the Data (Many to many couldn't push back )
         # validated_data["title"] = title
         
         ret = Post.objects.create(**validated_data)
 
-        # for criteria in extraCriteria:
-        ret.extraCriteria.set(extraCriteria)
+        # for Parameter in extraParameter:
+        ret.extraParameter.set(extraParameter)
 
         return ret 
 

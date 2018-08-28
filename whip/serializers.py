@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers,validators
 from .models import Parameter, Post, Bid
+from django.utils import timezone
 
 # serializer of user models
 # validators.UniqueValidator
@@ -74,7 +75,22 @@ class PostSerializer(serializers.ModelSerializer):
 
         if bidClossingTime >= eventTime:
             raise serializers.ValidationError(
-                "Bid Clossing Time must be before the Event time ")
+                {"bidClossingTime":[
+                    "Bid Clossing Time must be before the Event time "
+                ]}
+            )
+        if eventTime <= timezone.now():
+            raise serializers.ValidationError(
+                {"eventTime":[
+                    "Event Time must be later time now;"
+                ]}
+            )
+        if bidClossingTime <= timezone.now():
+            raise serializers.ValidationError(
+                {"bidClossingTime":[
+                    "Bid Clossing Time must be later time now;"
+                ]}
+            )
 
         # print(extraParameter)
 
@@ -86,7 +102,9 @@ class PostSerializer(serializers.ModelSerializer):
             if Parameter.key in  ParameterDict:
                 # raise a validate error 
                 raise serializers.ValidationError(
-                    "Parameter must have unique key"
+                    {"Parameter":
+                        ["Parameter must have unique key"]
+                    }
                 )
             ParameterDict[Parameter.key] = Parameter.value
 

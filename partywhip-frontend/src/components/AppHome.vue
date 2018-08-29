@@ -61,20 +61,11 @@ var pass = '123456'
 export default {
   data () {
     return {
-      posts: [],
-      items: [
-        { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Photos', subtitle: 'Jan 9, 2014' },
-        { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Recipes', subtitle: 'Jan 17, 2014' },
-        { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Work', subtitle: 'Jan 28, 2014' }
-      ]
+      posts: []
     }
   },
   mounted () {
     axios.get(sessionUrl, {}, {
-      auth: {
-        username: uname,
-        password: pass
-      }
     }).then(response => {
       // JSON responses are automatically parsed.
       console.log(response)

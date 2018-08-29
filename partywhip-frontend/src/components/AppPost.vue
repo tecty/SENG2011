@@ -14,12 +14,21 @@
   <v-form ref="form"  @submit.prevent="submit">
     <v-container grid-list-xl fluid>
     <v-layout wrap >
+       <v-flex xs12 sm6>
     <v-text-field
       v-model="form.title"
       :rules="rules.name"
       label="Title"
       required
     ></v-text-field>
+    </v-flex>
+<v-flex xs12 sm6>
+    <v-text-field
+      v-model="form.location"
+      label="Location"
+      required
+    ></v-text-field>
+    </v-flex>
       <v-flex xs12>
         <v-textarea
           v-model="form.msg"
@@ -30,14 +39,14 @@
           </div>
         </v-textarea>
       </v-flex>
-    
+
 <v-flex xs12 sm6 md4>
       <v-menu
         ref="menu"
         :close-on-content-click="false"
         v-model="form.menu"
         :nudge-right="40"
-        :return-value.sync="date"
+        :return-value.sync="form.date"
         lazy
         transition="scale-transition"
         offset-y
@@ -60,7 +69,7 @@
 </v-flex>
 <v-flex xs11 sm5>
       <v-menu
-        ref="menu"
+        ref="menu2"
         :close-on-content-click="false"
         v-model="form.menu2"
         :nudge-right="40"
@@ -83,9 +92,79 @@
         <v-time-picker
           v-if="form.menu2"
           v-model="form.time"
-          @change="$refs.menu.save(form.time)"
+          @change="$refs.menu2.save(form.time)"
         ></v-time-picker>
       </v-menu>
+</v-flex>
+<v-flex xs12 sm6 md4>
+      <v-menu
+        ref="menu10"
+        :close-on-content-click="false"
+        v-model="form.menu10"
+        :nudge-right="40"
+        :return-value.sync="form.date10"
+        lazy
+        transition="scale-transition"
+        offset-y
+        full-width
+        min-width="290px"
+      >
+        <v-text-field
+          slot="activator"
+          v-model="form.date10"
+          label="Bid Closing Date"
+          prepend-icon="event"
+          readonly
+          required
+        ></v-text-field>
+        <v-date-picker v-model="form.date10" no-title scrollable>
+          <v-spacer></v-spacer>
+          <v-btn flat color="primary" @click="$refs.menu10.save(form.date10)">OK</v-btn>
+        </v-date-picker>
+      </v-menu>
+</v-flex>
+<v-flex xs11 sm5>
+      <v-menu
+        ref="menu11"
+        :close-on-content-click="false"
+        v-model="form.menu11"
+        :nudge-right="40"
+        :return-value.sync="form.time11"
+        lazy
+        transition="scale-transition"
+        offset-y
+        full-width
+        max-width="290px"
+        min-width="290px"
+      >
+        <v-text-field
+          slot="activator"
+          v-model="form.time11"
+          label="Bid Closing Time"
+          prepend-icon="access_time"
+          readonly
+          required
+        ></v-text-field>
+        <v-time-picker
+          v-if="form.menu11"
+          v-model="form.time11"
+          @change="$refs.menu11.save(form.time11)"
+        ></v-time-picker>
+      </v-menu>
+</v-flex>
+<v-flex xs11 sm5>
+    <v-text-field
+      v-model="form.peopleCount"
+      label="Number of people"
+      required
+    ></v-text-field>
+</v-flex>
+<v-flex xs11 sm5>
+    <v-text-field
+      v-model="form.budegt"
+      label="Budegt"
+      required
+    ></v-text-field>
 </v-flex>
       </v-layout>
     </v-container>
@@ -113,13 +192,17 @@
         title: '',
         name: '',
         msg: '',
-        favoriteAnimal: '',
-        age: null,
-        terms: false,
+        location: '',
+        budegt: '',
+        peopleCount: 1,
         date: null,
         menu: false,
         time: null,
         menu2: false,
+        date10: null,
+        menu10: false,
+        time11: null,
+        menu11: false,
       })
 
       return {

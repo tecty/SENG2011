@@ -4,11 +4,6 @@
 # ignore the database to protect password leak 
 db.sqlite3
 
-# ignore the node_modules
-partywhip-frontend/node_modules
-
-# DON't ignore build folder in frontend
-!partywhip-frontend/build
 
 # python3 ignore 
 
@@ -122,3 +117,10 @@ venv.bak/
 *.exe
 *.mdb
 *.dll
+
+# ignore the node_modules
+partywhip-frontend/node_modules
+
+# DON't ignore build folder in frontend
+!partywhip-frontend/build
+

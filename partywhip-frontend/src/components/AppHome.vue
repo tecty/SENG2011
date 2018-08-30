@@ -56,8 +56,6 @@
 <script>
 import axios from 'axios'
 var sessionUrl = 'http://127.0.0.1:8000/api-v0/posts/?format=json'
-var uname = 'zhilu'
-var pass = '123456'
 export default {
   data () {
     return {

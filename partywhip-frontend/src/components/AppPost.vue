@@ -6,10 +6,17 @@
         absolute
         top
         right
-        color="success"
+        auto-height
+        :color="snackbarColor"
       >
-        <span>Post successful!</span>
-        <v-icon dark>check_circle</v-icon>
+        <span>{{ snackText }}</span>
+        <v-btn
+          dark
+          flat
+          @click="snackbar = false"
+        >
+         <v-icon dark>check_circle</v-icon>
+        </v-btn>
       </v-snackbar>
   <v-form ref="form"  @submit.prevent="submit">
     <v-container grid-list-xl fluid>
@@ -17,15 +24,14 @@
        <v-flex xs12 sm6>
     <v-text-field
       v-model="form.title"
-      :rules="rules.name"
-      label="Title"
+      label="Title *"
       required
     ></v-text-field>
     </v-flex>
 <v-flex xs12 sm6>
     <v-text-field
       v-model="form.location"
-      label="Location"
+      label="Location *"
       required
     ></v-text-field>
     </v-flex>
@@ -56,7 +62,7 @@
         <v-text-field
           slot="activator"
           v-model="form.date"
-          label="Event Date"
+          label="Event Date *"
           prepend-icon="event"
           readonly
           required
@@ -84,7 +90,7 @@
         <v-text-field
           slot="activator"
           v-model="form.time"
-          label="Event Time"
+          label="Event Time *"
           prepend-icon="access_time"
           readonly
           required
@@ -112,7 +118,7 @@
         <v-text-field
           slot="activator"
           v-model="form.date10"
-          label="Bid Closing Date"
+          label="Bid Closing Date *"
           prepend-icon="event"
           readonly
           required
@@ -140,7 +146,7 @@
         <v-text-field
           slot="activator"
           v-model="form.time11"
-          label="Bid Closing Time"
+          label="Bid Closing Time *"
           prepend-icon="access_time"
           readonly
           required
@@ -155,14 +161,14 @@
 <v-flex xs11 sm5>
     <v-text-field
       v-model="form.peopleCount"
-      label="Number of people"
+      label="Number of people *"
       required
     ></v-text-field>
 </v-flex>
 <v-flex xs11 sm5>
     <v-text-field
-      v-model="form.budegt"
-      label="Budegt"
+      v-model="form.budget"
+      label="Budget *"
       required
     ></v-text-field>
 </v-flex>
@@ -173,7 +179,6 @@
         <v-btn flat @click="resetForm">Clear</v-btn>
         <v-spacer></v-spacer>
         <v-btn
-          :disabled="!formIsValid"
           flat
           color="primary"
           type="submit"
@@ -189,55 +194,87 @@
   export default {
     data () {
       const defaultForm = Object.freeze({
-        title: '',
-        name: '',
-        msg: '',
-        location: '',
-        budegt: '',
+        title: 'test',
+        msg: 'test',
+        location: 'test',
+        budget: 1,
         peopleCount: 1,
-        date: null,
+        date: '2018-09-13',
         menu: false,
-        time: null,
+        time: '03:30',
         menu2: false,
-        date10: null,
+        date10: '2018-09-12',
         menu10: false,
-        time11: null,
-        menu11: false,
+        time11: '03:30',
+        menu11: false
       })
 
       return {
         form: Object.assign({}, defaultForm),
-        rules: {
-          age: [
-            val => val < 10 || `I don't believe you!`
-          ],
-          animal: [val => (val || '').length > 0 || 'This field is required'],
-          name: [val => (val || '').length > 0 || 'This field is required']
-        },
-        animals: ['Dog', 'Cat', 'Rabbit', 'Turtle', 'Snake'],
-        conditions: false,
-        content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc.`,
         snackbar: false,
-        terms: false,
+        snackbarColor: 'error',
+        snackText: 'Error You must complete all fields with *'
       }
     },
-    computed: {
-        formIsValid () {
-          return (
-            this.form.title
-          )
-        }
-      },
 
-      methods: {
-        resetForm () {
-          this.form = Object.assign({}, this.defaultForm)
-          this.$refs.form.reset()
-        },
-        submit () {
-          this.snackbar = true
-          this.resetForm()
-        }
+    methods: {
+      resetForm () {
+        this.form = Object.assign({}, this.defaultForm)
+        this.$refs.form.reset()
+      },
+      submit () {
+        var sessionUrl = 'http://127.0.0.1:8000/api-v0/posts/'
+        var uname = 'zhilu'
+        var pass = '123456'
+
+        axios.post(sessionUrl,
+          {
+            title: this.form.title,
+            msg: this.form.msg,
+            location: this.form.location,
+            budget: this.form.budget,
+            peopleCount: this.form.peopleCount,
+            eventTime: this.form.date + 'T' + this.form.time,
+            bidClossingTime: this.form.date10 + 'T' + this.form.time11,
+            extraParameter: [] // TODO extraparameter
+          }, {
+            auth: {
+              username: uname,
+              password: pass
+            }
+          })
+          .then(response => {
+            // JSON responses are automatically parsed.
+            console.log(response)
+            this.snackbar = true
+            this.snackbarColor = 'success'
+            this.snackText = 'Post Successful'
+            this.posts = response.data
+            this.resetForm()
+          })
+          .catch(error => {
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+              console.log(error.response.data)
+              console.log(error.response.status)
+              console.log(error.response.headers)
+              this.snackbar = true
+              this.snackbarColor = 'error'
+              this.snackText = 'Error: ' + JSON.stringify(error.response.data) // TODO improve error looking.
+            } else if (error.request) {
+              // The request was made but no response was received
+              // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+              // http.ClientRequest in node.js
+              console.log(error.request)
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log('Error', error.message.data)
+            }
+            console.log(error.config)
+          })
+          // this.resetForm()
       }
+    }
   }
 </script>

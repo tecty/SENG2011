@@ -7,6 +7,9 @@ db.sqlite3
 # ignore the node_modules
 partywhip-frontend/node_modules
 
+# DON't ignore build folder in frontend
+!partywhip-frontend/build
+
 # python3 ignore 
 
 # Byte-compiled / optimized / DLL files

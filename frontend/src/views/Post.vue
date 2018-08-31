@@ -1,9 +1,15 @@
 <template>
   <div class="post">
     <h1>post</h1>
-    <p>
+    <!-- <p>
       {{posts}}
-    </p>
+    </p> -->
+    <div v-for="(item, index) in posts" :key="index">
+      {{item.title}}
+    </div>
+
+
+
   </div>
 </template>
 
@@ -13,16 +19,19 @@ export default {
   data() {
     return {
       posts:[],
+      error:"",
     }
   },
   mounted(){
     this.axios
-      .get("http://localhost:8000/api-v0/posts/")
+      .get("posts/")
       .then(res =>{
         this.posts = res.data;
       })
       .catch(err => {
-        console.log(err);
+        this.error = err;
+        // console.log(err);
+        // Console.log(err);
       })
       
   }

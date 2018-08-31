@@ -21,25 +21,26 @@ $ git push --set-upstream origin YOUR_BRANCH_NAME
 Make sure you have install these package in your package manager:  
 python3, python3-venv, virtualenv
 
-```shell
-# in Ubuntu 
-sudo apt install python3 python3-venv virtualenv 
+```bash
+# in Ubuntu
+sudo apt install python3 python3-venv virtualenv
 ```
 
 
-```shell
+```bash
 # Create Virtual environment if you haven't
-$ virtualenv venv -p `which python3` 
+$ virtualenv venv -p `which python3`
 ```
 
-```shell
+```bash
 # activate the virtual envirnoment
 $ source venv/bin/activate
 ```
 
 ### Install dependencies and setup the database
 
-```shell
+```bash
+# install python dependencies
 (venv) $ pip install -r requirements.txt
 
 # setup the database
@@ -50,7 +51,7 @@ $ source venv/bin/activate
 
 A shell to run django's httpd.
 
-```shell
+```bash
 # Run in local
 (venv) $ ./manage.py runserver
 
@@ -58,13 +59,63 @@ A shell to run django's httpd.
 (venv) $ sudo python manage.py runserver 0:80
 ```
 
-### Install frontend dependencies and run the Web
+# Frontend
 
-```shell
-Tobe added
+## Install the System Environment
+
+Install node.js: [Node Install Use Package Manager](https://nodejs.org/en/download/package-manager/)  
+
+Install yarn: [Yarn Install Documents](https://yarnpkg.com/zh-Hans/docs/install#debian-stable)
+
+## Install The Dependencies of Frontend
+
+``` bash
+# install dependencies
+$ yarn install
 ```
 
+## Run the Frontend
+
+You also need another shell to keep fronend server running.
+
+```bash
+# serve with hot reload at localhost:8080
+$ yarn serve
+```
+
+## Some Helpful Commands
+
+```bash
+# build for production with minification
+$ yarn build
+
+# build for production and view the bundle analyzer report
+$ yarn build --report
+
+# <!-- These two can not run, doesn't matter -->
+# run unit tests
+$ npm run unit
+
+# run all tests
+$ npm test
+```
+
+Also you may want to checkout
+[vue](https://cn.vuejs.org/v2/guide/),
+[vuex](https://vuex.vuejs.org/guide/),
+[Vuetify](https://vuetifyjs.com/en/getting-started/quick-start),
+[Vue-router](https://router.vuejs.org/),
+[Axios](https://cn.vuejs.org/v2/cookbook/using-axios-to-consume-apis.html)
+and [vue-loader](http://vuejs.github.io/vue-loader)..
+
 ## URLs
+
+### Frondend
+
+URL | Detail
+:--- | :---
+http://127.0.0.1:8080/ | Home Page
+http://localhost:8080/post | Post Tasks Page
 
 ### Backend
 
@@ -72,4 +123,4 @@ URL | Detail
 :--- | :---
 http://127.0.0.1:8000/admin | Django admin
 http://127.0.0.1:8000/api-v0/ | Index of party whip's api  
-http://127.0.0.1:8000/ | Index of party whip's  
+http://127.0.0.1:8000/ | Index of party whip's (Not active yet)

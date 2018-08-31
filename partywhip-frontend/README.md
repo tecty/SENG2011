@@ -1,6 +1,7 @@
 # partywhip-frontend
 
-> the frontend project of partywhip
+> the frontend project of partywhip using vuetify
+> setup from https://github.com/vuetifyjs/webpack
 
 ## Build Setup
 

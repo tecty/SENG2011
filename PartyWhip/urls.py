@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
+# import jwt auth 
+from rest_framework_jwt.views import obtain_jwt_token
+
 
 urlpatterns = [
     # the endpoint for admin site
@@ -25,6 +28,10 @@ urlpatterns = [
     # register api authentication from rest framework 
     url(r'^api-auth/', 
         include('rest_framework.urls', namespace='rest_framework')),
+
+    # jwt auth
+    url(r'^api-token-auth/', obtain_jwt_token),
+
 
     #  include the url from whip app 
     path('api-v0/',include('whip.urls')),

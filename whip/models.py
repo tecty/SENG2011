@@ -2,10 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User 
 
 # Create your models here.
-class Criteria(models.Model):
+class Parameter(models.Model):
     key = models.CharField(max_length = 255)
     value = models.CharField(max_length = 1024)
-    # soft delete the criteria 
+    # soft delete the Parameter 
     isDelete = models.BooleanField(default=False)
 
     # functions used to show the object's name in Django 
@@ -21,7 +21,7 @@ class Post(models.Model):
     # who post this event 
     poster = models.ForeignKey(User, models.PROTECT)
     # the time this event will be held 
-    evenTime = models.DateTimeField()
+    eventTime = models.DateTimeField()
     # the time need to close the bid 
     bidClossingTime = models.DateTimeField()
     # where is the event
@@ -31,10 +31,26 @@ class Post(models.Model):
     # the budget of whole event 
     budget = models.DecimalField(max_digits=12, decimal_places=2)
     # state of the event 
-    state = models.CharField(max_length=255)
-    # not required criteria is added by relation of 
-    # Criteria table 
-    extraCriteria = models.ManyToManyField(Criteria,blank = True)
+    state = models.CharField(
+        max_length=2,
+        choices = (
+            ('BD','Bidding'),
+            ('DL','Deal'),
+            ('FN','Finished'),
+            ('CL','Canceled'),
+        ),
+        default = 'BD',
+    )
+    # not required Parameter is added by relation of 
+    # Parameter table 
+    extraParameter = models.ManyToManyField(
+        Parameter,
+        blank = True,
+        related_name = "extra_parameter"
+    )
+
+    
+
 
     # functions used to show the object's name in Django 
     def __unicode__(self):
@@ -48,7 +64,17 @@ class Bid(models.Model):
     # A message to have better chance to win
     msg = models.CharField(max_length = 1024)
     # state of this event 
-    state = models.CharField(max_length=255)
+    state = models.CharField(
+        max_length=2,
+        choices = (
+            ('BD','Bidding'),
+            ('SD','Selected'),
+            ('US','Unselected'),
+            ('FN','Finished'),
+            ('CL','Canceled'),
+        ),
+        default = 'BD',
+    )
     # who bid this  
     bidder = models.ForeignKey(User, models.PROTECT)
     # what the prive this bidder offer 

@@ -69,7 +69,8 @@ Tobe added
 
 ## partywhip-frontend
 
-> the frontend project of partywhip
+> the frontend project of partywhip using vuetify
+> setup from https://github.com/vuetifyjs/webpack
 
 ## Build Setup
 
@@ -96,6 +97,13 @@ npm test
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
 ## URLs
+
+### Frondend
+
+URL | Detail
+:--- | :---
+http://127.0.0.1:8080/#/ | Home Page
+http://127.0.0.1:8080/posts | Index of party whip's api  
 
 ### Backend
 

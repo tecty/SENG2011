@@ -103,7 +103,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 URL | Detail
 :--- | :---
 http://127.0.0.1:8080/#/ | Home Page
-http://127.0.0.1:8080/posts | Index of party whip's api  
+http://localhost:8080/#/post | Post Tasks Page
 
 ### Backend
 

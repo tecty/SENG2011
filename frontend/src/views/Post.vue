@@ -1,6 +1,9 @@
 <template>
   <div class="post">
-    <p>post</p>
+    <h1>post</h1>
+    <p>
+      {{posts}}
+    </p>
   </div>
 </template>
 

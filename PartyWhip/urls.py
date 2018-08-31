@@ -35,4 +35,8 @@ urlpatterns = [
 
     #  include the url from whip app 
     path('api-v0/',include('whip.urls')),
+
+    # bind another end point to api-v0 for convinence 
+    url(r'^api-v0/api-token-auth/', obtain_jwt_token),
+
 ]

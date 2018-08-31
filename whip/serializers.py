@@ -32,6 +32,13 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
         model = Bid
         fields = ('post', 'bidder', 'offer', "state")
 
+    def create(self, validated_data):
+        # push the current user into the validate data 
+        validated_data['bidder'] =  self.context['request'].user
+        # return the created bid  
+        return Bid.objects.create(**validated_data)
+
+
 
 class PostSerializer(serializers.ModelSerializer):
     # set the foreign stat sytle
@@ -39,8 +46,7 @@ class PostSerializer(serializers.ModelSerializer):
     state  = serializers.CharField(read_only = True)
     bid_set = BidSerializer(many=True,read_only = True)
     poster = UserSerializer(
-        read_only = True,
-        # default = serializers.CurrentUserDefault()
+        read_only = True
     )
 
     class Meta:
@@ -112,6 +118,9 @@ class PostSerializer(serializers.ModelSerializer):
         validated_data["eventTime"] = eventTime
         validated_data["bidClossingTime"] = bidClossingTime
         
+        # push back the current defult user 
+        validated_data['poster'] = self.context['request'].user
+
         # create the new instance of this post  
         ret = Post.objects.create(**validated_data)
 

@@ -7,9 +7,6 @@
     <div v-for="(item, index) in posts" :key="index">
       {{item.title}}
     </div>
-
-
-
   </div>
 </template>
 
@@ -27,11 +24,11 @@ export default {
       .get("posts/")
       .then(res =>{
         this.posts = res.data;
+
+
       })
       .catch(err => {
         this.error = err;
-        // console.log(err);
-        // Console.log(err);
       })
       
   }

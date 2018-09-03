@@ -1,4 +1,4 @@
-method filter(a:array<int>, key:int) returns (b:array<int>, n:int)
+method Filter(a:array<int>, key:int) returns (b:array<int>, n:int)
 	ensures n <= a.Length;
 	ensures b.Length == a.Length;
 

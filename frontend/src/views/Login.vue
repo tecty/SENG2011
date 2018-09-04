@@ -15,48 +15,45 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 
 export default {
-  data(){
-    return{
-      // prevent error because vuetify require this 
+  data() {
+    return {
+      // prevent error because vuetify require this
       valid: false,
-      // input of username and password 
-      username:"",
-      password:"",
-      // if show == true, show the password 
-      show:false,
-      error:""
-    }
+      // input of username and password
+      username: "",
+      password: "",
+      // if show == true, show the password
+      show: false,
+      error: ""
+    };
   },
-  methods:{
-    // map the login action from vuex 
+  methods: {
+    // map the login action from vuex
     ...mapActions(["loginByCredential"]),
-    login(){
-      // pass the user login credential 
+    login() {
+      // pass the user login credential
       this.loginByCredential({
         username: this.username,
-        password: this.password,
+        password: this.password
       })
-      .then(() => {
-        // console.log("imhere")
-        
-        if(this.$route.query.redirect){
-          // redirect request from another view
-          this.$router.push(this.$route.query.redirect);
-        }
-        else{
-          // go to previous page, if it's user direct to login 
-          this.$router.go(-1);
-        }
-      })
-      .catch(() => {
-        this.error = "Wrong username or password."  
-      })
-    }
-  },
-  
+        .then(() => {
+          // console.log("imhere")
 
-}
+          if (this.$route.query.redirect) {
+            // redirect request from another view
+            this.$router.push(this.$route.query.redirect);
+          } else {
+            // go to previous page, if it's user direct to login
+            this.$router.go(-1);
+          }
+        })
+        .catch(() => {
+          this.error = "Wrong username or password.";
+        });
+    }
+  }
+};
 </script>

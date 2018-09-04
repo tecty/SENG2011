@@ -1,11 +1,21 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/post">Posts</router-link>|
-      <router-link to="/login">Login</router-link>|
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <app-toolbar />
+    <v-content>
+      <router-view/>
+    </v-content>
+
+    <v-footer app>
+      <span>&copy; 2017</span>
+    </v-footer>
+  </v-app>
 </template>
+
+
+<script>
+import AppToolbar from "./components/AppToolbar.vue";
+export default {
+  name: "App",
+  components: { AppToolbar }
+};
+</script>

@@ -12,16 +12,14 @@
 
 <script>
 export default {
-  data(){
+  data() {
     return {
-      // require a valid function. 
+      // require a valid function.
       // here just for silence the error
-      valid:"",
-      price :"", 
-    }
+      valid: "",
+      price: ""
+    };
   },
-  methods:{
-
-  }
+  methods: {}
 };
 </script>

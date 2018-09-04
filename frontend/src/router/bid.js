@@ -1,7 +1,7 @@
 // router of bids
 export default [
   {
-    path: "/bid/create",
+    path: "/post/:id/bid",
     name: "BidCreate",
     component: () => import("@/views/bid/Create.vue")
   },

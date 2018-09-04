@@ -53,7 +53,8 @@ var routeLists = [
 ];
 
 // acquire the routes sotre in seperate files
-routeLists.concat(post, bid);
+routeLists.push(...post);
+routeLists.push(...bid);
 
 export default new Router({
   mode: "history",

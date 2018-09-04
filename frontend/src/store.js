@@ -4,6 +4,7 @@ import axios from 'axios';
 // import api from "./store/api"
 // import auth from "./store/auth"
 import {LOGIN_FAIL} from  "@/store/types";
+import { getToken } from './utils/auth';
 
 Vue.use(Vuex)
 
@@ -16,7 +17,7 @@ export default new Vuex.Store({
   // },
   state: {
     api_state:"",
-    token:"",
+    token:getToken(),
     error: "",
     data: "",
   },
@@ -27,7 +28,7 @@ export default new Vuex.Store({
       state.error = error;
     },
     ADD_TOKEN:(state,token)=>{
-      state.token = "JWT "+ token;
+      state.token =  token;
     },
     REMOVE_TOKEN: (state)=>{
       state.token = "";
@@ -40,7 +41,8 @@ export default new Vuex.Store({
         axios.post("api-token-auth/",credential)
         .then(res =>{
           // add this token to store
-          commit("ADD_TOKEN",res.data.token);
+          // modify the auth type 
+          commit("ADD_TOKEN", "JWT "+ res.data.token);
           // store this token to local storage 
           localStorage.setItem("token",state.token);
           // use this token to do axios request  
@@ -63,26 +65,6 @@ export default new Vuex.Store({
       // remove the record in vuex 
       commit("REMOVE_TOKEN");
     },
-    isLogin({state,commit}){
-      if(state.token ){
-        return true; 
-      }
-      else {
-        // try to fetch from the local storage 
-        var token = localStorage.getItem("token");
-        if (token){
-          // add this token to store
-          commit("ADD_TOKEN",token);
-          // store this token to local storage 
-          localStorage.setItem("token",state.token);
-          // use this token to do axios request  
-          axios.defaults.headers.common['Authorization'] = state.token;
-          return true;
-        }
-      }
-      // else: couldn't find token anywhere
-      return false;
-    }
   }
 
 })

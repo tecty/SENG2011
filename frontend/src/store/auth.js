@@ -42,23 +42,23 @@ const actions = {
 
 const getters = {
 
-  isLogin({state,commit}){
-    if (state.token == "") {
-      // here is a token, user must logined 
-      return true;
-    }
-    else{
-      // try to get the stored item
-      var token = localStorage.getItem("token");
-      if(token){
-        // there is a token in local storage, record it in to vuex
-        commit("ADD_TOKEN",token);
-        return true;
-      }
-      // else 
-      return false;
-    }
-  }
+  // isLogin({state,commit}){
+  //   if (state.token == "") {
+  //     // here is a token, user must logined 
+  //     return true;
+  //   }
+  //   else{
+  //     // try to get the stored item
+  //     var token = localStorage.getItem("token");
+  //     if(token){
+  //       // there is a token in local storage, record it in to vuex
+  //       commit("ADD_TOKEN",token);
+  //       return true;
+  //     }
+  //     // else 
+  //     return false;
+  //   }
+  // }
 }
 
 

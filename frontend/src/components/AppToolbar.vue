@@ -1,9 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer 
-      persistent :mini-variant="miniVariant" :clipped="clipped" v-model="drawer"
-      enable-resize-watcher fixed app
-    >
+    <v-navigation-drawer persistent v-model="drawer" fixed app >
       <v-list>
         <!-- https://stackoverflow.com/questions/47586022/router-link-with-vue-and-vuetify-confusion -->
         <v-list-tile value="true" v-for="(item, i) in items" :key="i" 
@@ -21,7 +18,7 @@
     <v-toolbar app :clipped-left="clipped">
       <v-toolbar-side-icon @click.stop="drawer = !drawer" />
       <router-link to="/">
-        <v-toolbar-title v-text="title" />
+        <v-toolbar-title class="black--text" v-text="title" />
       </router-link>
       <v-spacer />
       <v-btn v-if="!token" to="login"  flat>Login</v-btn>

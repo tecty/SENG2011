@@ -21,7 +21,7 @@
             </v-toolbar>
             <v-expansion-panel two-line focusable>
               <v-expansion-panel-content v-for="post in posts" :key="post.id" avatar>
-                <div slot="header">{{ post.msg }}</div>
+                <div slot="header">{{ post.id }}{{ post.msg }}</div>
                 <v-card>
                   <v-card-title>
                     <div>
@@ -32,7 +32,8 @@
                     </div>
                   </v-card-title>
                   <v-card-actions>
-                    <v-btn flat color="orange">Bid for it</v-btn>
+                    <v-btn flat color="orange" 
+                    :to="{ name:'BidCreate', params:{id: post.id} }" >Bid for it</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-expansion-panel-content>

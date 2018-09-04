@@ -31,13 +31,15 @@
       </v-btn>
       <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer />
-      <v-btn flat>Login</v-btn>
+      <v-btn v-if="!token" to="login"  flat>Login</v-btn>
+      <v-btn v-else @click="logoutWrapper" flat>Logout</v-btn>
     </v-toolbar>
   </div>
 
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
@@ -48,12 +50,12 @@ export default {
         {
           icon: "bubble_chart",
           title: "Inspire",
-          href: "/##"
+          href: "/"
         },
         {
           icon: "home",
           title: "Home",
-          href: "home"
+          href: "/"
         },
         {
           icon: "restaurant",
@@ -66,6 +68,17 @@ export default {
       rightDrawer: false,
       title: "PartyWhip"
     };
+  },
+  methods: {
+    ...mapActions(["logout"]),
+    logoutWrapper() {
+      this.logout();
+      this.$router.push("/");
+    }
+  },
+  computed: {
+    // this just check wether the user has logined
+    ...mapState(["token"])
   }
 };
 </script>

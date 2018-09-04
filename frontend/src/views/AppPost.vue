@@ -67,9 +67,8 @@
       </v-container>
 
       <v-card-actions>
-        <v-btn flat @click="resetForm">Clear</v-btn>
-        <v-spacer></v-spacer>
-        <v-btn flat color="primary" type="submit">Post</v-btn>
+        <v-btn color="primary" type="submit">Post</v-btn>
+        <v-btn @click="resetForm">Clear</v-btn>
       </v-card-actions>
     </v-form>
   </v-card>
@@ -107,29 +106,17 @@ export default {
       this.$refs.form.reset();
     },
     submit() {
-      var sessionUrl = "http://127.0.0.1:8000/api-v0/posts/";
-      var uname = "zhilu";
-      var pass = "123456";
       axios
-        .post(
-          sessionUrl,
-          {
-            title: this.form.title,
-            msg: this.form.msg,
-            location: this.form.location,
-            budget: this.form.budget,
-            peopleCount: this.form.peopleCount,
-            eventTime: this.form.date + "T" + this.form.time,
-            bidClossingTime: this.form.date10 + "T" + this.form.time11,
-            extraParameter: [] // TODO extraparameter
-          },
-          {
-            auth: {
-              username: uname,
-              password: pass
-            }
-          }
-        )
+        .post("posts/", {
+          title: this.form.title,
+          msg: this.form.msg,
+          location: this.form.location,
+          budget: this.form.budget,
+          peopleCount: this.form.peopleCount,
+          eventTime: this.form.date + "T" + this.form.time,
+          bidClossingTime: this.form.date10 + "T" + this.form.time11,
+          extraParameter: [] // TODO extraparameter
+        })
         .then(response => {
           // JSON responses are automatically parsed.
           console.log(response);

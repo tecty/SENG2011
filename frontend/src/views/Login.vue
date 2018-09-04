@@ -1,16 +1,17 @@
 <template>
   <v-form v-model="valid" @submit.prevent="login">
     <v-text-field
-      v-model="username" label="Username" required autofocus
+      v-model="username" label="Username" required autofocus 
+      aria-autocomplete="true"
     />
     <v-text-field 
       v-model="password" :type="show? 'text':'password'" label="Password" 
       :append-icon= "show ? 'visibility' : 'visibility_off'"
-      @click:append="show = !show"
+      aria-autocomplete="true" @click:append="show = !show" 
       required 
     />
     <p>{{error}}</p>
-    <v-btn @click="login" default >Login</v-btn>
+    <v-btn type="submit" >Login</v-btn>
   </v-form>
 </template>
 

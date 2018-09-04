@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import AppHome from "@/views/AppHome.vue";
+import { isLogin } from "@/utils/auth";
 
 Vue.use(Router);
 
@@ -43,6 +44,12 @@ export default new Router({
       meta: {
         // key to let the view can be view from guest
         guest: true
+      },
+      beforeEnter: (to, from, next) => {
+        // if user is currently logged in, prevent him from hitting this page.
+        if (isLogin()) {
+          next("/");
+        }
       }
     }
   ]

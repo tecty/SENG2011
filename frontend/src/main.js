@@ -15,10 +15,10 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.guest) != true) {
     // this record is require authenticate
 
-    if (isLogin() == false) {
+    if (!isLogin()) {
       // redirect to the login
       next({
-        path: "/login",
+        name: "login",
         query: { redirect: to.fullPath }
       });
       // break this, so it wont goto next

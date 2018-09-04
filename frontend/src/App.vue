@@ -19,3 +19,13 @@ export default {
   components: { AppToolbar }
 };
 </script>
+
+<style>
+a{
+  color:black;
+  /* remove the underline in link */
+  text-decoration: none;
+}
+
+</style>
+

@@ -1,18 +1,23 @@
 <template>
-  <v-form v-model="valid" @submit.prevent="login">
-    <v-text-field
-      v-model="username" label="Username" required autofocus 
-      aria-autocomplete="true"
-    />
-    <v-text-field 
-      v-model="password" :type="show? 'text':'password'" label="Password" 
-      :append-icon= "show ? 'visibility' : 'visibility_off'"
-      aria-autocomplete="true" @click:append="show = !show" 
-      required 
-    />
-    <p>{{error}}</p>
-    <v-btn type="submit" >Login</v-btn>
-  </v-form>
+  <v-layout row ma-3>
+    <v-flex xs10 offset-xs1 >
+      <h1>Login</h1>
+      <v-form v-model="valid" @submit.prevent="login">
+        <v-text-field
+          v-model="username" label="Username" required autofocus 
+          aria-autocomplete="true"
+        />
+        <v-text-field 
+          v-model="password" :type="show? 'text':'password'" label="Password" 
+          :append-icon= "show ? 'visibility' : 'visibility_off'"
+          aria-autocomplete="true" @click:append="show = !show" 
+          required 
+        />
+        <p>{{error}}</p>
+        <v-btn type="submit" >Login</v-btn>
+      </v-form>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>

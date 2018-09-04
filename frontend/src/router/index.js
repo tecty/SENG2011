@@ -28,9 +28,14 @@ export default new Router({
       }
     },
     {
+      path: "/post/create",
+      name: "PostCreate",
+      component: () => import("@/views/post/Create.vue")
+    },
+    {
       path: "/post",
-      name: "post",
-      component: () => import("@/views/AppPost.vue")
+      name: "PostList",
+      component: () => import("@/views/post/Show.vue")
     },
     {
       path: "/login",
@@ -49,6 +54,9 @@ export default new Router({
         // if user is currently logged in, prevent him from hitting this page.
         if (isLogin()) {
           next("/");
+        } else {
+          // go to next
+          next();
         }
       }
     }

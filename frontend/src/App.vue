@@ -21,11 +21,9 @@ export default {
 </script>
 
 <style>
-a{
-  color:black;
+a {
+  color: black;
   /* remove the underline in link */
   text-decoration: none;
 }
-
 </style>
-

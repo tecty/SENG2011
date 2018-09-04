@@ -2,6 +2,8 @@ import Vue from "vue";
 import Router from "vue-router";
 import AppHome from "@/views/AppHome.vue";
 import { isLogin } from "@/utils/auth";
+import post from "./post";
+import bid from "./bid";
 
 Vue.use(Router);
 
@@ -28,16 +30,6 @@ export default new Router({
       }
     },
     {
-      path: "/post/create",
-      name: "PostCreate",
-      component: () => import("@/views/post/Create.vue")
-    },
-    {
-      path: "/post",
-      name: "PostList",
-      component: () => import("@/views/post/Show.vue")
-    },
-    {
       path: "/login",
       name: "login",
       // route level code-splitting
@@ -59,6 +51,8 @@ export default new Router({
           next();
         }
       }
-    }
+    },
+    post,
+    bid
   ]
 });

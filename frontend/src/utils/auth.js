@@ -3,5 +3,5 @@ export function getToken(){
 }
 export function isLogin(){
     // return the bool value of whether ther is a token 
-    return getToken() != null;
+    return getToken() != null && getToken() != "";
 }

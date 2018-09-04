@@ -10,7 +10,7 @@
       required 
     />
     <p>{{error}}</p>
-    <v-btn @click="login" >Login</v-btn>
+    <v-btn @click="login" default >Login</v-btn>
   </v-form>
 </template>
 
@@ -40,7 +40,16 @@ export default {
         password: this.password,
       })
       .then(() => {
-        this.$router.go(-1);
+        // console.log("imhere")
+        
+        if(this.$route.query.redirect){
+          // redirect request from another view
+          this.$router.push(this.$route.query.redirect);
+        }
+        else{
+          // go to previous page, if it's user direct to login 
+          this.$router.go(-1);
+        }
       })
       .catch(() => {
         this.error = "Wrong username or password."  

@@ -13,16 +13,21 @@ Vue.config.productionTip = false
 
 // router guard 
 router.beforeEach((to, from, next)=>{
-  if(isLogin()){
-    next();
+  if(to.matched.some(record => record.meta.guest) != true){
+    // this record is require authenticate 
+
+    if(isLogin() == false){
+      // redirect to the login 
+      next({
+        path:"/login",
+        query:{ redirect: to.fullPath }
+      })
+      // break this, so it wont goto next 
+      return;
+    }
   }
-  else{
-    // redirect to the login 
-    next({
-      path:"/login",
-      query:{ redirect: to.fullPath }
-    })
-  }
+  // else go to next route :
+  next ();
 })
 
 

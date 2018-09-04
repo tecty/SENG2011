@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   data(){
@@ -27,36 +27,27 @@ export default {
       password:"",
       // if show == true, show the password 
       show:false,
-      error:"",
+      error:""
     }
   },
   methods:{
     // map the login action from vuex 
     ...mapActions(["loginByCredential"]),
-    ...mapGetters(["isApiSuccess"]),
     login(){
       // pass the user login credential 
       this.loginByCredential({
         username: this.username,
         password: this.password,
-      }).then( () => {
-
-        console.log(this.isApiSuccess())
       })
-      // check the state 
-      // .then(val => {
-      //   if(val == true ){
-      //     // login success
-      //     // console.log(this.isApiSuccess());
-      //     this.$router.go(-1) || this.$router.go("/");
-      //   }
-      //   else{
-      //     console.log(val);
-      //     this.error = "Wrong Password Or username";
-      //   }
-      // })
+      .then(() => {
+        this.$router.go(-1);
+      })
+      .catch(() => {
+        this.error = "Wrong username or password."  
+      })
     }
-  }
+  },
+  
 
 }
 </script>

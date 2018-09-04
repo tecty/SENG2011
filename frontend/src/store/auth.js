@@ -43,7 +43,7 @@ const actions = {
 const getters = {
 
   isLogin({state,commit}){
-    if (state.token) {
+    if (state.token == "") {
       // here is a token, user must logined 
       return true;
     }

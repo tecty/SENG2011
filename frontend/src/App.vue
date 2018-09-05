@@ -26,7 +26,4 @@ a {
   /* remove the underline in link */
   text-decoration: none;
 }
-.page{
-  padding-top:75px;
-}
 </style>

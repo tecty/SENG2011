@@ -1,6 +1,6 @@
 <template>
   <v-layout row ma-3>
-    <v-flex xs10 offset-xs1 >
+    <v-flex md10 offset-md1 xs12 offset-xs0 lg6 offset-lg3>
       <h1>Login</h1>
       <v-form v-model="valid" @submit.prevent="login">
         <v-text-field

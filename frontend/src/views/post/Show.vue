@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-layout mt-3>
     <v-slide-y-transition mode="out-in">
       <v-layout row>
         <v-flex xs12 sm8 offset-sm2>
@@ -45,7 +45,7 @@
     <v-btn fixed bottom right fab dark color="red" to="/post/create">
       <v-icon dark>add</v-icon>
     </v-btn>
-  </div>
+  </v-layout>
 
 </template>
 

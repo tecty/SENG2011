@@ -33,7 +33,7 @@
                   </v-card-title>
                   <v-card-actions>
                     <v-btn flat color="orange" 
-                    :to="{ name:'BidCreate', params:{id: post.id} }" >Bid for it</v-btn>
+                    :to="{ name:'BidCreate', params:{postId: post.id} }" >Bid for it</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-expansion-panel-content>

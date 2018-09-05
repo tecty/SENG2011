@@ -62,6 +62,14 @@ export default new Vuex.Store({
 
       // remove the record in vuex
       commit("REMOVE_TOKEN");
+    },
+    placeBid(context, data) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("bids/", data)
+          .then(() => resolve())
+          .catch(() => reject());
+      });
     }
   }
 });

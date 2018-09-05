@@ -5,12 +5,12 @@
       <v-form v-model="valid" @submit.prevent="login">
         <v-text-field
           v-model="username" label="Username" required autofocus 
-          aria-autocomplete="true"
+          autocomplete
         />
         <v-text-field 
           v-model="password" :type="show? 'text':'password'" label="Password" 
           :append-icon= "show ? 'visibility' : 'visibility_off'"
-          aria-autocomplete="true" @click:append="show = !show" 
+          autocomplete @click:append="show = !show" 
           required 
         />
         <p>{{error}}</p>

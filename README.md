@@ -15,6 +15,14 @@ $ git add && git commmit && git push
 # IF you are push this branch FIRST TIME, you may use this line
 $ git push --set-upstream origin YOUR_BRANCH_NAME
 ```
+## Docker Environment (Not imply yet)
+
+Using docker environment to get rid of complex settings.  
+
+Install [Docker Community Edition](https://docs.docker.com/install/#releases)
+
+Install [Docker Compose](https://docs.docker.com/compose/install/#master-builds)  
+
 
 ### Setting Environment
 

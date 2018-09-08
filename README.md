@@ -21,7 +21,7 @@ Using docker environment to get rid of complex settings.
 
 Install [Docker Community Edition](https://docs.docker.com/install/#releases)
 
-Install [Docker Compose](https://docs.docker.com/compose/install/#master-builds)  
+Install [Docker Compose](https://docs.docker.com/compose/install/#install-compose)  
 
 
 ### Setting Environment

@@ -8,9 +8,43 @@ from django.utils import timezone
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    # password only can be written 
+    password = serializers.CharField(write_only = True)
+    # also the password again
+    password_again = serializers.CharField(write_only = True)
+
+    """
+    validation codes  
+    """
+
+    def validate(self, data):
+        if data["password"] != data["password_again"]:
+            raise serializers.ValidationError({
+                "password_again":[
+                    "Two password must be same"
+                ]
+            })
+
+        # ELSE: validate successfully 
+        return data
+
     class Meta:
         model = User
-        fields = ('url', 'username', 'email', 'is_staff')
+        fields = (
+            'url',
+            'username',
+            "password",
+            "password_again",'email',
+            'is_staff'
+        )
+
+    def create(self,validated_data):
+        user = super(UserSerializer, self).create(validated_data)
+        # # set the password with encryption 
+        # user.set_password(validated_data['password'])
+        # user.save()
+        return user
+
 
 
 class ParameterSerializer(serializers.HyperlinkedModelSerializer):
@@ -22,7 +56,7 @@ class ParameterSerializer(serializers.HyperlinkedModelSerializer):
 
 class BidSerializer(serializers.HyperlinkedModelSerializer):
     # protect the state been modify by client 
-    # TODO: Provide another to post and change it 
+    # TODO: Provide another to endpoint to change it 
     state  = serializers.CharField(read_only = True)
     bidder = UserSerializer(
         read_only = True,
@@ -35,8 +69,9 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
     def create(self, validated_data):
         # push the current user into the validate data 
         validated_data['bidder'] =  self.context['request'].user
-        # return the created bid  
-        return Bid.objects.create(**validated_data)
+        # created and save the bid bid  
+        bid = super(BidSerializer,self),create(validated_data)
+        return bid
 
 
 
@@ -45,9 +80,61 @@ class PostSerializer(serializers.ModelSerializer):
     # extraParameter =serializers.StringRelatedField(many = True)
     state  = serializers.CharField(read_only = True)
     bid_set = BidSerializer(many=True,read_only = True)
-    poster = UserSerializer(
-        read_only = True
-    )
+    
+    
+    poster = UserSerializer(read_only = True)
+
+    """
+    validation code of this serializer
+    """
+    def validate_extraParameter(self, extraParameter):
+        """
+        for the mutual exclusion of keys in extraparameter
+        
+        If there is a duplicate keys in extra paramter, raise error 
+        """
+
+        # create a dict to detect collesion  
+        ParameterDict = {}
+
+        for Parameter in extraParameter:
+            # perform a check for duplicate key in the dictionary 
+            if Parameter.key in  ParameterDict:
+                # raise a validate error and break the loop
+                raise serializers.ValidationError(
+                    "extraParameter must have unique key"
+                )
+            # add this key value pair into this dict
+            # so it will raise error when it occour a duplicate key
+            ParameterDict[Parameter.key] = Parameter.value
+        # ELSE: validate successfully return back this data to validated_data 
+        return extraParameter 
+
+    def validate_eventTime(self, eventTime):
+        """ Event time > now """
+        if eventTime <= timezone.now():
+            raise serializers.ValidationError(
+                "Event Time must be later than now;"
+            )
+        return eventTime
+
+    def validate_bidClossingTime(self, bidClossingTime):
+        """ Bid clossing time > now """
+        if bidClossingTime <= timezone.now():
+            raise serializers.ValidationError(
+                "Bid Clossing Time must be later than now;"
+            )
+        return bidClossingTime
+
+    def validate(self,data):
+        if data["bidClossingTime"] >= data["eventTime"]:
+            raise serializers.ValidationError(
+                {"bidClossingTime":[
+                    "Bid Clossing must happen before the Event time "
+                ]}
+            )
+        # ELSE: validate successfully 
+        return data
 
     class Meta:
         model = Post
@@ -67,68 +154,14 @@ class PostSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        # Pop the data we want to verify 
-
-        # title = validated_data.pop("title")
-        # msg = validated_data.pop("msg")
-        # poster = validated_data.pop("poster")
-        eventTime = validated_data.pop("eventTime")
-        bidClossingTime = validated_data.pop("bidClossingTime")
-        # location = validated_data.pop("location")
-        # peopleCount = validated_data.pop("peopleCount")
-        # budget = validated_data.pop("budget")
-        # state = validated_data.pop("state")
-        extraParameter = validated_data.pop("extraParameter")
-
-        if bidClossingTime >= eventTime:
-            raise serializers.ValidationError(
-                {"bidClossingTime":[
-                    "Bid Clossing Time must be before the Event time "
-                ]}
-            )
-        if eventTime <= timezone.now():
-            raise serializers.ValidationError(
-                {"eventTime":[
-                    "Event Time must be later time now;"
-                ]}
-            )
-        if bidClossingTime <= timezone.now():
-            raise serializers.ValidationError(
-                {"bidClossingTime":[
-                    "Bid Clossing Time must be later time now;"
-                ]}
-            )
-
-        # print(extraParameter)
-
-        # create a dict to prevent collesion 
-        ParameterDict = {}
-
-        for Parameter in extraParameter:
-            # perform a check for duplicate key in the dictionary 
-            if Parameter.key in  ParameterDict:
-                # raise a validate error 
-                raise serializers.ValidationError(
-                    {"Parameter":
-                        ["Parameter must have unique key"]
-                    }
-                )
-            ParameterDict[Parameter.key] = Parameter.value
-
-        # push back the Data (Many to many couldn't push back )
-        validated_data["eventTime"] = eventTime
-        validated_data["bidClossingTime"] = bidClossingTime
-        
         # push back the current defult user 
         validated_data['poster'] = self.context['request'].user
 
-        # create the new instance of this post  
-        ret = Post.objects.create(**validated_data)
+        # use parents method to create this obj
+        post = super(PostSerializer,self).create(validated_data)
 
-        # for Parameter in extraParameter:
-        ret.extraParameter.set(extraParameter)
-
-        return ret 
+        # return back this created obj
+        return post 
 
 
 

@@ -24,7 +24,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
                     "Two password must be same"
                 ]
             })
-
+        # we no longer need the password again
+        data.pop("password_again")
         # ELSE: validate successfully 
         return data
 
@@ -39,6 +40,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         )
 
     def create(self,validated_data):
+        
+
         user = super(UserSerializer, self).create(validated_data)
         # # set the password with encryption 
         # user.set_password(validated_data['password'])

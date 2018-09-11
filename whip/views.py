@@ -5,14 +5,32 @@ from .serializers import UserSerializer, User, \
     Bid, BidSerializer
 from rest_framework import viewsets
 
-# ViewSets define the view behavior.
 
+# import premission for the premission rewrite 
+from rest_framework.decorators import api_view,permission_classes
+from rest_framework.permissions import AllowAny
+# import the rest response to create our own response 
+from rest_framework.response import Response
+
+
+
+# ViewSets define the view behavior.
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    def create(parameter_list):
-        pass
+    
+    permission_classes = [AllowAny]    
+
+    # @api_view(['POST'])
+    # @permission_classes((AllowAny,))
+    # def create_user(self,request):
+    #     serialized = UserSerializer(data=request.data)
+    #     if serialized.is_valid():
+    #         serialized.save()
+    #         return Response(serialized.data, status=status.HTTP_201_CREATED)
+    #     else:
+    #         return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ParameterViewSet(viewsets.ModelViewSet):

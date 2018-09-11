@@ -35,13 +35,14 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'url',
             'username',
             "password",
-            "password_again",'email',
+            "password_again",
+            # email somtime will trigger some wired behaviour
+            # not using it at this request stage
+            # 'email',
             'is_staff'
         )
 
     def create(self,validated_data):
-        
-
         user = super(UserSerializer, self).create(validated_data)
         # # set the password with encryption 
         # user.set_password(validated_data['password'])

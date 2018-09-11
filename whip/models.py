@@ -1,13 +1,39 @@
 from django.db import models
 from django.contrib.auth.models import User 
 
-# Create your models here.
+
+"""
+Location code copy from my own GitHub
+https://github.com/tecty/SENG2021/blob/master/backend/post/models.py
+"""
+class Location(models.Model):
+    # the exact name for that location
+    name = models.CharField(max_length = 512,blank=True)
+    # record the precise location of that location
+    # has number before point is 15-12 = 3, after the point is 20
+    lat = models.DecimalField(max_digits=24, decimal_places= 20)
+    lng = models.DecimalField(max_digits=24, decimal_places= 20)
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # Location will be change to foreign key 
+    location =  models.ForeignKey(Location,models.PROTECT,blank = True)
+    # Whether is trusted by out group (admin manage )
+    is_trusted = models.BooleanField(default=False)
+
+class Message(models.Model):
+    # Support the disscussion 
+    parentMsg = models.ForeignKey("self",on_delete= models.CASCADE)
+    # this message  
+    msg = models.CharField(max_length = 1024)
+    
+
 class Parameter(models.Model):
     key = models.CharField(max_length = 255)
     value = models.CharField(max_length = 1024)
     # soft delete the Parameter 
     isDelete = models.BooleanField(default=False)
-
     # functions used to show the object's name in Django 
     def __unicode__(self):
         return "%s : %s" % (self.key, self.value)
@@ -17,7 +43,8 @@ class Parameter(models.Model):
 class Post(models.Model):
     # basic description of this event 
     title = models.CharField(max_length=255)
-    msg = models.CharField(max_length=1024, blank=True)
+    # message foreign key to support discussion 
+    msg = models.ForeignKey(Message,on_delete= models.PROTECT)
     # who post this event 
     poster = models.ForeignKey(User, models.PROTECT)
     # the time this event will be held 
@@ -25,11 +52,14 @@ class Post(models.Model):
     # the time need to close the bid 
     bidClossingTime = models.DateTimeField()
     # where is the event
-    location = models.CharField(max_length=255)
+    location =  models.ForeignKey(Location,models.PROTECT)
     # how many people will occour 
     peopleCount = models.IntegerField()
     # the budget of whole event 
     budget = models.DecimalField(max_digits=12, decimal_places=2)
+    # how much points received by bidder
+    posterReceivedPoints = models.IntegerField(default= 0)
+
     # state of the event 
     state = models.CharField(
         max_length=2,
@@ -49,9 +79,6 @@ class Post(models.Model):
         related_name = "extra_parameter"
     )
 
-    
-
-
     # functions used to show the object's name in Django 
     def __unicode__(self):
         return self.title
@@ -62,7 +89,8 @@ class Bid(models.Model):
     # which post is this bid for 
     post = models.ForeignKey(Post, on_delete = models.CASCADE)
     # A message to have better chance to win
-    msg = models.CharField(max_length = 1024)
+    # foreign key to msg to support discussion 
+    msg = models.ForeignKey(Message, on_delete = models.PROTECT)
     # state of this event 
     state = models.CharField(
         max_length=2,
@@ -79,7 +107,9 @@ class Bid(models.Model):
     bidder = models.ForeignKey(User, models.PROTECT)
     # what the prive this bidder offer 
     offer = models.DecimalField(max_digits=12, decimal_places=2)
-    
+    # How much did bidder received 
+    bidderReceivedPoints = models.IntegerField(default= 0) 
+
     # functions used to show the object's name in Django 
     def __unicode__(self):
         return "%s bids %s" % (self.bidder, self.offer)

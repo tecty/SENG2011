@@ -1,10 +1,33 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers,validators
-from .models import Parameter, Post, Bid
+from .models import Location, Profile, Parameter, Post, Bid
 from django.utils import timezone
 
-# serializer of user models
-# validators.UniqueValidator
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = ("address","lat","lng")
+
+"""
+Solution in 
+https://django-rest-auth.readthedocs.io/en/latest/faq.html
+And this serialiser to simply the saving procedure, never have direct use in 
+viewset
+"""
+class ProfileSerializer(serializers.ModelSerializer):
+    # couldn't be changed by user 
+    is_trusted = serializers.BooleanField(read_only = True)
+    class Meta: 
+        model = Profile
+        fields = (
+            "location",
+            "tel",
+            "is_trusted",
+        )
+    
+
+
+
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -14,9 +37,19 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     password_again = serializers.CharField(write_only = True)
 
     """
+    Extended Fields
+    """
+    # location of this user 
+    location = LocationSerializer(source = "profile.location")
+    # telephone of this user
+    tel = serializers.IntegerField(source = "profile.tel")
+    # whether it is is the  trusted 
+    is_trusted = serializers.BooleanField(
+        source = "profile.is_trusted", read_only = True)
+
+    """
     validation codes  
     """
-
     def validate(self, data):
         if data["password"] != data["password_again"]:
             raise serializers.ValidationError({
@@ -39,16 +72,37 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             # email somtime will trigger some wired behaviour
             # not using it at this request stage
             # 'email',
-            'is_staff'
+            # we don't need the staff info, and we shouldn't change it at frontend 
+            # 'is_staff', 
+            "location",
+            "tel",
+            "is_trusted",
         )
 
     def create(self,validated_data):
-        user = super(UserSerializer, self).create(validated_data)
-        # # set the password with encryption 
-        # user.set_password(validated_data['password'])
-        # user.save()
-        return user
+        # pop the foreign to create instance 
+        profile_data = validated_data.pop("profile",{})
 
+        # I don't know the ** means
+        # This line just for creating a location instance 
+        # if there is not exists  
+        # [0] is for that we only need the object from this creation
+        location = Location.objects.get_or_create(
+            **(profile_data.pop("location")))[0]
+
+        # push back the location object 
+        profile_data['location'] = location
+
+        # create this user 
+        user = super(UserSerializer, self).create(validated_data)
+
+
+        # print ("imhere")
+        print(profile_data)
+        # user profile_data serializer to update 
+        ProfileSerializer().update(user.profile,validated_data=profile_data)
+        
+        return user
 
 
 class ParameterSerializer(serializers.HyperlinkedModelSerializer):
@@ -122,19 +176,19 @@ class PostSerializer(serializers.ModelSerializer):
             )
         return eventTime
 
-    def validate_bidClossingTime(self, bidClossingTime):
-        """ Bid clossing time > now """
-        if bidClossingTime <= timezone.now():
+    def validate_bidClosingTime(self, bidClosingTime):
+        """ Bid closing time > now """
+        if bidClosingTime <= timezone.now():
             raise serializers.ValidationError(
-                "Bid Clossing Time must be later than now;"
+                "Bid Closing Time must be later than now;"
             )
-        return bidClossingTime
+        return bidClosingTime
 
     def validate(self,data):
-        if data["bidClossingTime"] >= data["eventTime"]:
+        if data["bidClosingTime"] >= data["eventTime"]:
             raise serializers.ValidationError(
-                {"bidClossingTime":[
-                    "Bid Clossing must happen before the Event time "
+                {"bidClosingTime":[
+                    "Bid Closing must happen before the Event time "
                 ]}
             )
         # ELSE: validate successfully 
@@ -148,7 +202,7 @@ class PostSerializer(serializers.ModelSerializer):
             "msg",
             "poster",
             "eventTime",
-            "bidClossingTime",
+            "bidClosingTime",
             "location",
             "peopleCount",
             "budget",
@@ -166,6 +220,3 @@ class PostSerializer(serializers.ModelSerializer):
 
         # return back this created obj
         return post 
-
-
-

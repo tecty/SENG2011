@@ -5,6 +5,9 @@ from .serializers import UserSerializer, User, \
     Bid, BidSerializer
 from rest_framework import viewsets
 
+from rest_framework import permissions
+
+
 # Own premission  
 from .permission import GuestCreateOnly,OwnerUpdateOnly
 
@@ -14,8 +17,8 @@ from .permission import GuestCreateOnly,OwnerUpdateOnly
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    
-    permission_classes = [GuestCreateOnly,OwnerUpdateOnly]    
+    permission_classes = [permissions.AllowAny]
+    # permission_classes = [GuestCreateOnly,OwnerUpdateOnly]
 
 
 class ParameterViewSet(viewsets.ModelViewSet):

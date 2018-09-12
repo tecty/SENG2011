@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User 
 
+# for handling signal of user model
+# this will extend the user model 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 """
 Location code copy from my own GitHub
@@ -8,21 +12,33 @@ https://github.com/tecty/SENG2021/blob/master/backend/post/models.py
 """
 class Location(models.Model):
     # the exact name for that location
-    name = models.CharField(max_length = 512,blank=True)
+    address = models.CharField(max_length = 512,blank=True)
     # record the precise location of that location
     # has number before point is 15-12 = 3, after the point is 20
     lat = models.DecimalField(max_digits=24, decimal_places= 20)
     lng = models.DecimalField(max_digits=24, decimal_places= 20)
 
 
+"""
+Extention of Current User model of Django 
+"""
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # Location will be change to foreign key 
-    location =  models.ForeignKey(Location,models.PROTECT,blank = True)
+    location =  models.ForeignKey(Location,models.PROTECT,blank = True, null = True)
     # telephone of this customer 
     tel = models.BigIntegerField(null= True)
     # Whether is trusted by out group (admin manage )
     is_trusted = models.BooleanField(default=False)
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 class Message(models.Model):
     # Support the disscussion 
@@ -53,7 +69,7 @@ class Event(models.Model):
     # the time this event will be held 
     eventTime = models.DateTimeField()
     # the time need to close the bid 
-    bidClossingTime = models.DateTimeField()
+    bidClosingTime = models.DateTimeField()
     # where is the event
     location =  models.ForeignKey(Location,models.PROTECT)
 
@@ -67,7 +83,7 @@ class Post(models.Model):
     # the time this event will be held 
     eventTime = models.DateTimeField()
     # the time need to close the bid 
-    bidClossingTime = models.DateTimeField()
+    bidClosingTime = models.DateTimeField()
     # where is the event
     location =  models.ForeignKey(Location,models.PROTECT)
     # how many people will occour 

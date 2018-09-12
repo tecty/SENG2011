@@ -9,5 +9,10 @@ export default [
     path: "/post",
     name: "PostList",
     component: () => import("@/views/post/Show.vue")
+  },
+  {
+    path: "/post/:postId",
+    name: "PostDetail",
+    component: () => import("@/views/post/Detail.vue")
   }
 ];

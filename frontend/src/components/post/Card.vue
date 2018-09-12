@@ -11,6 +11,9 @@
         </v-layout>
       </v-form>
     </v-card-actions>
+    <v-btn :to="{ name: 'BidCreate', params: { postId: post.id }}">
+      detail
+    </v-btn>
   </v-card>
 </template>
 

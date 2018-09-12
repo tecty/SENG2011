@@ -6,7 +6,7 @@
         label="Price"
         required
       ></v-text-field>
-      {{ error }}{{ price }} {{ $route.params.postId }}
+      {{this.$route.params}}  {{this.$route.name}}
       <v-btn type="submit" color="primary">Bid</v-btn>
     </v-form>
   </div>

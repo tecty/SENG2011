@@ -25,7 +25,7 @@ class Mark{
 }
 
 method avgmark(list : seq<int>) returns (avg : int)
-     ensures |list| > 0
+     requires |list| > 0
 {
     var i :int := 0;
     var sum : int := 0;

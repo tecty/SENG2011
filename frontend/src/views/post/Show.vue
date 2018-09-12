@@ -6,7 +6,11 @@
         <postCard :post="props.item"/>
       </v-flex>
     </v-data-iterator>
+      <v-btn fixed bottom right fab dark color="red" to="/post/create">
+      <v-icon dark>add</v-icon>
+    </v-btn>
   </v-container>
+  
 </template>
 
 

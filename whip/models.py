@@ -19,6 +19,8 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # Location will be change to foreign key 
     location =  models.ForeignKey(Location,models.PROTECT,blank = True)
+    # telephone of this customer 
+    tel = models.BigIntegerField(null= True)
     # Whether is trusted by out group (admin manage )
     is_trusted = models.BooleanField(default=False)
 
@@ -40,6 +42,21 @@ class Parameter(models.Model):
     def __str__(self):
         return self.__unicode__()
 
+
+class Event(models.Model):
+    # basic description of this event 
+    title = models.CharField(max_length=255)
+    # message foreign key to support discussion 
+    msg = models.ForeignKey(Message,on_delete= models.PROTECT)
+    # who post this event 
+    poster = models.ForeignKey(User, models.PROTECT)
+    # the time this event will be held 
+    eventTime = models.DateTimeField()
+    # the time need to close the bid 
+    bidClossingTime = models.DateTimeField()
+    # where is the event
+    location =  models.ForeignKey(Location,models.PROTECT)
+
 class Post(models.Model):
     # basic description of this event 
     title = models.CharField(max_length=255)
@@ -59,7 +76,6 @@ class Post(models.Model):
     budget = models.DecimalField(max_digits=12, decimal_places=2)
     # how much points received by bidder
     posterReceivedPoints = models.IntegerField(default= 0)
-
     # state of the event 
     state = models.CharField(
         max_length=2,
@@ -78,6 +94,9 @@ class Post(models.Model):
         blank = True,
         related_name = "extra_parameter"
     )
+
+    # extra key for non neccessary one to many relationship 
+    event = models.ForeignKey(Event,on_delete = models.CASCADE, blank = True ,null= True)
 
     # functions used to show the object's name in Django 
     def __unicode__(self):
@@ -115,3 +134,4 @@ class Bid(models.Model):
         return "%s bids %s" % (self.bidder, self.offer)
     def __str__(self):
         return self.__unicode__()
+

@@ -9,7 +9,7 @@ from rest_framework import permissions
 
 
 # Own premission  
-from .permission import GuestCreateOnly,OwnerUpdateOnly
+from .permission import GuestCreateOnly,OwnerUpdateOnly,IsAdminOrReadOnly
 
 
 # ViewSets define the view behavior.
@@ -17,13 +17,16 @@ from .permission import GuestCreateOnly,OwnerUpdateOnly
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.AllowAny]
-    # permission_classes = [GuestCreateOnly,OwnerUpdateOnly]
+    # only for test use 
+    # permission_classes = [permissions.AllowAny]
+    
+    permission_classes = [GuestCreateOnly,OwnerUpdateOnly]
 
 
 class ParameterViewSet(viewsets.ModelViewSet):
     queryset = Parameter.objects.all()
     serializer_class = ParameterSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class BidViewSet(viewsets.ModelViewSet):

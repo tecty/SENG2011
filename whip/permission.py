@@ -28,3 +28,13 @@ class OwnerUpdateOnly(permissions.BasePermission):
                 return True
         # auth fail
         return False
+
+class IsAdminOrReadOnly(permissions.BasePermission):
+    message = "Permission deny"
+    def has_permission(self, request, view):
+        if request.method == "GET":
+            return True
+        if request.user.is_staff:
+            return True
+        # else
+        return False

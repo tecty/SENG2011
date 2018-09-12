@@ -79,6 +79,28 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             "is_trusted",
         )
 
+    def update(self, validated_data):
+        # do the same things as create 
+        # pop the foreign to create instance 
+        profile_data = validated_data.pop("profile",{})
+
+        # I don't know the ** means
+        # This line just for creating a location instance 
+        # if there is not exists  
+        # [0] is for that we only need the object from this creation
+        location = Location.objects.get_or_create(
+            **(profile_data.pop("location")))[0]
+
+        # push back the location object 
+        profile_data['location'] = location
+        # create this user 
+        user = super(UserSerializer, self).update(validated_data)
+
+        # user profile_data serializer to update 
+        ProfileSerializer().update(user.profile,validated_data=profile_data)
+
+        return user
+
     def create(self,validated_data):
         # pop the foreign to create instance 
         profile_data = validated_data.pop("profile",{})
@@ -96,9 +118,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         # create this user 
         user = super(UserSerializer, self).create(validated_data)
 
-
-        # print ("imhere")
-        print(profile_data)
         # user profile_data serializer to update 
         ProfileSerializer().update(user.profile,validated_data=profile_data)
         
@@ -109,7 +128,7 @@ class ParameterSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Parameter
         # fields = ('key', 'value', "isDelete")
-        fields = ('id','key', 'value')
+        fields = ('key', 'value')
 
 
 class BidSerializer(serializers.HyperlinkedModelSerializer):
@@ -217,6 +236,8 @@ class PostSerializer(serializers.ModelSerializer):
 
         # use parents method to create this obj
         post = super(PostSerializer,self).create(validated_data)
+
+        print (validated_data)
 
         # return back this created obj
         return post 

@@ -47,6 +47,9 @@ class Message(models.Model):
     owner = models.ForeignKey(User, on_delete = models.PROTECT)
     # this message  
     msg = models.CharField(max_length = 1024)
+
+    
+
     
 
 class Parameter(models.Model):

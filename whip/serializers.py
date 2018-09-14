@@ -128,11 +128,14 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return user
     
 class MessageSerializer(serializers.ModelSerializer):
+    parentMsg = serializers.CharField(write_only = True,allow_blank = True)
     sub_msg = serializers.ListField(child = RecursiveField(),source= "message_set.all",read_only = True)
     owner = UserSerializer(read_only = True)
     class Meta:
         model = Message
         fields = (
+            "id",
+            "parentMsg",
             "msg",
             "owner",
             "sub_msg"
@@ -141,6 +144,14 @@ class MessageSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # push this user to validated data 
         validated_data['owner'] =  self.context['request'].user
+
+        # pop the parent message first 
+        parentMsg = validated_data.pop("parentMsg")
+        if parentMsg:
+            # re push in the fetched instance of parentMsg for the forein link 
+            validated_data["parentMsg"] = Message.objects.get(pk = parentMsg)
+
+        
         # call the super method to create this obj
         return super(MessageSerializer,self).create(validated_data)
 

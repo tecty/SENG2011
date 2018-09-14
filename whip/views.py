@@ -39,7 +39,14 @@ class ParameterViewSet(viewsets.ModelViewSet):
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    
+
+    @action(detail= True, methods = ["POST"], url_name = "create_sub_post")
+    def post(self, request, pk = None):
+        # get the meta data of this event 
+        event = self.get_object()
+
+        print(event)        
+
 
 
 class BidViewSet(viewsets.ModelViewSet):

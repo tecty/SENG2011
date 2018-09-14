@@ -78,7 +78,9 @@ class Event(models.Model):
     bidClosingTime = models.DateTimeField()
     # where is the event
     location =  models.ForeignKey(Location,models.PROTECT)
-
+    # how many people will occour 
+    peopleCount = models.IntegerField()
+    
 class Post(models.Model):
     # basic description of this event 
     title = models.CharField(max_length=255)

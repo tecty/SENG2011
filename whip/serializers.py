@@ -157,6 +157,9 @@ class MessageSerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
+    owner = UserSerializer(
+        read_only = True,
+    )
     class Meta:
         model = Event
         fields = (
@@ -166,6 +169,13 @@ class EventSerializer(serializers.ModelSerializer):
             "bidClosingTime",
             "location"
         )
+    def create(self,validated_data):
+        validated_data['owner'] = self.context['request'].user
+        # use parents method to create this obj
+        post = super(EventSerializer,self).create(validated_data)
+
+        # return back this created obj
+        return post 
 
 
 
@@ -182,7 +192,6 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
     state  = serializers.CharField(read_only = True)
     owner = UserSerializer(
         read_only = True,
-        # default = serializers.CurrentUserDefault()  
     )
     msg = MessageSerializer()
     class Meta:

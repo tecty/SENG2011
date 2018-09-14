@@ -14,7 +14,7 @@ from .permission import GuestCreateOnly,OwnerUpdateOnly,IsAdminOrReadOnly
 class LocationViewset(viewsets.ModelViewSet):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
-    
+
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -41,6 +41,14 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
-    @action(detail = False, methods = ['post'], url_name='Choose Bidder')
-    def choose(self, request, pk = None):
-        pass 
+    
+
+    @action(detail = True, methods = ['POST','GET'], url_name='Choose Bidder')
+    def choose(self, request,pk= None):
+        # get the post object from the pk specified 
+        post = self.get_object()
+        # use a method in object to choose the bidder 
+        post.choose( request.data["id"])
+
+        # return back this post detail 
+        return post 

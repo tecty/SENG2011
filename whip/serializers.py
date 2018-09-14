@@ -174,15 +174,23 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
         read_only = True,
         # default = serializers.CurrentUserDefault()  
     )
+    msg = MessageSerializer()
     class Meta:
         model = Bid
-        fields = ('post', 'owner', 'offer', "state")
+        fields = ('post', 'owner','msg', 'offer', "state")
 
     def create(self, validated_data):
         # push the current user into the validate data 
         validated_data['owner'] =  self.context['request'].user
+
+        # pass this message as string to it 
+        validated_data['msg'] = \
+            MessageSerializer(context = self.context ) \
+            .create(validated_data.pop('msg'))
+        
+        
         # created and save the bid bid  
-        bid = super(BidSerializer,self),create(validated_data)
+        bid = super(BidSerializer,self).create(validated_data)
         return bid
 
 
@@ -285,8 +293,6 @@ class PostSerializer(serializers.ModelSerializer):
         # get or create a location 
         validated_data["location"] = \
             LocationSerializer().create(location)
-
-
 
         # use parents method to create this obj
         post = super(PostSerializer,self).create(validated_data)

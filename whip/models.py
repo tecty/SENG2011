@@ -122,6 +122,14 @@ class Post(models.Model):
     def __str__(self):
         return self.__unicode__()
 
+    def choose(self,bidder_id):
+        # switch this state to dealed 
+        self.state = "DL"
+        self.bid_set.get()
+        
+
+
+
 class Bid(models.Model):
     # which post is this bid for 
     post = models.ForeignKey(Post, on_delete = models.CASCADE)

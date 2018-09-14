@@ -128,7 +128,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return user
     
 class MessageSerializer(serializers.ModelSerializer):
-    sub_msg = serializers.ListField(child = RecursiveField(), read_only = True)
+    sub_msg = serializers.ListField(child = RecursiveField(),source= "message_set.all",read_only = True)
     owner = UserSerializer(read_only = True)
     class Meta:
         model = Message
@@ -163,7 +163,7 @@ class ParameterSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Parameter
         # fields = ('key', 'value', "isDelete")
-        fields = ('key', 'value')
+        fields = ('id','key', 'value')
 
 
 class BidSerializer(serializers.HyperlinkedModelSerializer):

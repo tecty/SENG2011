@@ -3,7 +3,8 @@ from .serializers import UserSerializer, User, \
     Post, PostSerializer, \
     Parameter, ParameterSerializer, \
     Bid, BidSerializer,\
-    Location, LocationSerializer
+    Location, LocationSerializer,\
+    Message, MessageSerializer
 from rest_framework import viewsets,permissions
 from rest_framework.decorators import action
 
@@ -15,7 +16,9 @@ class LocationViewset(viewsets.ModelViewSet):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
 
-
+class MessageViewset(viewsets.ModelViewSet):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()

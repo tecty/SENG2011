@@ -1,5 +1,5 @@
 from django.conf.urls import url, include
-from .views import UserViewSet,PostViewSet, ParameterViewSet, BidViewSet, LocationViewset
+from .views import UserViewSet,PostViewSet, ParameterViewSet, BidViewSet, LocationViewset,MessageViewset
 from rest_framework import routers
 
 # the urls in this app 
@@ -11,6 +11,7 @@ router.register("posts", PostViewSet )
 router.register("Parameters", ParameterViewSet )
 router.register("bids", BidViewSet )
 router.register("locations", LocationViewset  )
+router.register("msg",  MessageViewset )
 
 
 # the url pattern for django 

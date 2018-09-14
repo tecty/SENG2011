@@ -126,7 +126,6 @@ class Post(models.Model):
         # switch this state to dealed 
         self.state = "DL"
         self.bid_set.get()
-        
 
 
 

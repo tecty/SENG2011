@@ -188,7 +188,7 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
     msg = MessageSerializer()
     class Meta:
         model = Bid
-        fields = ('post', 'owner','msg', 'offer', "state")
+        fields = ('id','post', 'owner','msg', 'offer', "state","bidderReceivedPoints")
 
     def create(self, validated_data):
         # push the current user into the validate data 
@@ -277,15 +277,15 @@ class PostSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "title",
-            "msg",
             "owner",
             "eventTime",
             "bidClosingTime",
-            "location",
             "peopleCount",
             "budget",
             "state",
             "bid_set",
+            "location",
+            "msg",
             "extraParameter",
         )
 

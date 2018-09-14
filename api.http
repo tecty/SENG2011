@@ -11,10 +11,28 @@ Content-Type: application/json
 
 POST http://localhost:8000/api-v0/msg/ HTTP/1.1
 Content-Type: application/json
-Authorization: JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InRlY3R5IiwiZXhwIjoxNTM2OTQxNzQwLCJlbWFpbCI6IiJ9.kv5rauKSS1xxQmxFgYdZB6VWa3gMFt5IymKekOKQpHU
+Authorization: JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InRlY3R5IiwiZXhwIjoxNTM2OTYwNTg2LCJlbWFpbCI6IiJ9.gJsOS8Q3UMFCAq33NO5uoDNZOKHzXnOc0lXsQz0IURE
 
 {
     # id of the parent message 
     "parentMsg":"7",
     "msg":"sss"
+}
+
+
+###
+# Finish the selected bid 
+GET http://localhost:8000/api-v0/posts/1/finish/ HTTP/1.1
+Content-Type: application/json
+Authorization: JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InRlY3R5IiwiZXhwIjoxNTM2OTYwNTg2LCJlbWFpbCI6IiJ9.gJsOS8Q3UMFCAq33NO5uoDNZOKHzXnOc0lXsQz0IURE
+
+
+###
+# Rate a bid 
+POST  http://localhost:8000/api-v0/posts/1/rate/ HTTP/1.1
+Content-Type: application/json
+Authorization: JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InRlY3R5IiwiZXhwIjoxNTM2OTYwNTg2LCJlbWFpbCI6IiJ9.gJsOS8Q3UMFCAq33NO5uoDNZOKHzXnOc0lXsQz0IURE
+
+{
+    "rate" : "5"
 }

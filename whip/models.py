@@ -6,6 +6,9 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+# global variable that restrict the range of rate 
+rateRange =[(i,i) for i in range(6)]
+
 """
 Location code copy from my own GitHub
 https://github.com/tecty/SENG2021/blob/master/backend/post/models.py
@@ -96,7 +99,7 @@ class Post(models.Model):
     # the budget of whole event 
     budget = models.DecimalField(max_digits=12, decimal_places=2)
     # how much points received by bidder
-    posterReceivedPoints = models.IntegerField(default= 0)
+    posterReceivedPoints = models.IntegerField(default= 0, choices = rateRange)
     # state of the event 
     state = models.CharField(
         max_length=2,
@@ -126,10 +129,40 @@ class Post(models.Model):
         return self.__unicode__()
 
     def choose(self,bidder_id):
+        """
+        Use this function, user will choose a bid and make a deal
+        """
+
         # switch this state to dealed 
         self.state = "DL"
-        self.bid_set.get()
+        deal_bid = self.bid_set.get(pk = bidder_id)
 
+        # make all the rest bid as Unselected
+        for bid in self.bid_set.all():
+            bid.state = "US"
+            bid.save()        
+        # the deal bid is set to Selected 
+        deal_bid.state = "SD"
+        deal_bid.save()
+
+        # save the new state of this obj 
+        self.save() 
+
+    def finish(self):
+        self.state = "FN"
+        selected = self.bid_set.get(state = "SD")
+        selected.state = "FN"
+
+        # save the status 
+        self.save()
+        selected.save()
+
+
+    def rate(self, rate_to_bidder):
+        selected = self.bid_set.get(state = "FN")
+        # rate the bidder 
+        selected.bidderReceivedPoints = rate_to_bidder
+        selected.save()
 
 
 class Bid(models.Model):
@@ -155,7 +188,7 @@ class Bid(models.Model):
     # what the prive this bidder offer 
     offer = models.DecimalField(max_digits=12, decimal_places=2)
     # How much did bidder received 
-    bidderReceivedPoints = models.IntegerField(default= 0) 
+    bidderReceivedPoints = models.IntegerField(default= 0 , choices = rateRange)
 
     # functions used to show the object's name in Django 
     def __unicode__(self):

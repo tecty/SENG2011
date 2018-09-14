@@ -6,6 +6,7 @@ from .serializers import UserSerializer, User, \
     Location, LocationSerializer,\
     Message, MessageSerializer
 from rest_framework import viewsets,permissions
+from rest_framework.response import Response
 from rest_framework.decorators import action
 
 
@@ -45,13 +46,47 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
 
     
+    """
+    TODO: need to prevent mutiple time state change
+    """
 
-    @action(detail = True, methods = ['POST','GET'], url_name='Choose Bidder')
+    @action(detail = True, methods = ['POST'], url_name='Choose Bidder')
     def choose(self, request,pk= None):
         # get the post object from the pk specified 
         post = self.get_object()
         # use a method in object to choose the bidder 
-        post.choose( request.data["id"])
+        post.choose(request.data["id"])
+
+        # wrap the serializer and with this post detail 
+        serializer = self.get_serializer(post)
 
         # return back this post detail 
-        return post 
+        return Response(serializer.data)
+
+
+
+    @action(detail = True, methods = ['POST','GET'], url_name='Finish Post')
+    def finish(self, request,pk= None):
+        # get the post object from the pk specified 
+        post = self.get_object()
+        # use a method in object to choose the bidder 
+        post.finish()
+
+        # wrap the serializer and with this post detail 
+        serializer = self.get_serializer(post)
+
+        # return back this post detail 
+        return Response(serializer.data)
+
+    @action(detail = True, methods = ['POST'], url_name='Finish Post')
+    def rate(self, request,pk= None):
+        # get the post object from the pk specified 
+        post = self.get_object()
+        # use a method in object to choose the bidder 
+        post.rate(request.data["rate"])
+
+        # wrap the serializer and with this post detail 
+        serializer = self.get_serializer(post)
+
+        # return back this post detail 
+        return Response(serializer.data)

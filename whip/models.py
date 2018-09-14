@@ -42,7 +42,9 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Message(models.Model):
     # Support the disscussion 
-    parentMsg = models.ForeignKey("self",on_delete= models.CASCADE)
+    parentMsg = models.ForeignKey("Message",blank=  True, null = True,on_delete= models.CASCADE)
+    # owner 
+    owner = models.ForeignKey(User, on_delete = models.PROTECT)
     # this message  
     msg = models.CharField(max_length = 1024)
     
@@ -65,7 +67,7 @@ class Event(models.Model):
     # message foreign key to support discussion 
     msg = models.ForeignKey(Message,on_delete= models.PROTECT)
     # who post this event 
-    poster = models.ForeignKey(User, models.PROTECT)
+    owner = models.ForeignKey(User, models.PROTECT)
     # the time this event will be held 
     eventTime = models.DateTimeField()
     # the time need to close the bid 
@@ -79,7 +81,7 @@ class Post(models.Model):
     # message foreign key to support discussion 
     msg = models.ForeignKey(Message,on_delete= models.PROTECT)
     # who post this event 
-    poster = models.ForeignKey(User, models.PROTECT)
+    owner = models.ForeignKey(User, models.PROTECT)
     # the time this event will be held 
     eventTime = models.DateTimeField()
     # the time need to close the bid 
@@ -139,7 +141,7 @@ class Bid(models.Model):
         default = 'BD',
     )
     # who bid this  
-    bidder = models.ForeignKey(User, models.PROTECT)
+    owner = models.ForeignKey(User, models.PROTECT)
     # what the prive this bidder offer 
     offer = models.DecimalField(max_digits=12, decimal_places=2)
     # How much did bidder received 

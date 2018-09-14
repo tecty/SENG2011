@@ -1,7 +1,10 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers,validators
-from .models import Location, Profile, Parameter, Post, Bid
+from .models import Location, Profile, Parameter, Post, Bid,Event,Message
 from django.utils import timezone
+
+# to support the recursive message 
+from rest_framework_recursive.fields import RecursiveField
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,7 +28,14 @@ class ProfileSerializer(serializers.ModelSerializer):
             "is_trusted",
         )
     
-
+class MessageSerializer(serializers.ModelSerializer):
+    sub_msg = serializers.ListField(child = RecursiveField())
+    class Meta:
+        model = Message
+        fields = (
+            "msg",
+            "sub_msg"
+        )
 
 
 
@@ -122,6 +132,19 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         ProfileSerializer().update(user.profile,validated_data=profile_data)
         
         return user
+
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        field = (
+            "title",
+            "msg",
+            "poster",
+            "eventTime",
+            "bidClosingTime",
+            "location"
+        )
+
 
 
 class ParameterSerializer(serializers.HyperlinkedModelSerializer):

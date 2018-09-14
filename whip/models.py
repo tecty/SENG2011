@@ -196,3 +196,9 @@ class Bid(models.Model):
     def __str__(self):
         return self.__unicode__()
 
+    def rate(self, rate_to_poster):
+        if self.state != "FN":
+            raise TypeError("Not allow method")
+        self.post.posterReceivedPoints = rate_to_poster
+        # save the status 
+        self.post.save()

@@ -283,6 +283,7 @@ class PostSerializer(serializers.ModelSerializer):
             "peopleCount",
             "budget",
             "state",
+            "posterReceivedPoints",
             "bid_set",
             "location",
             "msg",

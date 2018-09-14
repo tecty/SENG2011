@@ -40,6 +40,18 @@ class BidViewSet(viewsets.ModelViewSet):
     queryset = Bid.objects.all()
     serializer_class = BidSerializer
 
+    @action(detail = True, methods = ['POST'], url_name='Rate-Poster')
+    def rate(self, request,pk= None):
+        # get the post object from the pk specified 
+        bid = self.get_object()
+        # use a method in object to choose the bidder 
+        bid.rate(request.data["rate"])
+
+        # wrap the serializer and with this bid detail 
+        serializer = self.get_serializer(bid)
+
+        # return back this bid detail 
+        return Response(serializer.data)
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -78,7 +90,7 @@ class PostViewSet(viewsets.ModelViewSet):
         # return back this post detail 
         return Response(serializer.data)
 
-    @action(detail = True, methods = ['POST'], url_name='Finish Post')
+    @action(detail = True, methods = ['POST'], url_name='Rate-Bidder')
     def rate(self, request,pk= None):
         # get the post object from the pk specified 
         post = self.get_object()

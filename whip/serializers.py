@@ -10,6 +10,9 @@ class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
         fields = ("address","lat","lng")
+    def create(self,validated_data):
+        # Only create a location if it's exist  
+        return Location.objects.get_or_create(**validated_data)[0]
 
 """
 Solution in 
@@ -26,15 +29,6 @@ class ProfileSerializer(serializers.ModelSerializer):
             "location",
             "tel",
             "is_trusted",
-        )
-    
-class MessageSerializer(serializers.ModelSerializer):
-    sub_msg = serializers.ListField(child = RecursiveField())
-    class Meta:
-        model = Message
-        fields = (
-            "msg",
-            "sub_msg"
         )
 
 
@@ -132,6 +126,24 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         ProfileSerializer().update(user.profile,validated_data=profile_data)
         
         return user
+    
+class MessageSerializer(serializers.ModelSerializer):
+    sub_msg = serializers.ListField(child = RecursiveField(), read_only = True)
+    owner = UserSerializer(read_only = True)
+    class Meta:
+        model = Message
+        fields = (
+            "msg",
+            "owner",
+            "sub_msg"
+        )
+
+    def create(self, validated_data):
+        # push this user to validated data 
+        validated_data['owner'] =  self.context['request'].user
+        # call the super method to create this obj
+        return super(MessageSerializer,self).create(validated_data)
+
 
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
@@ -139,7 +151,7 @@ class EventSerializer(serializers.ModelSerializer):
         field = (
             "title",
             "msg",
-            "poster",
+            "owner",
             "eventTime",
             "bidClosingTime",
             "location"
@@ -158,17 +170,17 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
     # protect the state been modify by client 
     # TODO: Provide another to endpoint to change it 
     state  = serializers.CharField(read_only = True)
-    bidder = UserSerializer(
+    owner = UserSerializer(
         read_only = True,
         # default = serializers.CurrentUserDefault()  
     )
     class Meta:
         model = Bid
-        fields = ('post', 'bidder', 'offer', "state")
+        fields = ('post', 'owner', 'offer', "state")
 
     def create(self, validated_data):
         # push the current user into the validate data 
-        validated_data['bidder'] =  self.context['request'].user
+        validated_data['owner'] =  self.context['request'].user
         # created and save the bid bid  
         bid = super(BidSerializer,self),create(validated_data)
         return bid
@@ -180,9 +192,14 @@ class PostSerializer(serializers.ModelSerializer):
     # extraParameter =serializers.StringRelatedField(many = True)
     state  = serializers.CharField(read_only = True)
     bid_set = BidSerializer(many=True,read_only = True)
-    
-    
-    poster = UserSerializer(read_only = True)
+
+    # inherentant the context fcfrom this class 
+    msg = MessageSerializer()
+    # who create this post  
+    owner = UserSerializer(read_only = True)
+    # what's the location of this post 
+    location =  LocationSerializer()
+
 
     """
     validation code of this serializer
@@ -242,7 +259,7 @@ class PostSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "msg",
-            "poster",
+            "owner",
             "eventTime",
             "bidClosingTime",
             "location",
@@ -255,12 +272,24 @@ class PostSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # push back the current defult user 
-        validated_data['poster'] = self.context['request'].user
+        validated_data['owner'] = self.context['request'].user
+
+        # pop the message to create the message obj 
+        message = validated_data.pop('msg')
+        # pass this message as string to it 
+        validated_data['msg'] = \
+            MessageSerializer(context = self.context ).create(message)
+
+        #  location data may not exist 
+        location = validated_data.pop("location",{})
+        # get or create a location 
+        validated_data["location"] = \
+            LocationSerializer().create(location)
+
+
 
         # use parents method to create this obj
         post = super(PostSerializer,self).create(validated_data)
-
-        print (validated_data)
 
         # return back this created obj
         return post 

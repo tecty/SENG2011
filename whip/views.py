@@ -2,17 +2,20 @@ from django.shortcuts import render
 from .serializers import UserSerializer, User, \
     Post, PostSerializer, \
     Parameter, ParameterSerializer, \
-    Bid, BidSerializer
-from rest_framework import viewsets
-
-from rest_framework import permissions
+    Bid, BidSerializer,\
+    Location, LocationSerializer
+from rest_framework import viewsets,permissions
+from rest_framework.decorators import action
 
 
 # Own premission  
 from .permission import GuestCreateOnly,OwnerUpdateOnly,IsAdminOrReadOnly
 
+class LocationViewset(viewsets.ModelViewSet):
+    queryset = Location.objects.all()
+    serializer_class = LocationSerializer
+    
 
-# ViewSets define the view behavior.
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -37,3 +40,7 @@ class BidViewSet(viewsets.ModelViewSet):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+    @action(detail = False, methods = ['post'], url_name='Choose Bidder')
+    def choose(self, request, pk = None):
+        pass 

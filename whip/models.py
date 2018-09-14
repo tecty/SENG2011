@@ -70,8 +70,6 @@ class Parameter(models.Model):
 class Event(models.Model):
     # basic description of this event 
     title = models.CharField(max_length=255)
-    # message foreign key to support discussion 
-    msg = models.ForeignKey(Message,on_delete= models.PROTECT)
     # who post this event 
     owner = models.ForeignKey(User, models.PROTECT)
     # the time this event will be held 

@@ -4,7 +4,8 @@ from .serializers import UserSerializer, User, \
     Parameter, ParameterSerializer, \
     Bid, BidSerializer,\
     Location, LocationSerializer,\
-    Message, MessageSerializer
+    Message, MessageSerializer,\
+    Event, EventSerializer
 from rest_framework import viewsets,permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -34,6 +35,11 @@ class ParameterViewSet(viewsets.ModelViewSet):
     queryset = Parameter.objects.all()
     serializer_class = ParameterSerializer
     permission_classes = [IsAdminOrReadOnly]
+
+class EventViewSet(viewsets.ModelViewSet):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+    
 
 
 class BidViewSet(viewsets.ModelViewSet):

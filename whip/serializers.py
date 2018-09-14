@@ -159,9 +159,8 @@ class MessageSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        field = (
+        fields = (
             "title",
-            "msg",
             "owner",
             "eventTime",
             "bidClosingTime",

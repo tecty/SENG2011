@@ -1,4 +1,4 @@
-@auth = JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6InR0dCIsImV4cCI6MTUzNzE5Njk5NCwiZW1haWwiOiIifQ.qHyL6C2-7IM7BN4VqGWYC7zfHgEo3FOp_PsiU_iUNu4
+@auth = JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6InR0dCIsImV4cCI6MTUzNzE5OTUyOCwiZW1haWwiOiIifQ.15bAqoJIPAoPmXtL_IAd53gMaaxX84uctS97AkXL1UA
 @baseUrl = http://localhost:8000/api-v0/
 
 
@@ -71,13 +71,36 @@ Authorization: {{auth}}
 }
 
 
-# Event actions"
 ###
-# create a post of sub event 
-POST  {{baseUrl}}events/1/post/ HTTP/1.1
+# create an event 
+POST  {{baseUrl}}events/ HTTP/1.1
 Content-Type: application/json
 Authorization: {{auth}}
 
 {
-    
+    "title": "wera",
+    "eventTime": "2222-02-22T00:00:00Z",
+    "bidClosingTime": "2222-01-22T00:00:00Z",
+    "location": {
+        "address": "asdg",
+        "lat": 123,
+        "lng": 21.334123
+    }
+}
+
+
+###
+# create a post of sub event 
+POST  {{baseUrl}}posts/ HTTP/1.1
+Content-Type: application/json
+Authorization: {{auth}}
+
+{
+    # parent event
+    "eventId": 1,
+    "peopleCount": 12,
+    "budget": 12,
+    # the extra params ids 
+    "extraParameter": [4, 21, 43],
+    "message": "test post "
 }

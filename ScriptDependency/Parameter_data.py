@@ -1,6 +1,6 @@
 # This file cannot run standalone 
 # Must be called by init_db.sh 
-from whip.models import Parameter, Post, Bid
+from whip.models import Parameter
 
 # Parameter for Age profolio 
 Parameter(key="Age Profile",value="0-10").save()

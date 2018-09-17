@@ -3,6 +3,11 @@
 # get into the virtual env  
 source venv/bin/activate 
 
+echo "Update the Software in Virtualenv"
+# update the prerequiste 
+pip install -r requirements.txt > /dev/null 
+
+
 # create a new database 
 rm db.sqlite3 -rf 
 

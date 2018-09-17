@@ -122,6 +122,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         # create this user 
         user = super(UserSerializer, self).create(validated_data)
 
+        # set the password by a delicate function 
+        # In this way, the password will encrypt and save correctly
+        user.set_password(validated_data["password"])
+        # save this model 
+        user.save()
+
         # user profile_data serializer to update 
         ProfileSerializer().update(user.profile,validated_data=profile_data)
         
@@ -160,6 +166,36 @@ class EventSerializer(serializers.ModelSerializer):
     owner = UserSerializer(
         read_only = True,
     )
+
+    """
+    validation code of this serializer
+    """
+    def validate_eventTime(self, eventTime):
+        """ Event time > now """
+        if eventTime <= timezone.now():
+            raise serializers.ValidationError(
+                "Event Time must be later than now;"
+            )
+        return eventTime
+
+    def validate_bidClosingTime(self, bidClosingTime):
+        """ Bid closing time > now """
+        if bidClosingTime <= timezone.now():
+            raise serializers.ValidationError(
+                "Bid Closing Time must be later than now;"
+            )
+        return bidClosingTime
+
+    def validate(self,data):
+        if data["bidClosingTime"] >= data["eventTime"]:
+            raise serializers.ValidationError(
+                {"bidClosingTime":[
+                    "Bid Closing must happen before the Event time "
+                ]}
+            )
+        # ELSE: validate successfully 
+        return data
+
     class Meta:
         model = Event
         fields = (
@@ -215,6 +251,7 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+    event = EventSerializer()
     # set the foreign stat sytle
     # extraParameter =serializers.StringRelatedField(many = True)
     state  = serializers.CharField(read_only = True)
@@ -222,11 +259,6 @@ class PostSerializer(serializers.ModelSerializer):
 
     # inherentant the context fcfrom this class 
     msg = MessageSerializer()
-    # who create this post  
-    owner = UserSerializer(read_only = True)
-    # what's the location of this post 
-    location =  LocationSerializer()
-
 
     """
     validation code of this serializer
@@ -254,48 +286,17 @@ class PostSerializer(serializers.ModelSerializer):
         # ELSE: validate successfully return back this data to validated_data 
         return extraParameter 
 
-    def validate_eventTime(self, eventTime):
-        """ Event time > now """
-        if eventTime <= timezone.now():
-            raise serializers.ValidationError(
-                "Event Time must be later than now;"
-            )
-        return eventTime
-
-    def validate_bidClosingTime(self, bidClosingTime):
-        """ Bid closing time > now """
-        if bidClosingTime <= timezone.now():
-            raise serializers.ValidationError(
-                "Bid Closing Time must be later than now;"
-            )
-        return bidClosingTime
-
-    def validate(self,data):
-        if data["bidClosingTime"] >= data["eventTime"]:
-            raise serializers.ValidationError(
-                {"bidClosingTime":[
-                    "Bid Closing must happen before the Event time "
-                ]}
-            )
-        # ELSE: validate successfully 
-        return data
-
     class Meta:
         model = Post
         fields = (
-            "id",
-            "title",
-            "owner",
-            "eventTime",
-            "bidClosingTime",
+            "event",
             "peopleCount",
             "budget",
-            "state",
             "posterReceivedPoints",
-            "bid_set",
-            "location",
-            "msg",
+            "state",
             "extraParameter",
+            "msg",
+            "bid_set",
         )
 
     def create(self, validated_data):

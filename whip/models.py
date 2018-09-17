@@ -51,10 +51,6 @@ class Message(models.Model):
     # this message  
     msg = models.CharField(max_length = 1024)
 
-    
-
-    
-
 class Parameter(models.Model):
     key = models.CharField(max_length = 255)
     value = models.CharField(max_length = 1024)
@@ -65,7 +61,6 @@ class Parameter(models.Model):
         return "%s : %s" % (self.key, self.value)
     def __str__(self):
         return self.__unicode__()
-
 
 class Event(models.Model):
     # basic description of this event 
@@ -78,28 +73,19 @@ class Event(models.Model):
     bidClosingTime = models.DateTimeField()
     # where is the event
     location =  models.ForeignKey(Location,models.PROTECT)
-    # how many people will occour 
-    peopleCount = models.IntegerField()
     
 class Post(models.Model):
-    # basic description of this event 
-    title = models.CharField(max_length=255)
-    # message foreign key to support discussion 
-    msg = models.ForeignKey(Message,on_delete= models.PROTECT)
-    # who post this event 
-    owner = models.ForeignKey(User, models.PROTECT)
-    # the time this event will be held 
-    eventTime = models.DateTimeField()
-    # the time need to close the bid 
-    bidClosingTime = models.DateTimeField()
-    # where is the event
-    location =  models.ForeignKey(Location,models.PROTECT)
+    # Parent of the post model have neccessary infomation 
+    # Move majority information that would have collesion to Event model 
+    event = models.ForeignKey(Event,on_delete = models.CASCADE)
     # how many people will occour 
     peopleCount = models.IntegerField()
     # the budget of whole event 
     budget = models.DecimalField(max_digits=12, decimal_places=2)
     # how much points received by bidder
     posterReceivedPoints = models.IntegerField(default= 0, choices = rateRange)
+    # forein key to support recursive msg
+    msg = models.ForeignKey(Message, on_delete = models.PROTECT)
     # state of the event 
     state = models.CharField(
         max_length=2,
@@ -119,8 +105,6 @@ class Post(models.Model):
         related_name = "extra_parameter"
     )
 
-    # extra key for non neccessary one to many relationship 
-    event = models.ForeignKey(Event,on_delete = models.CASCADE, blank = True ,null= True)
 
     # functions used to show the object's name in Django 
     def __unicode__(self):

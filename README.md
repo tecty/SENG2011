@@ -29,7 +29,6 @@ Make sure you can use command line start python3, that's all we need. Then you c
 ./run.sh -f 
 ```
 
-
 # Frontend
 
 ## Install the System Environment
@@ -53,6 +52,17 @@ You also need another shell to keep fronend server running.
 # serve with hot reload at localhost:8080
 $ yarn serve
 ```
+
+## APIs Documents 
+
+The api document is in [api.http](./api.http); You need to run it via [vscode Rest Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+
+You can install it via this command in vscode command panel (Ctrl + Shift + P):
+
+```bash
+ext install humao.rest-client
+```
+
 
 ## Some Helpful Commands
 
@@ -79,15 +89,6 @@ Also you may want to checkout
 [Axios](https://cn.vuejs.org/v2/cookbook/using-axios-to-consume-apis.html)
 and [vue-loader](http://vuejs.github.io/vue-loader)..
 
-## APIs Documents 
-
-The api document is in api.http ; You need to run it via [vscode Rest Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
-
-You can install it via this command:
-
-```bash
-ext install humao.rest-client
-```
 
 
 ## URLs

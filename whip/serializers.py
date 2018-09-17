@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from rest_framework import serializers,validators
 from .models import Location, Profile, Parameter, Post, Bid,Event,Message
 from django.utils import timezone
@@ -121,6 +121,11 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
         # create this user 
         user = super(UserSerializer, self).create(validated_data)
+
+        # TODO: need to modify if we divide our group data 
+        user.groups.add(Group.objects.get(name='Poster'))
+        user.groups.add(Group.objects.get(name='Bidder'))
+
 
         # set the password by a delicate function 
         # In this way, the password will encrypt and save correctly

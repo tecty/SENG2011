@@ -1,6 +1,7 @@
 # This file cannot run standalone 
 # Must be called by init_db.sh 
 from django.contrib.auth.models import Group,Permission
+from itertools import chain
 
 """
 dividing two groups of user here
@@ -9,37 +10,33 @@ dividing two groups of user here
 """
 # bidder group 
 bidder = Group.objects.create(name = "Bidder")
+
+permission_list = \
+list(
+  chain(
+    Permission.objects.filter(content_type__model = "event"),
+    Permission.objects.filter(content_type__model = "post"),
+    Permission.objects.filter(content_type__model = "message")
+  )
+)
+
+
+
 # CRUD of post Event Msg 
-bidder.objects.permissions_set(
-  Permission.objects.filter(
-    content_type__model__contains = "event" 
-  )
-)
-bidder.permissions_set(
-  Permission.objects.filter(
-    content_type__model__contains = "post" 
-  )
-)
-bidder.permissions_set(
-  Permission.objects.filter(
-    content_type__model__contains = "msg" 
-  )
-)
+bidder.permissions.set(permission_list)
 # save the setting 
 bidder.save()
 
 # poster group 
 poster = Group.objects.create(name = "Poster")
+permission_list = list(
+  chain(
+    Permission.objects.filter(content_type__model = "bid"),
+    Permission.objects.filter(content_type__model = "message")
+  )
+)
+
 # CRUD of post Event Msg 
-poster.permissions_set(
-  Permission.objects.filter(
-    content_type__model__contains = "bid" 
-  )
-)
-poster.permissions_set(
-  Permission.objects.filter(
-    content_type__model__contains = "msg" 
-  )
-)
+poster.permissions.set(permission_list)
 # save the setting 
 poster.save()

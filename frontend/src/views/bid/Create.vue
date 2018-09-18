@@ -1,19 +1,27 @@
 <template>
-  <div>
+ <v-layout>
+    <v-flex xs12 sm6 offset-sm3>
+        <!-- card  for the detail of the post -->
+        <post-detail-card :post="post" />
+      <v-card>
+      <!-- card for making post -->
     <v-form v-model="valid" @submit.prevent="submit">
       <v-text-field
         v-model="price"
         label="Price"
         required
       ></v-text-field>
-      {{this.$route.params}}  {{this.$route.name}}
       <v-btn type="submit" color="primary">Bid</v-btn>
     </v-form>
-  </div>
+  </v-card>
+    </v-flex>
+  </v-layout>
+
 </template>
 
 <script>
 import { mapActions } from "vuex";
+import PostDetailCard from "@/components/PostDetailCard";
 export default {
   data() {
     return {
@@ -21,8 +29,16 @@ export default {
       // here just for silence the error
       valid: "",
       price: "",
-      error: ""
+      error: "",
     };
+  },
+  computed: {
+    post: function() {
+      return this.$store.state.posts[this.$route.params.postId-1]
+    }
+  },
+  mounted() {
+    this.$store.commit('addAllPosts')
   },
   methods: {
     ...mapActions(["placeBid"]),
@@ -40,7 +56,13 @@ export default {
         .catch(() => {
           this.error = "import is not correct";
         });
+    },
+    getPost(){
+      
     }
+  },
+  components: {
+    PostDetailCard
   }
 };
 </script>

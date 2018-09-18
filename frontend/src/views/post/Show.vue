@@ -18,23 +18,13 @@
 import axios from "axios";
 import postCard from "@/components/post/Card";
 export default {
-  data() {
-    return {
-      posts: []
-    };
+  computed: {
+    posts() {
+      return this.$store.state.posts
+    }
   },
   mounted() {
-    axios
-      .get("posts/")
-      .then(response => {
-        // JSON responses are automatically parsed.
-        console.log(response);
-        this.posts = response.data;
-      })
-      .catch(error => {
-        console.log(error);
-        console.log(error.response);
-      });
+    this.$store.commit('addAllPosts')
   },
   components: {
     postCard

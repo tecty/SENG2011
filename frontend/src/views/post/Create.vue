@@ -84,11 +84,11 @@ export default {
       location: "test",
       budget: 1,
       peopleCount: 1,
-      date: "2018-09-13",
+      date: "2018-11-13",
       menu: false,
       time: "03:30",
       menu2: false,
-      date10: "2018-09-12",
+      date10: "2018-11-12",
       menu10: false,
       time11: "03:30",
       menu11: false

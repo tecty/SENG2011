@@ -17,7 +17,8 @@ export default new Vuex.Store({
     api_state: "",
     token: getToken(),
     error: "",
-    data: ""
+    data: "",
+    posts: []
   },
   mutations: {
     API_ERROR: (state, error_type, error) => {
@@ -30,6 +31,19 @@ export default new Vuex.Store({
     },
     REMOVE_TOKEN: state => {
       state.token = "";
+    },
+    addAllPosts: state => {
+      axios
+        .get("posts/")
+        .then(response => {
+          // JSON responses are automatically parsed.
+          console.log(response);
+          state.posts = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+          console.log(error.response);
+        });
     }
   },
   actions: {
@@ -47,6 +61,7 @@ export default new Vuex.Store({
             axios.defaults.headers.common["Authorization"] = state.token;
 
             // success full do the request
+            
             resolve();
           })
           .catch(err => {

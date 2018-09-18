@@ -37,9 +37,6 @@ export default {
       return this.$store.state.posts[this.$route.params.postId-1]
     }
   },
-  mounted() {
-    this.$store.commit('addAllPosts')
-  },
   methods: {
     ...mapActions(["placeBid"]),
     submit() {

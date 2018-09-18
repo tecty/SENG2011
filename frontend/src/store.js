@@ -32,18 +32,9 @@ export default new Vuex.Store({
     REMOVE_TOKEN: state => {
       state.token = "";
     },
-    addAllPosts: state => {
-      axios
-        .get("posts/")
-        .then(response => {
-          // JSON responses are automatically parsed.
-          console.log(response);
-          state.posts = response.data;
-        })
-        .catch(error => {
-          console.log(error);
-          console.log(error.response);
-        });
+    GET_POSTS: (state, posts) => {
+      state.posts = posts;
+
     }
   },
   actions: {
@@ -85,6 +76,23 @@ export default new Vuex.Store({
           .then(() => resolve())
           .catch(() => reject());
       });
+    },
+    addPosts({ commit }){
+      return new Promise((resolve,reject) => {
+        axios
+          .get("posts/")
+          .then(response => {
+            // JSON responses are automatically parsed.
+            console.log(response);
+            commit("GET_POSTS",response.data);
+            resolve();
+          })
+          .catch(error => {
+            console.log(error);
+            console.log(error.response);
+            reject();
+          });
+      })
     }
   }
 });

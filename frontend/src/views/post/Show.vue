@@ -23,9 +23,6 @@ export default {
       return this.$store.state.posts
     }
   },
-  mounted() {
-    this.$store.commit('addAllPosts')
-  },
   components: {
     postCard
   }

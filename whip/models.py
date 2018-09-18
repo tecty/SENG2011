@@ -108,7 +108,7 @@ class Post(models.Model):
 
     # functions used to show the object's name in Django 
     def __unicode__(self):
-        return self.title
+        return self.event.title
     def __str__(self):
         return self.__unicode__()
 

@@ -239,23 +239,37 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
     # protect the state been modify by client 
     # TODO: Provide another to endpoint to change it 
     state  = serializers.CharField(read_only = True)
+    post = serializers.PrimaryKeyRelatedField(queryset =  Post.objects.all())
     owner = UserSerializer(
         read_only = True,
     )
-    msg = MessageSerializer()
+        # inherentant the context fcfrom this class 
+    msg = MessageSerializer(read_only = True)
+
+    message = serializers.CharField(write_only = True)
+
     class Meta:
         model = Bid
-        fields = ('id','post', 'owner','msg', 'offer', "state","bidderReceivedPoints")
+        fields = (
+            'id',
+            'post',
+            'owner',
+            'msg',
+            'message',
+            'offer',
+            "state","bidderReceivedPoints"
+        )
 
     def create(self, validated_data):
         # push the current user into the validate data 
         validated_data['owner'] =  self.context['request'].user
 
+        # pop the message to create the message char 
+        msg =  validated_data.pop('message',
+            {})
         # pass this message as string to it 
         validated_data['msg'] = \
-            MessageSerializer(context = self.context ) \
-            .create(validated_data.pop('msg'))
-        
+            MessageSerializer(context = self.context ).create({"msg": msg})
         
         # created and save the bid bid  
         bid = super(BidSerializer,self).create(validated_data)

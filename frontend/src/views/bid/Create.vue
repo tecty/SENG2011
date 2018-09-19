@@ -10,6 +10,7 @@
         v-model="price"
         label="Price"
         required
+      
       ></v-text-field>
       <v-btn type="submit" color="primary">Bid</v-btn>
     </v-form>

@@ -322,6 +322,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = (
             "eventId",
+            'title',
             "event",
             "peopleCount",
             "budget",

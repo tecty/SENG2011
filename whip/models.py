@@ -73,11 +73,18 @@ class Event(models.Model):
     bidClosingTime = models.DateTimeField()
     # where is the event
     location =  models.ForeignKey(Location,models.PROTECT)
-    
+    def __unicode__(self):
+        return self.title
+    def __str__(self):
+        return self.__unicode__()
+
 class Post(models.Model):
     # Parent of the post model have neccessary infomation 
     # Move majority information that would have collesion to Event model 
     event = models.ForeignKey(Event,on_delete = models.CASCADE)
+
+    # basic title of this event  
+    title = models.CharField(max_length=255)
     # how many people will occour 
     peopleCount = models.IntegerField()
     # the budget of whole event 
@@ -108,7 +115,7 @@ class Post(models.Model):
 
     # functions used to show the object's name in Django 
     def __unicode__(self):
-        return self.event.title
+        return self.title + " of "+ self.event.title
     def __str__(self):
         return self.__unicode__()
 

@@ -6,7 +6,7 @@ Using django, Vue.js, vuetifyjs
 
 ### Set Your Working Branch
 
-```shell
+```bash
 # create to your branch and working there
 $ git checkout -b YOUR_BRANCH_NAME
 
@@ -24,47 +24,17 @@ Install [Docker Community Edition](https://docs.docker.com/install/#releases)
 Install [Docker Compose](https://docs.docker.com/compose/install/#install-compose)  
 
 
-### Setting Environment
+# Backend 
 
-Make sure you have install these package in your package manager:  
-python3, python3-venv, virtualenv
 
-```bash
-# in Ubuntu
-sudo apt install python3 python3-venv virtualenv
-```
+## One Script to Run the Backend 
 
+Make sure you can use command line start python3, that's all we need. Then you can type:
 
 ```bash
-# Create Virtual environment if you haven't
-$ virtualenv venv -p `which python3`
-```
-
-```bash
-# activate the virtual envirnoment
-$ source venv/bin/activate
-```
-
-### Install dependencies and setup the database
-
-```bash
-# install python dependencies
-(venv) $ pip install -r requirements.txt
-
-# setup the database
-(venv) $ ./init_db.sh
-```
-
-### Run the Server
-
-A shell to run django's httpd.
-
-```bash
-# Run in local
-(venv) $ ./manage.py runserver
-
-# ALTERNATIVE: start the server to public
-(venv) $ sudo python manage.py runserver 0:80
+./run.sh 
+# if you meet some database conflict, you can jst type 
+./run.sh -f 
 ```
 
 # Frontend
@@ -91,6 +61,17 @@ You also need another shell to keep fronend server running.
 $ yarn dev
 ```
 
+## APIs Documents 
+
+The api document is in [api.http](./api.http); You need to run it via [vscode Rest Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+
+You can install it via this command in vscode command panel (Ctrl + Shift + P):
+
+```bash
+ext install humao.rest-client
+```
+
+
 ## Some Helpful Commands
 
 ```bash
@@ -115,6 +96,8 @@ Also you may want to checkout
 [Vuetify](https://vuetifyjs.com/en/getting-started/quick-start),
 [Vue-router](https://router.vuejs.org/),
 [Axios](https://cn.vuejs.org/v2/cookbook/using-axios-to-consume-apis.html)..
+
+
 
 ## URLs
 

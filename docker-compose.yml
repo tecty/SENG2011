@@ -9,14 +9,13 @@ services:
     volumes: 
       - partyWhipMysql:/var/lib/mysql
 
-  phpmyadmin:
+  myAdmin:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
     environment:
      - PMA_ARBITRARY=1
     restart: always
     ports:
-     - 8080:80
+     - 8081:80
     volumes:
      - /sessions
 
@@ -30,5 +29,19 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     depends_on:
       - db
+
+  frontend:
+    build: ./frontend/
+    volumes:
+      - ./frontend/:/app
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    # command: 
+      # - "ls;"
+      # - "npm serve"
+      # - "yarn install;"
+      # - "yarn serve;"
 volumes: 
   partyWhipMysql:

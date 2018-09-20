@@ -1,5 +1,5 @@
 FROM python:3-onbuild
 
-COPY ScriptDependency/requirements.txt /usr/src/app
+ADD requirements.txt /usr/src/app
 WORKDIR /usr/src/app
 

@@ -36,11 +36,11 @@ def add_groups(apps,schema_editor):
 
     # CRUD of post Event Msg 
     bidder.permissions.set(permission_list)
-    print(bidder.permissions)
-    print(permission_list)
+    # print(bidder.permissions)
+    # print(permission_list)
     # save the setting 
     bidder.save()
-    print(bidder.permissions)
+    # print(bidder.permissions)
 
     # poster group 
     poster = Group.objects.create(name = "Poster")

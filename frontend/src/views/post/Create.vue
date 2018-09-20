@@ -16,7 +16,7 @@
             <v-text-field v-model="form.location" label="Location *" required></v-text-field>
           </v-flex>
           <v-flex xs12>
-            <v-textarea v-model="form.msg" color="teal">
+            <v-textarea v-model="form.message" color="teal">
               <div slot="label">
                 Description
               </div>
@@ -80,7 +80,7 @@ export default {
   data() {
     const defaultForm = Object.freeze({
       title: "test",
-      msg: "test",
+      message: "test",
       location: "test",
       budget: 1,
       peopleCount: 1,
@@ -109,7 +109,8 @@ export default {
       axios
         .post("posts/", {
           title: this.form.title,
-          msg: this.form.msg,
+          message: this.form.message,
+          eventId: 1, //testing use
           location: this.form.location,
           budget: this.form.budget,
           peopleCount: this.form.peopleCount,

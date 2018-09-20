@@ -84,7 +84,8 @@ export default new Vuex.Store({
           .then(response => {
             // JSON responses are automatically parsed.
             console.log(response);
-            commit("GET_POSTS",response.data);
+            console.log(response.data);
+            commit("GET_POSTS", response.data);
             resolve();
           })
           .catch(error => {

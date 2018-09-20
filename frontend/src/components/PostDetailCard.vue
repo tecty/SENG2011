@@ -5,7 +5,7 @@
     <v-card-title primary-title>
       <div >
          <span class="headline">Task detail of {{post.title}}</span><br>
-          <span>{{post.msg}}</span><br>
+          <span>{{post.message}}</span><br>
           
       </div>
       <v-card-text>

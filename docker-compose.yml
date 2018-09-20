@@ -26,7 +26,7 @@ services:
       - "8000:8000"
     volumes: 
       - .:/usr/src/app/
-    command: python manage.py runserver 0.0.0.0:8000
+    command: 
     depends_on:
       - db
 
@@ -38,10 +38,5 @@ services:
       - "8080"
     ports:
       - "8080:8080"
-    # command: 
-      # - "ls;"
-      # - "npm serve"
-      # - "yarn install;"
-      # - "yarn serve;"
 volumes: 
   partyWhipMysql:

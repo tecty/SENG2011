@@ -1,3 +1,8 @@
 #!/bin/bash
+if (($# != 2))
+then
+    echo "$0 <Service_Name>"
+    exit 1
+fi
 # this command will attach to the running backend container
-sudo docker exec -i -t seng2011_backend_1 /bin/bash
+sudo docker exec -i -t "seng2011_$1_1" /bin/bash

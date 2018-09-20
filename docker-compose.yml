@@ -6,6 +6,8 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: AnApple_123
+    volumes: 
+      - partyWhipMysql:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -28,3 +30,5 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     depends_on:
       - db
+volumes: 
+  partyWhipMysql:

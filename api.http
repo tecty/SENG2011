@@ -1,0 +1,107 @@
+@auth = JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6InR0dCIsImV4cCI6MTUzNzM1MDM3MiwiZW1haWwiOiIifQ.xbElWFO12S0OzCtQi1zKVmjCEoK8UFtZ5s5QVWgJfwU
+@baseUrl = http://localhost:8000/api-v0/
+
+
+POST {{baseUrl}}api-token-auth/ HTTP/1.1
+Content-Type: application/json
+
+{
+	"username": "ttt" ,
+	"password": "apple123"
+}
+
+
+###
+
+# register User
+POST {{baseUrl}}users/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "ttt",
+    "password": "apple123",
+    "password_again": "apple123",
+    "location": {
+        "address": "a simpel location",
+        "lat": 123,
+        "lng": 123.2
+    },
+    "tel": 12333
+}
+
+###
+
+POST {{baseUrl}}msg/ HTTP/1.1
+Content-Type: application/json
+Authorization: {{auth}}
+
+{
+    # id of the parent message 
+    "parentMsg":"",
+    "msg":"sss"
+}
+
+
+###
+# Finish the selected bid 
+GET {{baseUrl}}posts/1/finish/ HTTP/1.1
+Content-Type: application/json
+Authorization: {{auth}}
+
+
+###
+# Rate a bid 
+POST  {{baseUrl}}posts/1/rate/ HTTP/1.1
+Content-Type: application/json
+Authorization: {{auth}}
+
+{
+    "rate" : "5"
+}
+
+# Bid actions: 
+###
+# Bidder rate a post 
+POST  {{baseUrl}}bids/1/rate/ HTTP/1.1
+Content-Type: application/json
+Authorization: {{auth}}
+
+{
+    "rate" : "5"
+}
+
+
+###
+# create an event 
+POST  {{baseUrl}}events/ HTTP/1.1
+Content-Type: application/json
+Authorization: {{auth}}
+
+{
+    "title": "wera",
+    "eventTime": "2222-02-22T00:00:00Z",
+    "bidClosingTime": "2222-01-22T00:00:00Z",
+    "location": {
+        "address": "asdg",
+        "lat": 123,
+        "lng": 21.334123
+    }
+}
+
+
+###
+# create a post of sub event 
+POST  {{baseUrl}}posts/ HTTP/1.1
+Content-Type: application/json
+Authorization: {{auth}}
+
+{
+    # parent event
+    "eventId": 1,
+    "title": "dinner",
+    "peopleCount": 12,
+    "budget": 12,
+    # the extra params ids 
+    "extraParameter": [4, 21, 43],
+    "message": "test post "
+}

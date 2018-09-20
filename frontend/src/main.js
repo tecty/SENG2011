@@ -2,6 +2,7 @@ import "@babel/polyfill";
 import Vue from "vue";
 import "./plugins/vuetify";
 import "./plugins/axios";
+import "./plugins/vee-validate";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -34,6 +35,6 @@ new Vue({
   store,
   render: h => h(App),
   created() {
-    this.$store.dispatch('addPosts')
+    this.$store.dispatch('addPosts');
   }
 }).$mount("#app");

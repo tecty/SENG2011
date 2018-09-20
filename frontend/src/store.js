@@ -73,8 +73,8 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         axios
           .post("bids/", data)
-          .then(() => resolve())
-          .catch((err) => reject(err));
+          .then(res => resolve(res))
+          .catch(err => reject(err));
       });
     },
     addPosts({ commit }){

@@ -17,23 +17,27 @@
     </v-card>
       <!-- card for making post -->
       <v-card>
-    <v-form ref="form" v-model="valid" lazy-validation>
+    <form @submit.prevent="submit">
       <v-text-field
+      v-validate="'required|decimal:3'"
+      data-vv-name="price"
         v-model="price"
         label="Price"
-        
+    :error-messages="errors.collect('price')"
         required
       
       ></v-text-field>
       <v-textarea
         v-model="message"
+         v-validate="'required'"
+      data-vv-name="message"
         label="Message"
         hint="Write Message to poster in your bid"
-        required
-      
+       :error-messages="errors.collect('message')"
+       required
       ></v-textarea>
-      <v-btn type="submit" color="primary">Bid</v-btn>
-    </v-form>
+      <v-btn type="submit" color="primary" @click="submit">Bid</v-btn>
+    </form>
       </v-card>
     
   </v-card>
@@ -47,11 +51,12 @@ import { mapActions } from "vuex";
 import PostDetailCard from "@/components/PostDetailCard";
 import BidCard from "@/components/BidCard";
 export default {
+
   data() {
     return {
       // require a valid function.
       // here just for silence the error
-      valid: true,
+      message: "",
       price: "",
       error: "",
     };
@@ -64,29 +69,34 @@ export default {
   methods: {
     ...mapActions(["placeBid"]),
     submit() {
-      if (this.$refs.form.validate()) {
-        var data = {
-          post: this.$route.params.postId,
-          offer: this.price
-        };
-        console.log(data);
-        console.log(this.$route.params.postId);
-        this.placeBid(data)
-          .then(() => {
-            this.$router.next("/");
-          })
-          .catch((err) => {
-            this.error = "import is not correct";
-            console.log(err);
-            console.log(err.response);
-            console.log(err.response.data);
-          });
-      }
+      this.$validator.validateAll().then(valid => {
+        if(valid){
+            var data = {
+            post: this.$route.params.postId,
+            offer: this.price,
+            message: this.message
+          };
+          console.log(data);
+          console.log(this.$route.params.postId);
+          this.placeBid(data)
+            .then((response) => {
+
+              this.$router.next("/");
+            })
+            .catch((err) => {
+              this.error = "import is not correct";
+              console.log(err);
+            });
+          }
+      })
     },
   },
   components: {
     PostDetailCard,
     BidCard
+  },
+  $_veeValidate: {
+    validator: 'new'
   }
 };
 </script>

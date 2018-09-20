@@ -20,17 +20,17 @@ services:
      - /sessions
 
   backend:
-    build: .
+    build: backend/
     restart: always
     ports: 
       - "8000:8000"
     volumes: 
-      - .:/usr/src/app/
+      - ./backend/:/usr/src/app/
     depends_on:
       - db
 
   frontend:
-    build: ./frontend/
+    build: frontend/
     volumes:
       - ./frontend/:/app
     expose:

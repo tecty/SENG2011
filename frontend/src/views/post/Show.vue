@@ -3,7 +3,6 @@
     <v-data-iterator :items="posts" content-tag="v-layout" row wrap>
       <v-flex slot="item" slot-scope="props" sm12 sm6 md4 lg3 >
         <!-- actual data is iterating at this v-flex layer -->
-        {{props.item}}
         <postCard :post="props.item"/>
       </v-flex>
     </v-data-iterator>

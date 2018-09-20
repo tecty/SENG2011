@@ -74,7 +74,7 @@ export default new Vuex.Store({
         axios
           .post("bids/", data)
           .then(() => resolve())
-          .catch(() => reject());
+          .catch((err) => reject(err));
       });
     },
     addPosts({ commit }){

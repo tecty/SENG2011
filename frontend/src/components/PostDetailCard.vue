@@ -9,8 +9,8 @@
           
       </div>
       <v-card-text>
-        <span>Starting at: {{post.eventTime}}</span><br>
-        <span>Bid will closes in: {{post.bidClossingTime}}</span>
+        <span>Starting at: {{post.event.eventTime}}</span><br>
+        <span>Bid will closes in: {{post.event.bidClosingTime}}</span>
       </v-card-text>
     </v-card-title>
 

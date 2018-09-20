@@ -1,7 +1,7 @@
-FROM node:8-alpine
+FROM node:8
 
 # install simple http server for serving static content
-RUN npm install -g http-server
+RUN npm install -g @vue/cli-service
 
 # make the 'app' folder the current working directory
 WORKDIR /app

@@ -1,7 +1,7 @@
 FROM python:3
 
-ADD requirements.txt /usr/src/app
 WORKDIR /usr/src/app
+ADD requirements.txt .
 # install the pip requirements 
 RUN pip install -r requirements.txt
 

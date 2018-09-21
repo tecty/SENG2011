@@ -1,0 +1,43 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=AnApple123
+      - POSTGRES_USER=root
+    volumes: 
+      - partyWhipData:/var/lib/postgresql/data
+
+  pgAdmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+     - PGADMIN_DEFAULT_EMAIL=seng2011@local.com
+     - PGADMIN_DEFAULT_PASSWORD=seng2011
+    ports:
+     - 8081:80
+    depends_on:
+      - db
+
+  backend:
+    build: backend/
+    restart: always
+    ports: 
+      - 8000:8000
+    volumes: 
+      - ./backend/:/usr/src/app/
+    depends_on:
+      - db
+
+  frontend:
+    build: frontend/
+    restart: always
+    volumes:
+      - ./frontend/:/app
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+volumes: 
+  partyWhipData:

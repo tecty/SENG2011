@@ -1,5 +1,5 @@
 #!/bin/bash
-if (($# != 2))
+if (($# != 1))
 then
     echo "$0 <Service_Name>"
     exit 1

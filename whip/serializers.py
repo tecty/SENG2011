@@ -83,7 +83,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             "is_trusted",
         )
 
-    def update(self, validated_data):
+    def update(self, instance ,validated_data):
         # do the same things as create 
         # pop the foreign to create instance 
         profile_data = validated_data.pop("profile",{})
@@ -98,7 +98,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         # push back the location object 
         profile_data['location'] = location
         # create this user 
-        user = super(UserSerializer, self).update(validated_data)
+        user = super(UserSerializer, self).update(instance,validated_data)
 
         # user profile_data serializer to update 
         ProfileSerializer().update(user.profile,validated_data=profile_data)
@@ -248,6 +248,7 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
 
     message = serializers.CharField(write_only = True)
 
+    bidderReceivedPoints = serializers.IntegerField(read_only = True)
     class Meta:
         model = Bid
         fields = (
@@ -257,12 +258,41 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
             'msg',
             'message',
             'offer',
-            "state","bidderReceivedPoints"
+            "state",
+            "bidderReceivedPoints"
         )
+
+    def update(self, instance,validated_data):
+        # push the current user into the validate data 
+        validated_data['owner'] =  self.context['request'].user
+
+        # pop the message to create the message char 
+        msg =  validated_data.pop("message","")
+
+        # change the actual msage in the isntance 
+        instance.msg.msg = msg;
+
+        # and owner only can change the offer 
+        instance.offer = validated_data["offer"];
+
+        return instance
 
     def create(self, validated_data):
         # push the current user into the validate data 
         validated_data['owner'] =  self.context['request'].user
+        try:
+            # try to fetch bid with two key constrain 
+            bid = Bid.objects.get(
+                owner = validated_data["owner"], 
+                post = validated_data["post"]
+            )
+            if bid != None:
+                # I can fetch a bid of this post, 
+                # redirect to update this bid, rather than create a new bid 
+                return self.update(bid, validated_data)
+        except Exception as identifier:
+            #  do nothing just for mute the error 
+            pass
 
         # pop the message to create the message char 
         msg =  validated_data.pop('message',

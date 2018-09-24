@@ -181,6 +181,10 @@ class Bid(models.Model):
     # How much did bidder received 
     bidderReceivedPoints = models.IntegerField(default= 0 , choices = rateRange)
 
+    class Meta: 
+        # one post can only bid by one guy
+        unique_together = (("owner","post"),)
+
     # functions used to show the object's name in Django 
     def __unicode__(self):
         return "%s bids %s" % (self.bidder, self.offer)

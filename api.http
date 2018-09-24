@@ -1,4 +1,4 @@
-@auth = JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6InR0dCIsImV4cCI6MTUzNzM1MDM3MiwiZW1haWwiOiIifQ.xbElWFO12S0OzCtQi1zKVmjCEoK8UFtZ5s5QVWgJfwU
+@auth = JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6InR0dCIsImV4cCI6MTUzNzgyNjAwMSwiZW1haWwiOiIifQ.aNurVqzufA7wWIsA8-m9PYbi5NcwwxOIsVL1Ksl9liU
 @baseUrl = http://localhost:8000/api-v0/
 
 
@@ -104,4 +104,16 @@ Authorization: {{auth}}
     # the extra params ids 
     "extraParameter": [4, 21, 43],
     "message": "test post "
+}
+
+###
+# Bid a post 
+POST  {{baseUrl}}bids/ HTTP/1.1
+Content-Type: application/json
+Authorization: {{auth}}
+
+{
+    "post": 1,
+    "message": "hsjrestwyuij",
+    "offer": 323
 }

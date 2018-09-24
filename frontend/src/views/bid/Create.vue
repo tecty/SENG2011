@@ -1,11 +1,9 @@
 <template>
-  <v-layout>
+  <v-container>
     <v-flex xs12 sm6 offset-sm3>
       <!-- card  for the detail of the post -->
       <post-detail-card :post="post" />
       <v-card>
-
-
         <!-- cards of bids -->
         <v-card>
           <v-container fluid grid-list-lg>
@@ -22,11 +20,9 @@
             <v-btn type="submit" color="primary" @click="submit">Bid</v-btn>
           </form>
         </v-card>
-
       </v-card>
     </v-flex>
-  </v-layout>
-
+  </v-container>
 </template>
 
 <script>

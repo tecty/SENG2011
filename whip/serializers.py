@@ -227,7 +227,6 @@ class EventSerializer(serializers.ModelSerializer):
         return post 
 
 
-
 class ParameterSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Parameter

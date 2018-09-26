@@ -17,7 +17,8 @@ export default new Vuex.Store({
     api_state: "",
     token: getToken(),
     error: "",
-    data: ""
+    data: "",
+    posts: []
   },
   mutations: {
     API_ERROR: (state, error_type, error) => {
@@ -30,6 +31,10 @@ export default new Vuex.Store({
     },
     REMOVE_TOKEN: state => {
       state.token = "";
+    },
+    GET_POSTS: (state, posts) => {
+      state.posts = posts;
+
     }
   },
   actions: {
@@ -47,6 +52,7 @@ export default new Vuex.Store({
             axios.defaults.headers.common["Authorization"] = state.token;
 
             // success full do the request
+            
             resolve();
           })
           .catch(err => {
@@ -67,9 +73,27 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         axios
           .post("bids/", data)
-          .then(() => resolve())
-          .catch(() => reject());
+          .then(res => resolve(res))
+          .catch(err => reject(err));
       });
+    },
+    addPosts({ commit }){
+      return new Promise((resolve,reject) => {
+        axios
+          .get("posts/")
+          .then(response => {
+            // JSON responses are automatically parsed.
+            console.log(response);
+            console.log(response.data);
+            commit("GET_POSTS", response.data);
+            resolve();
+          })
+          .catch(error => {
+            console.log(error);
+            console.log(error.response);
+            reject();
+          });
+      })
     }
   }
 });

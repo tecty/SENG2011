@@ -6,7 +6,11 @@
         <postCard :post="props.item"/>
       </v-flex>
     </v-data-iterator>
+      <v-btn fixed bottom right fab dark color="red" to="/post/create">
+      <v-icon dark>add</v-icon>
+    </v-btn>
   </v-container>
+  
 </template>
 
 
@@ -14,23 +18,10 @@
 import axios from "axios";
 import postCard from "@/components/post/Card";
 export default {
-  data() {
-    return {
-      posts: []
-    };
-  },
-  mounted() {
-    axios
-      .get("posts/")
-      .then(response => {
-        // JSON responses are automatically parsed.
-        console.log(response);
-        this.posts = response.data;
-      })
-      .catch(error => {
-        console.log(error);
-        console.log(error.response);
-      });
+  computed: {
+    posts() {
+      return this.$store.state.posts
+    }
   },
   components: {
     postCard

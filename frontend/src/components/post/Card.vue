@@ -1,5 +1,5 @@
 <template>
-  <v-card to="post/{{post.id}}">
+  <v-card :to="{ name: 'PostDetail', params: { postId: post.id }}">
     <v-card-title primary-title>
       <h4>{{post.title}} of {{post.event.title}}</h4>
     </v-card-title>

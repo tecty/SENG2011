@@ -247,6 +247,8 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
 
     message = serializers.CharField(write_only = True)
 
+    rateOfBidder = serializers.FloatField(read_only = True)
+
     bidderReceivedPoints = serializers.IntegerField(read_only = True)
     class Meta:
         model = Bid
@@ -258,7 +260,8 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
             'message',
             'offer',
             "state",
-            "bidderReceivedPoints"
+            "bidderReceivedPoints",
+            "rateOfBidder"
         )
 
     def update(self, instance,validated_data):

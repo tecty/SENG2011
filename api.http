@@ -1,4 +1,4 @@
-@auth = JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6InR0dCIsImV4cCI6MTUzNzgyNjAwMSwiZW1haWwiOiIifQ.aNurVqzufA7wWIsA8-m9PYbi5NcwwxOIsVL1Ksl9liU
+@auth = JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InR0dCIsImV4cCI6MTUzODU1OTc4MSwiZW1haWwiOiIifQ.gIDsfyMLvinIqxn-HCAI-ZxXYY6laiWpdeDMuwtD2Yo
 @baseUrl = http://localhost:8000/api-v0/
 
 

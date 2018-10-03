@@ -187,9 +187,26 @@ class Bid(models.Model):
 
     # functions used to show the object's name in Django 
     def __unicode__(self):
-        return "%s bids %s" % (self.bidder, self.offer)
+        return "%s bids %s" % (self.owner, self.offer)
     def __str__(self):
         return self.__unicode__()
+
+    @property
+    def rateOfBidder(self):
+        bidset = Bid.objects.filter(owner = self.owner).exclude(id = self.id)
+
+        # filter out all the needed parameter's ids 
+        params = self.post.extraParameter.all().values_list('id',flat= True)
+
+        total = 0;
+        # prevent divide 0 error 
+        count = 1;
+        for bid in bidset:
+            score = self.bidderReceivedPoints
+            count += self.post.extraParameter\
+                .filter(id__in = params).all().count()
+        return total/count;
+
 
     def rate(self, rate_to_poster):
         if self.state != "FN":

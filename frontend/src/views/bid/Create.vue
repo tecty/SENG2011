@@ -12,7 +12,7 @@
         </v-card>
         <!-- card for making post -->
         <v-card>
-          <form @submit.prevent="submit">
+          <form @submit.prevent>
             <v-text-field v-validate="'required|decimal:3'" data-vv-name="price" v-model="price" label="Price" :error-messages="errors.collect('price')"
               required></v-text-field>
             <v-textarea v-model="message" v-validate="'required'" data-vv-name="message" label="Message" hint="Write Message to poster in your bid"
@@ -59,8 +59,7 @@
             console.log(this.$route.params.postId);
             this.placeBid(data)
               .then((response) => {
-
-                this.$router.next("/");
+                console.log(response);
               })
               .catch((err) => {
                 this.error = "import is not correct";

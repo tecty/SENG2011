@@ -7,7 +7,7 @@
         <!-- cards of bids -->
         <v-card>
           <v-container fluid grid-list-lg>
-            <bid-card v-for="bid in post.bid_set" :key="bid.id" :bid="bid"></bid-card>
+            <bid-card v-for="bid in post.bid_set" :key="bid.id" :bid="bid" :post="post"></bid-card>
           </v-container>
         </v-card>
         <!-- card for making post -->

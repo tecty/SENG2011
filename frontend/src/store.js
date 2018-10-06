@@ -34,7 +34,6 @@ export default new Vuex.Store({
     },
     GET_POSTS: (state, posts) => {
       state.posts = posts;
-
     }
   },
   actions: {
@@ -48,6 +47,7 @@ export default new Vuex.Store({
             commit("ADD_TOKEN", "JWT " + res.data.token);
             // store this token to local storage
             localStorage.setItem("token", state.token);
+            localStorage.setItem("username", credential.username);
             // use this token to do axios request
             axios.defaults.headers.common["Authorization"] = state.token;
 
@@ -86,6 +86,23 @@ export default new Vuex.Store({
             console.log(response);
             console.log(response.data);
             commit("GET_POSTS", response.data);
+            resolve();
+          })
+          .catch(error => {
+            console.log(error);
+            console.log(error.response);
+            reject();
+          });
+      })
+    },
+    updatePost(context, id, data){
+      return new Promise((resolve,reject) => {
+        axios
+        .put("posts/" + id, data)
+          .then(response => {
+            // JSON responses are automatically parsed.
+            console.log(response);
+            console.log(response.data);
             resolve();
           })
           .catch(error => {

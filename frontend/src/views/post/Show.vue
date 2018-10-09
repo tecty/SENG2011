@@ -15,14 +15,17 @@
 
 
 <script>
+import { mapState } from "vuex";
 import axios from "axios";
 import postCard from "@/components/post/Card";
 export default {
-  computed: {
-    posts() {
-      return this.$store.state.posts
-    }
-  },
+  computed: mapState({
+    // arrow functions can make the code very succinct!
+    posts: state => state.posts,
+
+    // passing the string value 'posts' is same as `state => state.count`
+    postsAlias: "posts"
+  }),
   components: {
     postCard
   }

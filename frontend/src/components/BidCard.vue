@@ -9,8 +9,11 @@
           <span> offer ${{bid.offer}}</span>
         </v-card-title>
         <v-card-actions>
-          <div v-if="post.event.owner.username == currUser">
+          <div v-if="post.event.owner.username == currUser && post.state == 'BD'">
             <v-btn flat dark @click="chooseBid()">Choose</v-btn>
+          </div>
+          <div v-if="bid.owner.username == currUser">
+            <v-btn flat dark @click="deleteBid()">Delete</v-btn>
           </div>
           <v-spacer></v-spacer>
           <v-btn flat color="orange">Comment</v-btn>
@@ -23,28 +26,41 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-  export default {
-    // the data of this post
-    props: ["bid", "post"],
-    data() {
-      return {
-        currUser: localStorage.getItem("username")
-      };
+export default {
+  // the data of this post
+  props: ["bid", "post"],
+  data() {
+    return {
+      currUser: localStorage.getItem("username")
+    };
+  },
+  methods: {
+    chooseBid() {
+      axios
+        .post("posts/" + this.post.id + "/choose/", { id: this.bid.id })
+        .then(response => {
+          // JSON responses are automatically parsed.
+          console.log(response);
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+          console.log(error.response);
+        });
     },
-    methods: {
-      chooseBid() {
-        axios
-        .post("posts/" + this.post.id + "/choose/", {id: this.bid.id})
-          .then(response => {
-            // JSON responses are automatically parsed.
-            console.log(response);
-            console.log(response.data);
-          })
-          .catch(error => {
-            console.log(error);
-            console.log(error.response);
-          });
-      }
-    },
-  };
+    deleteBid() {
+      axios
+        .delete("bids/" + this.bid.id + "/")
+        .then(response => {
+          // JSON responses are automatically parsed.
+          console.log(response);
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+          console.log(error.response);
+        });
+    }
+  }
+};
 </script>

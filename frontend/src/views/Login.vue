@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     // map the login action from vuex
-    ...mapActions(["loginByCredential"]),
+    ...mapActions(["loginByCredential", "addPosts"]),
     login() {
       // pass the user login credential
       this.loginByCredential({
@@ -47,7 +47,7 @@ export default {
       })
         .then(() => {
           // console.log("imhere")
-
+          this.addPosts();
           if (this.$route.query.redirect) {
             // redirect request from another view
             this.$router.push(this.$route.query.redirect);

@@ -70,15 +70,17 @@ export default {
       this.$validator.validateAll().then(valid => {
         if (valid) {
           var data = {
-            post: this.$route.params.postId,
+            post: this.$route.params.postId - 1,
             offer: this.price,
             message: this.message
           };
           console.log(data);
-          console.log(this.$route.params.postId);
+          console.log(data.post);
           this.placeBid(data)
             .then(response => {
-              this.addPosts();
+              this.addPosts().then(result => {
+                console.log(result);
+              });
               console.log(response);
             })
             .catch(err => {

@@ -8,6 +8,10 @@
           <br><v-spacer></v-spacer>
           <span> offer ${{bid.offer}}</span>
         </v-card-title>
+       <v-card-text>
+
+        <div>message : {{bid.msg.msg}}</div>
+       </v-card-text>
         <v-card-actions>
           <div v-if="post.event.owner.username == currUser && post.state == 'BD'">
             <v-btn flat dark @click="chooseBid()">Choose</v-btn>

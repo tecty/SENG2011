@@ -37,7 +37,7 @@ export default new Vuex.Store({
     REMOVE_TOKEN: state => {
       state.token = "";
     },
-    GET_POSTS: (state, posts) => {
+    SET_POSTS: (state, posts) => {
       state.posts = posts;
     }
   },
@@ -78,7 +78,10 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         axios
           .post("bids/", data)
-          .then(res => resolve(res))
+          .then(res => {
+            console.log("bid success");
+            resolve(res);
+          })
           .catch(err => reject(err));
       });
     },
@@ -90,8 +93,8 @@ export default new Vuex.Store({
             // JSON responses are automatically parsed.
             console.log(response);
             console.log(response.data);
-            commit("GET_POSTS", response.data);
-            resolve();
+            commit("SET_POSTS", response.data);
+            resolve(this.state.posts);
           })
           .catch(error => {
             console.log(error);

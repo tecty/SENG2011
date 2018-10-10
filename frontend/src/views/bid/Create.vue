@@ -60,8 +60,11 @@ export default {
   //     post: "currPost"
   //   })
   // },
+  // computed: {
   //   post: function() {
-  //     return this.$store.state.posts[this.$route.params.postId - 1];
+  //     return this.$store.state.posts.find(
+  //       post => post.id == this.$route.params.postId - 1
+  //     );
   //   }
   // },
   methods: {
@@ -81,7 +84,6 @@ export default {
               this.addPosts().then(result => {
                 console.log(result);
               });
-              console.log(response);
             })
             .catch(err => {
               this.error = "import is not correct";

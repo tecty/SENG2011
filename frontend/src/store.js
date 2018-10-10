@@ -20,6 +20,11 @@ export default new Vuex.Store({
     data: "",
     posts: []
   },
+  getters: {
+    currPost: state => {
+      return state.posts.find(post => post.id == this.$route.params.postId - 1);
+    }
+  },
   mutations: {
     API_ERROR: (state, error_type, error) => {
       // claim an error
@@ -32,9 +37,8 @@ export default new Vuex.Store({
     REMOVE_TOKEN: state => {
       state.token = "";
     },
-    GET_POSTS: (state, posts) => {
+    SET_POSTS: (state, posts) => {
       state.posts = posts;
-
     }
   },
   actions: {
@@ -48,11 +52,12 @@ export default new Vuex.Store({
             commit("ADD_TOKEN", "JWT " + res.data.token);
             // store this token to local storage
             localStorage.setItem("token", state.token);
+            localStorage.setItem("username", credential.username);
             // use this token to do axios request
             axios.defaults.headers.common["Authorization"] = state.token;
 
             // success full do the request
-            
+
             resolve();
           })
           .catch(err => {
@@ -73,27 +78,47 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         axios
           .post("bids/", data)
-          .then(res => resolve(res))
+          .then(res => {
+            console.log("bid success");
+            resolve(res);
+          })
           .catch(err => reject(err));
       });
     },
-    addPosts({ commit }){
-      return new Promise((resolve,reject) => {
+    addPosts({ commit }) {
+      return new Promise((resolve, reject) => {
         axios
           .get("posts/")
           .then(response => {
             // JSON responses are automatically parsed.
             console.log(response);
             console.log(response.data);
-            commit("GET_POSTS", response.data);
-            resolve();
+            commit("SET_POSTS", response.data);
+            resolve(this.state.posts);
           })
           .catch(error => {
             console.log(error);
             console.log(error.response);
             reject();
           });
-      })
+      });
     }
+    // updatePost(context, id, data) {
+    //   return new Promise((resolve, reject) => {
+    //     axios
+    //       .put("posts/" + id, data)
+    //       .then(response => {
+    //         // JSON responses are automatically parsed.
+    //         console.log(response);
+    //         console.log(response.data);
+    //         resolve();
+    //       })
+    //       .catch(error => {
+    //         console.log(error);
+    //         console.log(error.response);
+    //         reject();
+    //       });
+    //   });
+    // }
   }
 });

@@ -76,6 +76,7 @@
 
 <script>
 import axios from "axios";
+import { mapActions, mapState } from "vuex";
 export default {
   data() {
     const defaultForm = Object.freeze({
@@ -121,7 +122,8 @@ export default {
         .then(response => {
           // JSON responses are automatically parsed.
           console.log(response);
-          this.snackbar = true;
+          this.addPost();
+          this.this.snackbar = true;
           this.snackbarColor = "success";
           this.snackText = "Post Successful";
           this.posts = response.data;
@@ -148,7 +150,7 @@ export default {
           }
           console.log(error.config);
         });
-      // this.resetForm()
+      this.resetForm();
     }
   }
 };

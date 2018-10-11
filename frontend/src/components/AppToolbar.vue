@@ -44,6 +44,11 @@ export default {
         },
         {
           icon: "restaurant",
+          title: "Event",
+          href: "/event"
+        },
+        {
+          icon: "restaurant",
           title: "Post",
           href: "/post"
         }

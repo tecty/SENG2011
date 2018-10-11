@@ -3,6 +3,7 @@ import Router from "vue-router";
 import AppHome from "@/views/AppHome.vue";
 import { isLogin } from "@/utils/auth";
 import post from "./post";
+import event from "./event";
 import bid from "./bid";
 
 Vue.use(Router);
@@ -53,6 +54,7 @@ var routeLists = [
 ];
 
 // acquire the routes sotre in seperate files
+routeLists.push(...event);
 routeLists.push(...post);
 routeLists.push(...bid);
 

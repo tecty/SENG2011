@@ -20,21 +20,34 @@ class BidderMarkTest(TestCase):
       self.user003,
       self.user004,
     ]
-
   def test_0_bidds(self):
+    theLocation = Location.objects.get_or_create(
+      address= "hell place",
+      lat = 10.15,
+      lng = 10.15,
+    )[0]
+    theMessage = Message.objects.create(
+      msg = "dummy message",
+      owner = self.user001
+    )
+
     theEvent = Event.objects.create(
       title = "sth",
-      owner = self.user_list[0],
+      owner = self.user001,
       eventTime =timezone.now(),
-      bidClosingTime = timezone.now()
+      bidClosingTime = timezone.now(),
+      location = theLocation
     )
     thePost = Post.objects.create(
       event = theEvent,
       title = "missing",
       peopleCount = 10,
-      budget = 100
+      budget = 100,
+      msg = theMessage
     )
-    thePost.bid_set.create(
+    bid001 = thePost.bid_set.create(
       owner = self.user_list[1],
-      offer = 100
+      offer = 100,
+      msg = theMessage
     )
+    self.assertEqual(bid001.rateOfBidder,0)

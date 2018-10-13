@@ -91,10 +91,10 @@ ext install humao.rest-client
 
 URL | Detail
 :--- | :---
-http://localhost:8000/ | Index of party whip's  
-http://localhost:8080/ | Home Page (Backend)
-http://localhost:8000/admin | Django admin
-http://localhost:8081/ | pgAdmin: GUI of PostgreSQL 
+[http://localhost:8000/](http://localhost:8000/) | Index of party whip's  
+[http://localhost:8080/](http://localhost:8080/) | Home Page (Backend)
+[http://localhost:8000/admin](http://localhost:8000/admin) | Django admin
+[http://localhost:8081/](http://localhost:8081/) | pgAdmin: GUI of PostgreSQL 
 
 ## Some Helpful Commands (Deprecated)
 

@@ -61,6 +61,14 @@ export default new Vuex.Store({
           });
       });
     },
+    registerByUser({ dispatch }, user) {
+      return axios.post("users/", user).then(() => {
+        dispatch("loginByCredential", {
+          username: user.username,
+          password: user.password
+        });
+      });
+    },
     logout({ commit }) {
       // remove the record in local storage
       localStorage.removeItem("token");
@@ -82,14 +90,11 @@ export default new Vuex.Store({
           .get("posts/")
           .then(response => {
             // JSON responses are automatically parsed.
-            // console.log(response);
-            // console.log(response.data);
             commit("GET_POSTS", response.data);
             resolve();
           })
           .catch(error => {
-            // console.log(error);
-            // console.log(error.response);
+            console.log(error);
             reject();
           });
       });

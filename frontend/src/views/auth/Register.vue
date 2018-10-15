@@ -1,8 +1,8 @@
 <template>
   <v-layout row ma-3>
     <v-flex md10 offset-md1 xs12 offset-xs0 lg6 offset-lg3>
-      <h1>Login</h1>
-      <v-form v-model="valid" @submit.prevent="login">
+      <h1>Sign Up</h1>
+      <v-form v-model="valid" @submit.prevent="register">
         <v-text-field
           v-model="username" label="Username" required autofocus 
           autocomplete
@@ -19,6 +19,11 @@
           autocomplete @click:append="show = !show" 
           required 
         />
+        <v-text-field 
+          v-model="tel" type="text" label="Telephone" 
+          autocomplete 
+          required 
+        />
         <addr 
           @confirmLocation="
             loc => {
@@ -28,6 +33,7 @@
             }
           "
         ></addr>
+        <p></p>
         <p>{{error}}</p>
         <v-btn type="submit" >Login</v-btn>
       </v-form>
@@ -52,32 +58,35 @@ export default {
       location:{},
       // if show == true, show the password
       show: false,
+      tel:"",
       error: ""
     };
   },
   methods: {
     // map the login action from vuex
-    ...mapActions(["loginByCredential"]),
-    login() {
-      // pass the user login credential
-      this.loginByCredential({
+    ...mapActions(["registerByUser"]),
+    register() {
+      this.registerByUser({
         username: this.username,
-        password: this.password
+        password: this.password,
+        password_again: this.passwordAgain,
+        location: this.location,
+        tel: this.tel
       })
-        .then(() => {
-          // console.log("imhere")
-
-          if (this.$route.query.redirect) {
-            // redirect request from another view
-            this.$router.push(this.$route.query.redirect);
-          } else {
-            // go to previous page, if it's user direct to login
-            this.$router.go(-1);
-          }
-        })
-        .catch(() => {
-          this.error = "Wrong username or password.";
-        });
+      .then(() => {
+        // go to main page 
+        if (this.$route.query.redirect) {
+          // redirect request from another view
+          this.$router.push(this.$route.query.redirect);
+        } else {
+          // go to previous page, if it's user direct to login
+          this.$router.go(-2);
+        }
+      })
+      .catch(err=>{
+        console.log(err); 
+        this.error = err.response.data 
+      });
     }
   },
   components: {

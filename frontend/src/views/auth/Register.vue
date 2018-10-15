@@ -19,6 +19,15 @@
           autocomplete @click:append="show = !show" 
           required 
         />
+        <addr 
+          @confirmLocation="
+            loc => {
+              // assign the confirmed location to 
+              // this property 
+              location = loc;
+            }
+          "
+        ></addr>
         <p>{{error}}</p>
         <v-btn type="submit" >Login</v-btn>
       </v-form>
@@ -40,6 +49,7 @@ export default {
       username: "",
       password: "",
       passwordAgain: "",
+      location:{},
       // if show == true, show the password
       show: false,
       error: ""
@@ -69,6 +79,9 @@ export default {
           this.error = "Wrong username or password.";
         });
     }
+  },
+  components: {
+    addr
   }
 };
 </script>

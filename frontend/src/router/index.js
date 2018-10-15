@@ -35,7 +35,30 @@ var routeLists = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */
-      "@/views/Login.vue"),
+      "@/views/auth/Login.vue"),
+    meta: {
+      // key to let the view can be view from guest
+      guest: true
+    },
+    beforeEnter: (to, from, next) => {
+      // if user is currently logged in, prevent him from hitting this page.
+      if (isLogin()) {
+        next("/");
+      } else {
+        // go to next
+        next();
+      }
+    }
+  },
+  {
+    path: "/register",
+    name: "register",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */
+      "@/views/auth/Register.vue"),
     meta: {
       // key to let the view can be view from guest
       guest: true

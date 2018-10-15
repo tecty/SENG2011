@@ -34,7 +34,6 @@ export default new Vuex.Store({
     },
     GET_POSTS: (state, posts) => {
       state.posts = posts;
-
     }
   },
   actions: {
@@ -52,7 +51,7 @@ export default new Vuex.Store({
             axios.defaults.headers.common["Authorization"] = state.token;
 
             // success full do the request
-            
+
             resolve();
           })
           .catch(err => {
@@ -77,23 +76,23 @@ export default new Vuex.Store({
           .catch(err => reject(err));
       });
     },
-    addPosts({ commit }){
-      return new Promise((resolve,reject) => {
+    addPosts({ commit }) {
+      return new Promise((resolve, reject) => {
         axios
           .get("posts/")
           .then(response => {
             // JSON responses are automatically parsed.
-            console.log(response);
-            console.log(response.data);
+            // console.log(response);
+            // console.log(response.data);
             commit("GET_POSTS", response.data);
             resolve();
           })
           .catch(error => {
-            console.log(error);
-            console.log(error.response);
+            // console.log(error);
+            // console.log(error.response);
             reject();
           });
-      })
+      });
     }
   }
 });

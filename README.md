@@ -36,7 +36,7 @@ $ git push --set-upstream origin YOUR_BRANCH_NAME
 
 ## Docker Environment
 
-First, we need to install: 
+First, we need to install:
 [Docker Community Edition](https://docs.docker.com/install/#releases)
 and
 [Docker Compose](https://docs.docker.com/compose/install/#install-compose)  
@@ -45,7 +45,7 @@ That's all we need. Then you can type:
 
 ```bash
 # startup the app, use (Ctrl +C) to exit
-$ sudo docker-compose up 
+$ sudo docker-compose up
 ```
 
 Or, you don't want that much information, you can:
@@ -54,7 +54,7 @@ Or, you don't want that much information, you can:
 # Filter out the message of specified service
 $ sudo docker-compose up | egrep "frontend"
 
-# Or: detach the message when you up the app 
+# Or: detach the message when you up the app
 $ sudo docker-compose up -t
 # Get the logged messages
 $ sudo docker-compose logs
@@ -94,7 +94,7 @@ URL | Detail
 [http://localhost:8000/](http://localhost:8000/) | Index of party whip's  
 [http://localhost:8080/](http://localhost:8080/) | Home Page (Backend)
 [http://localhost:8000/admin](http://localhost:8000/admin) | Django admin
-[http://localhost:8081/](http://localhost:8081/) | pgAdmin: GUI of PostgreSQL 
+[http://localhost:8081/](http://localhost:8081/) | pgAdmin: GUI of PostgreSQL
 
 ## Some Helpful Commands (Deprecated)
 

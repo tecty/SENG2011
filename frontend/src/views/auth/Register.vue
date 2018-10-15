@@ -13,6 +13,12 @@
           autocomplete @click:append="show = !show" 
           required 
         />
+        <v-text-field 
+          v-model="passwordAgain" :type="show? 'text':'password'" label="Password Again" 
+          :append-icon= "show ? 'visibility' : 'visibility_off'"
+          autocomplete @click:append="show = !show" 
+          required 
+        />
         <p>{{error}}</p>
         <v-btn type="submit" >Login</v-btn>
       </v-form>
@@ -22,6 +28,8 @@
 
 <script>
 import { mapActions } from "vuex";
+// import postCard from "@/components/helper/addressInput";
+import addr from "@/components/helper/addressInput.vue";
 
 export default {
   data() {
@@ -31,6 +39,7 @@ export default {
       // input of username and password
       username: "",
       password: "",
+      passwordAgain: "",
       // if show == true, show the password
       show: false,
       error: ""

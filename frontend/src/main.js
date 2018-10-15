@@ -35,6 +35,6 @@ new Vue({
   store,
   render: h => h(App),
   created() {
-    this.$store.dispatch('addPosts');
+    this.$store.dispatch("addPosts");
   }
 }).$mount("#app");

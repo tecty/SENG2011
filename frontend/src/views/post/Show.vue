@@ -21,6 +21,10 @@ export default {
       return this.$store.state.posts;
     }
   },
+  mounted() {
+    // fetch the latest posts 
+    this.$store.dispatch("refreshAll");
+  },
   components: {
     postCard
   }

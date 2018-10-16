@@ -15,7 +15,8 @@ export default new Vuex.Store({
     username: getUsername(),
     error: "",
     data: "",
-    posts: []
+    posts: [],
+    events: []
   },
   mutations: {
     API_ERROR: (state, error_type, error) => {
@@ -43,8 +44,11 @@ export default new Vuex.Store({
       // remove the axios record
       axios.defaults.headers.common["Authorization"] = null;
     },
-    GET_POSTS: (state, posts) => {
+    SET_POSTS: (state, posts) => {
       state.posts = posts;
+    },
+    SET_EVENTS: (state, events) => {
+      state.events = events;
     }
   },
   actions: {
@@ -78,11 +82,34 @@ export default new Vuex.Store({
           .catch(err => reject(err));
       });
     },
-    async addPosts({ commit }) {
+    async refreshPosts({ commit }) {
       const res = await axios.get("posts/");
       // JSON responses are automatically parsed.
-      commit("GET_POSTS", res.data);
+      commit("SET_POSTS", res.data);
       return res;
+    },
+    async refreshEvents({ commit }) {
+      const res = await axios.get("events/");
+      commit("SET_EVENTS", res.data);
+      return res;
+    },
+    async refreshAll({ dispatch }) {
+      return Promise.all([
+        dispatch("refreshEvents"),
+        dispatch("refreshPosts")
+      ]).then(res => {
+        dispatch("wireEvents");
+        return res;
+      });
+    },
+    async wireEvents({ state, commit }) {
+      let posts = state.posts;
+      posts.forEach(p => {
+        // wire all the posts with it's event
+        p.event = state.events.find(e => e.id == p.event);
+      });
+      // commit these wired post into store
+      commit("SET_POSTS", posts);
     }
   }
 });

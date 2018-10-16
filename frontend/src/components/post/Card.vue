@@ -5,24 +5,7 @@
     </v-card-title>
     <v-divider />
     <v-list >
-      <v-list-tile>
-        <v-list-tile-content>Issuer:</v-list-tile-content>
-        <v-list-tile-content class="align-end">
-          {{ post.event.owner.username }}
-        </v-list-tile-content>
-      </v-list-tile>
-      <v-list-tile>
-        <v-list-tile-content>Event Time:</v-list-tile-content>
-        <v-list-tile-content class="align-end">
-          {{ post.event.eventTime }}
-        </v-list-tile-content>
-      </v-list-tile>
-      <v-list-tile>
-        <v-list-tile-content>Bid End:</v-list-tile-content>
-        <v-list-tile-content class="align-end">
-          {{ post.event.bidClosingTime }}
-        </v-list-tile-content>
-      </v-list-tile>
+
       <v-list-tile>
         <v-list-tile-content>People Occuation:</v-list-tile-content>
         <v-list-tile-content class="align-end">

@@ -9,10 +9,6 @@ import { getToken } from "./utils/auth";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  // modules:{
-  //   api,
-  //   auth,
-  // },
   state: {
     api_state: "",
     token: getToken(),
@@ -37,36 +33,24 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    loginByCredential({ commit, state }, credential) {
-      return new Promise((resolve, reject) => {
-        axios
-          .post("api-token-auth/", credential)
-          .then(res => {
-            // add this token to store
-            // modify the auth type
-            commit("ADD_TOKEN", "JWT " + res.data.token);
-            // store this token to local storage
-            localStorage.setItem("token", state.token);
-            // use this token to do axios request
-            axios.defaults.headers.common["Authorization"] = state.token;
-
-            // success full do the request
-
-            resolve();
-          })
-          .catch(err => {
-            commit("API_ERROR", LOGIN_FAIL, err);
-            // reject by the server
-            reject(err);
-          });
-      });
+    async loginByCredential({ commit, state }, credential) {
+      const res = await axios.post("api-token-auth/", credential);
+      // add this token to store
+      // modify the auth type
+      commit("ADD_TOKEN", "JWT " + res.data.token);
+      // store this token to local storage
+      localStorage.setItem("token", state.token);
+      // use this token to do axios request
+      axios.defaults.headers.common["Authorization"] = state.token;
+      // success full do the request
+      // return back this promise
+      return res;
     },
-    registerByUser({ dispatch }, user) {
-      return axios.post("users/", user).then(() => {
-        dispatch("loginByCredential", {
-          username: user.username,
-          password: user.password
-        });
+    async registerByUser({ dispatch }, user) {
+      await axios.post("users/", user);
+      dispatch("loginByCredential", {
+        username: user.username,
+        password: user.password
       });
     },
     logout({ commit }) {
@@ -85,18 +69,10 @@ export default new Vuex.Store({
       });
     },
     addPosts({ commit }) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get("posts/")
-          .then(response => {
-            // JSON responses are automatically parsed.
-            commit("GET_POSTS", response.data);
-            resolve();
-          })
-          .catch(error => {
-            console.log(error);
-            reject();
-          });
+      return axios.get("posts/").then(res => {
+        // JSON responses are automatically parsed.
+        commit("GET_POSTS", res.data);
+        return res;
       });
     }
   }

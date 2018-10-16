@@ -4,7 +4,7 @@ import axios from "axios";
 // import api from "./store/api"
 // import auth from "./store/auth"
 import { getToken, getUsername } from "./utils/auth";
-
+import moment from "moment";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -96,6 +96,10 @@ export default new Vuex.Store({
     },
     async refreshEvents({ commit }) {
       const res = await axios.get("events/");
+      res.data.forEach(e => {
+        e.eventTime = moment(e.eventTime).format("YYYY MMM DD h:mm");
+        e.bidClosingTime = moment(e.bidClosingTime).format("YYYY MMM DD h:mm");
+      });
       commit("SET_EVENTS", res.data);
       return res;
     },

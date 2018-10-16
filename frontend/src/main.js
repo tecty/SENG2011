@@ -8,7 +8,7 @@ import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 import { isLogin } from "./utils/auth";
-
+import moment from "moment";
 Vue.config.productionTip = false;
 
 // router guard
@@ -33,6 +33,10 @@ router.beforeEach((to, from, next) => {
 new Vue({
   router,
   store,
-  render: h => h(App)
-
+  render: h => h(App),
+  filters: {
+    moment: function(date) {
+      return moment(date).format("MMMM Do YYYY, h:mm:ss a");
+    }
+  }
 }).$mount("#app");

@@ -15,7 +15,22 @@
 import AppToolbar from "./components/AppToolbar.vue";
 export default {
   name: "App",
-  components: { AppToolbar }
+  components: { AppToolbar },
+  filters: {
+    stateToText: function (s) {
+      switch (s) {
+        case 'BD': return 'Bidding';break;
+        case 'DL': return 'Deal'; break;
+        case 'FN': return 'Finished'; break;
+        case 'CL': return 'Canceled'; break;
+        case 'SD': return 'Selected'; break;
+        case 'US': return 'Unselected'; break;
+        default:
+          return 'Unknown'+ s;
+          break;
+      }
+    }
+  }
 };
 </script>
 

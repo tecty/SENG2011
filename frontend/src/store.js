@@ -121,6 +121,9 @@ export default new Vuex.Store({
       });
       // commit these wired post into store
       commit("SET_POSTS", posts);
+    },
+    async getPostById({ state }, id) {
+      return state.posts.find(el => el.id == id);
     }
   }
 });

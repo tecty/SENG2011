@@ -16,7 +16,8 @@ export default new Vuex.Store({
     error: "",
     data: "",
     posts: [],
-    events: []
+    events: [],
+    extraParameter: []
   },
   mutations: {
     API_ERROR: (state, error_type, error) => {
@@ -55,7 +56,8 @@ export default new Vuex.Store({
     },
     SET_EVENTS: (state, events) => {
       state.events = events;
-    }
+    },
+    SET_EXTRA_PARAMS: (state, ep) => (state.extraParameter = ep)
   },
   actions: {
     async loginByCredential({ commit, state }, credential) {
@@ -124,6 +126,14 @@ export default new Vuex.Store({
     },
     async getPostById({ state }, id) {
       return state.posts.find(el => el.id == id);
+    },
+    async requireExtraParams({ state, commit }) {
+      if (state.extraParameter.length == 0) {
+        let ret = await axios.get("http://localhost:8000/api-v0/Parameters/");
+        commit("SET_EXTRA_PARAMS", ret.data);
+        return ret;
+      }
+      return null;
     }
   }
 });

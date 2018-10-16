@@ -29,14 +29,28 @@ router.beforeEach((to, from, next) => {
   // else go to next route :
   next();
 });
+// Vue.filters("stateToText", );
 
+Vue.filter("stateToText", s => {
+  switch (s) {
+    case "BD":
+      return "Bidding";
+    case "DL":
+      return "Deal";
+    case "FN":
+      return "Finished";
+    case "CL":
+      return "Canceled";
+    case "SD":
+      return "Selected";
+    case "US":
+      return "Unselected";
+    default:
+      return "Unknown" + s;
+  }
+});
 new Vue({
   router,
   store,
-  render: h => h(App),
-  filters: {
-    moment: function(date) {
-      return moment(date).format("MMMM Do YYYY, h:mm:ss a");
-    }
-  }
+  render: h => h(App)
 }).$mount("#app");

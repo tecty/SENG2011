@@ -6,8 +6,7 @@ ensures multiset(a[l..m]) + multiset(a[m..u+1]) == multiset(a[l..u+1])
 }
 
 method MergeSort(a1:array<int>) returns (a:array<int>)
-  requires a1 != null && a1.Length > 0;
-  ensures a != null;
+  requires a1.Length > 0;
   ensures forall k:: forall l:: 0 <= k < l < a.Length ==> a[k] <= a[l];
 {
   a := mergesort(a1, 0, a1.Length-1);
@@ -15,10 +14,9 @@ method MergeSort(a1:array<int>) returns (a:array<int>)
 }
 
 method mergesort(a1:array<int>, l:int, u:int) returns (a:array<int>)
-  requires a1 != null && a1.Length > 0;
+  requires a1.Length > 0;
   requires 0 <= l <= u < a1.Length;
  
-  ensures a != null;
   ensures a.Length == a1.Length;
   ensures forall q:: forall r:: l <= q < r <= u ==> a[q] <= a[r];
   ensures forall q:: (0 <= q < l || u < q < a.Length) ==> a[q] == a1[q];
@@ -40,7 +38,7 @@ method mergesort(a1:array<int>, l:int, u:int) returns (a:array<int>)
     a[o] := a1[o];
     o := o + 1;
   }
-
+  assert forall k:: 0 <= k < a1.Length ==> a[k] == a1[k];
   if (l >= u)
   {
     return;

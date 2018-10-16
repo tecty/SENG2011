@@ -97,7 +97,7 @@ Authorization: {{auth}}
 
 {
     # parent event
-    "eventId": 1,
+    "event": 1,
     "title": "dinner",
     "peopleCount": 12,
     "budget": 12,

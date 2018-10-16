@@ -8,7 +8,6 @@
             <span>{{post.message}}</span><br>
 
           </div>
-          {{post.state}}
           <v-card-text>
             <span>Starting at: {{post.event.eventTime}}</span><br>
             <span>Bid will closes in: {{post.event.bidClosingTime}}</span>

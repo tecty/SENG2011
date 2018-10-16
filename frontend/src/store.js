@@ -38,8 +38,11 @@ export default new Vuex.Store({
       // remove the record in local storage
       localStorage.removeItem("token");
       localStorage.removeItem("username");
+      // remove the vuex record
       state.token = "";
       state.username = "";
+      // remove the axios record
+      axios.defaults.headers.common["Authorization"] = null;
     },
     GET_POSTS: (state, posts) => {
       state.posts = posts;

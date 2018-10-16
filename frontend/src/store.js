@@ -4,14 +4,16 @@ import axios from "axios";
 // import api from "./store/api"
 // import auth from "./store/auth"
 import { LOGIN_FAIL } from "@/store/types";
-import { getToken } from "./utils/auth";
+import { getToken, getUsername } from "./utils/auth";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     api_state: "",
+    // base state 
     token: getToken(),
+    username: getUsername(),
     error: "",
     data: "",
     posts: []
@@ -23,10 +25,21 @@ export default new Vuex.Store({
       state.error = error;
     },
     ADD_TOKEN: (state, token) => {
+      // store this token to local storage
+      localStorage.setItem("token", token);
       state.token = token;
     },
-    REMOVE_TOKEN: state => {
+    ADD_USER: (state, username) => {
+      // store the username in localstorage
+      localStorage.setItem("username", username);
+      state.username = username;
+    },
+    REMOVE_TOKEN_AND_USER: state => {
+      // remove the record in local storage
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
       state.token = "";
+      state.username = "";
     },
     GET_POSTS: (state, posts) => {
       state.posts = posts;
@@ -38,12 +51,10 @@ export default new Vuex.Store({
       // add this token to store
       // modify the auth type
       commit("ADD_TOKEN", "JWT " + res.data.token);
-      // store this token to local storage
-      localStorage.setItem("token", state.token);
+      commit("ADD_USER", credential.username);
       // use this token to do axios request
       axios.defaults.headers.common["Authorization"] = state.token;
-      // success full do the request
-      // return back this promise
+      // return back this promise back to support chaining
       return res;
     },
     async registerByUser({ dispatch }, user) {
@@ -54,11 +65,8 @@ export default new Vuex.Store({
       });
     },
     logout({ commit }) {
-      // remove the record in local storage
-      localStorage.removeItem("token");
-
       // remove the record in vuex
-      commit("REMOVE_TOKEN");
+      commit("REMOVE_TOKEN_AND_USER");
     },
     placeBid(context, data) {
       return new Promise((resolve, reject) => {
@@ -68,12 +76,11 @@ export default new Vuex.Store({
           .catch(err => reject(err));
       });
     },
-    addPosts({ commit }) {
-      return axios.get("posts/").then(res => {
-        // JSON responses are automatically parsed.
-        commit("GET_POSTS", res.data);
-        return res;
-      });
+    async addPosts({ commit }) {
+      const res = await axios.get("posts/");
+      // JSON responses are automatically parsed.
+      commit("GET_POSTS", res.data);
+      return res;
     }
   }
 });

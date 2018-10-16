@@ -16,20 +16,20 @@
 
 
 <script>
-import Places from 'vue-places';
+import Places from "vue-places";
 export default {
   data() {
     return {
       form: {
         country: {
           label: null,
-          data: {},
-        },
-      },
+          data: {}
+        }
+      }
     };
   },
   components: {
     Places
   }
-}
+};
 </script>

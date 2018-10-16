@@ -3,7 +3,6 @@ import Vuex from "vuex";
 import axios from "axios";
 // import api from "./store/api"
 // import auth from "./store/auth"
-import { LOGIN_FAIL } from "@/store/types";
 import { getToken, getUsername } from "./utils/auth";
 
 Vue.use(Vuex);
@@ -11,7 +10,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     api_state: "",
-    // base state 
+    // base state
     token: getToken(),
     username: getUsername(),
     error: "",

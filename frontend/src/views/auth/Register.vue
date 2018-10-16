@@ -55,10 +55,10 @@ export default {
       username: "",
       password: "",
       passwordAgain: "",
-      location:{},
+      location: {},
       // if show == true, show the password
       show: false,
-      tel:"",
+      tel: "",
       error: ""
     };
   },
@@ -73,20 +73,20 @@ export default {
         location: this.location,
         tel: this.tel
       })
-      .then(() => {
-        // go to main page 
-        if (this.$route.query.redirect) {
-          // redirect request from another view
-          this.$router.push(this.$route.query.redirect);
-        } else {
-          // go to previous page, if it's user direct to login
-          this.$router.go(-2);
-        }
-      })
-      .catch(err=>{
-        console.log(err); 
-        this.error = err.response.data 
-      });
+        .then(() => {
+          // go to main page
+          if (this.$route.query.redirect) {
+            // redirect request from another view
+            this.$router.push(this.$route.query.redirect);
+          } else {
+            // go to previous page, if it's user direct to login
+            this.$router.go(-2);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          this.error = err.response.data;
+        });
     }
   },
   components: {

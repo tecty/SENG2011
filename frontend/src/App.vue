@@ -4,13 +4,10 @@
     <v-content>
       <router-view/>
     </v-content>
-
     <v-footer app>
-      <span>&copy; 2017</span>
+      <span>SENG2011 PartyWhip &copy; 2018</span>
     </v-footer>
-    </script> 
   </v-app>  
-
 </template>
 
 

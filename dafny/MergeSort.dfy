@@ -28,7 +28,19 @@ method mergesort(a1:array<int>, l:int, u:int) returns (a:array<int>)
   decreases u-l;
 {
   a := new int[a1.Length];
-  assume forall k:: 0 <= k < a1.Length ==> a[k] == a1[k];
+
+    var o:= 0;
+  while (o < a.Length)
+    invariant a1.Length == a.Length
+    invariant 0 <= o <= a1.Length
+    invariant forall q:: (0 <= q < a.Length) ==> a1[q] == old(a1[q]);
+    invariant forall k:: 0 <= k < o ==> a[k] == a1[k]
+    invariant a1[0..o] == a[0..o]
+  {
+    a[o] := a1[o];
+    o := o + 1;
+  }
+
   if (l >= u)
   {
     return;
@@ -65,7 +77,20 @@ method merge(a:array<int>, l:int, m:int, u:int) returns (buf:array<int>)
 //   assume forall k:: 0 <= k < a.Length ==> a[k] == a[k];
   
   buf := new int[a.Length];
-  assume forall k:: 0 <= k < a.Length ==> buf[k] == a[k];
+  var o:= 0;
+  while (o < a.Length)
+    invariant buf.Length == a.Length
+    invariant 0 <= o <= a.Length
+    invariant forall q:: (0 <= q < a.Length) ==> a[q] == old(a[q]);
+    invariant forall k:: 0 <= k < o ==> a[k] == buf[k]
+    invariant buf[0..o] == a[0..o]
+  {
+    buf[o] := a[o];
+    o := o + 1;
+  }
+  assert forall k:: 0 <= k < a.Length ==> a[k] == buf[k];
+
+
   var i:int := l;
   var j:int := m + 1;
   var k:int := 0;

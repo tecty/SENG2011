@@ -24,6 +24,12 @@ export default new Vuex.Store({
       state.api_state = error_type;
       state.error = error;
     },
+    API_WAITING: state => {
+      state.api_state = "WAIT";
+    },
+    API_FINISHED: state => {
+      state.api_state = "";
+    },
     ADD_TOKEN: (state, token) => {
       // store this token to local storage
       localStorage.setItem("token", token);
@@ -93,12 +99,13 @@ export default new Vuex.Store({
       commit("SET_EVENTS", res.data);
       return res;
     },
-    async refreshAll({ dispatch }) {
+    async refreshAll({ dispatch, commit }) {
+      commit("API_WAITING");
       return Promise.all([
         dispatch("refreshEvents"),
         dispatch("refreshPosts")
       ]).then(res => {
-        dispatch("wireEvents");
+        dispatch("wireEvents").then(() => commit("API_FINISHED"));
         return res;
       });
     },

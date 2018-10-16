@@ -115,7 +115,7 @@ export default {
           budget: this.form.budget,
           peopleCount: this.form.peopleCount,
           eventTime: this.form.date + "T" + this.form.time,
-          bidClossingTime: this.form.date10 + "T" + this.form.time11,
+          bidClosingTime: this.form.date10 + "T" + this.form.time11,
           extraParameter: [] // TODO extraparameter
         })
         .then(response => {

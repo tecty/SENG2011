@@ -5,7 +5,7 @@ from itertools import chain
 from django.contrib.auth.management import create_permissions
 from django.apps.registry import apps as apps_alt
 
-
+# from django.contrib.auth.models import Premission
 def add_groups(apps,schema_editor):
     # create all ContentTypes premission before this migration
     for app_config in apps_alt.get_app_configs():
@@ -29,18 +29,11 @@ def add_groups(apps,schema_editor):
             Permission.objects.filter(codename__contains = "message")
         )
     )
-
-
-    # print(Permission.objects.all())
-
-
+    
     # CRUD of post Event Msg 
     bidder.permissions.set(permission_list)
-    # print(bidder.permissions)
-    # print(permission_list)
     # save the setting 
     bidder.save()
-    # print(bidder.permissions)
 
     # poster group 
     poster = Group.objects.create(name = "Poster")
@@ -53,11 +46,8 @@ def add_groups(apps,schema_editor):
 
     # CRUD of post Event Msg 
     poster.permissions.set(permission_list)
-    print(poster.permissions)
-    print(permission_list)
     # save the setting 
     poster.save()
-    print(poster.permissions)
 
 
 class Migration(migrations.Migration):

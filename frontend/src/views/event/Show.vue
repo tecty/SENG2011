@@ -1,9 +1,12 @@
 <template>
   <v-container fluid grid-list-md>
-    <v-data-iterator :items="events" content-tag="v-layout" row wrap>
+    <v-data-iterator :items="events"
+      content-tag="v-layout" row wrap
+      v-if="api_state != 'WAIT'"
+    >
       <v-flex slot="item" slot-scope="props" sm12 sm6 md4 lg3 >
         <!-- actual data is iterating at this v-flex layer -->
-        <postCard :post="props.item"/>
+        <eventCard :event="props.item"/>
       </v-flex>
     </v-data-iterator>
       <v-btn fixed bottom right fab dark color="red" to="/event/create">
@@ -15,16 +18,19 @@
 
 
 <script>
-import axios from "axios";
-import eventCard from "@/components/event/Card";
+import EventCard from "@/components/event/Card";
+import { mapState } from 'vuex';
 export default {
-  computed: {
-    events() {
-      return this.$store.state.events
-    }
+  computed: mapState(['events','api_state']),
+  mounted() {
+    // fetch the latest events 
+    this.$store.dispatch("refreshAll");
   },
   components: {
-    eventCard
+    EventCard
   }
 };
 </script>
+
+<style scoped>
+</style>

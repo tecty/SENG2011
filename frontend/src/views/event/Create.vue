@@ -40,6 +40,23 @@
               <v-time-picker v-if="form.menu2" v-model="form.time" @change="$refs.menu2.save(form.time)"></v-time-picker>
             </v-menu>
           </v-flex>
+          <v-flex xs12 sm6 md4>
+            <v-menu ref="menu10" :close-on-content-click="false" v-model="form.menu10" :nudge-right="40" :return-value.sync="form.date10"
+              lazy transition="scale-transition" offset-y full-width min-width="290px">
+              <v-text-field slot="activator" v-model="form.date10" label="Bid Closing Date *" prepend-icon="event" readonly required></v-text-field>
+              <v-date-picker v-model="form.date10" no-title scrollable>
+                <v-spacer></v-spacer>
+                <v-btn flat color="primary" @click="$refs.menu10.save(form.date10)">OK</v-btn>
+              </v-date-picker>
+            </v-menu>
+          </v-flex>
+          <v-flex xs11 sm5>
+            <v-menu ref="menu11" :close-on-content-click="false" v-model="form.menu11" :nudge-right="40" :return-value.sync="form.time11"
+              lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
+              <v-text-field slot="activator" v-model="form.time11" label="Bid Closing Time *" prepend-icon="access_time" readonly required></v-text-field>
+              <v-time-picker v-if="form.menu11" v-model="form.time11" @change="$refs.menu11.save(form.time11)"></v-time-picker>
+            </v-menu>
+          </v-flex>
         </v-layout>
       </v-container>
 
@@ -82,19 +99,20 @@ export default {
     },
     submit() {
       axios
-        .event("events/", {
+        .post("events/", {
           title: this.form.title,
           message: this.form.message,
           eventId: 1, //testing use
           location: this.form.location,
-          eventTime: this.form.date + "T" + this.form.time
+          eventTime: this.form.date + "T" + this.form.time,
+          bidClosingTime: this.form.date10 + "T" + this.form.time11,
         })
         .then(response => {
           // JSON responses are automatically parsed.
           console.log(response);
           this.snackbar = true;
           this.snackbarColor = "success";
-          this.snackText = "Event Successful";
+          this.snackText = "Event has been successfully created";
           this.events = response.data;
           this.resetForm();
         })

@@ -1,7 +1,7 @@
 <template>
-  <v-card :to="{ name: 'EventDetail', params: { postId: post.id }}">
+  <v-card :to="{ name: 'EventDetail', params: { eventId: event.id }}">
     <v-card-title primary-title>
-      <h4>{{ event.title }}</h4>
+      <h4>{{event.title}}</h4>
     </v-card-title>
     <v-divider />
     <v-list >
@@ -15,6 +15,12 @@
         <v-list-tile-content>Event Time:</v-list-tile-content>
         <v-list-tile-content class="align-end">
           {{ event.eventTime }}
+        </v-list-tile-content>
+      </v-list-tile>
+      <v-list-tile>
+        <v-list-tile-content>Bid End:</v-list-tile-content>
+        <v-list-tile-content class="align-end">
+          {{ event.bidClosingTime }}
         </v-list-tile-content>
       </v-list-tile>
       <v-list-tile>

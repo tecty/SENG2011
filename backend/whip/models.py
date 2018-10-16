@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User 
-
 # for handling signal of user model
 # this will extend the user model 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+# for quick aggregate to average 
+from django.db.models import Avg
 
 # global variable that restrict the range of rate 
 rateRange =[(i,i) for i in range(6)]
@@ -187,9 +188,24 @@ class Bid(models.Model):
 
     # functions used to show the object's name in Django 
     def __unicode__(self):
-        return "%s bids %s" % (self.bidder, self.offer)
+        return "%s bids %s" % (self.owner, self.offer)
     def __str__(self):
         return self.__unicode__()
+
+    @property
+    def rateOfBidder(self):
+        '''
+        proof by Dafny
+        '''
+        bidset = Bid.objects\
+            .filter(owner = self.owner,state = "FN")\
+            .aggregate(
+                Avg('bidderReceivedPoints')
+            )['bidderReceivedPoints__avg']
+        if bidset == None:
+            return 0
+        return bidset;
+
 
     def rate(self, rate_to_poster):
         if self.state != "FN":

@@ -18,11 +18,11 @@
 </template>
 
 <script>
-  export default {
-    // the data of this post
-    props: ["bid"],
-    data() {
-      return {};
-    }
-  };
+export default {
+  // the data of this post
+  props: ["bid"],
+  data() {
+    return {};
+  }
+};
 </script>

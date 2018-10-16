@@ -1,4 +1,4 @@
-@auth = JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6InR0dCIsImV4cCI6MTUzOTIzNDc2MiwiZW1haWwiOiIifQ.H4u06k2p4ybvUF8dwzEPEkVg0bR_pZ12fFMJLeYlX28
+@auth = JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJ1c2VybmFtZSI6InR0dCIsImV4cCI6MTUzOTY5NzkwNCwiZW1haWwiOiIifQ.f5-lJCMACkeQqBlYzVUTaGBosKPX75OeKtavFe93HZs
 @baseUrl = http://localhost:8000/api-v0/
 
 
@@ -97,7 +97,7 @@ Authorization: {{auth}}
 
 {
     # parent event
-    "eventId": 1,
+    "event": 1,
     "title": "dinner",
     "peopleCount": 12,
     "budget": 12,

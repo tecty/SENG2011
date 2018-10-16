@@ -1,4 +1,4 @@
-// router of posts
+// router of events
 export default [
   {
     path: "/event/create",

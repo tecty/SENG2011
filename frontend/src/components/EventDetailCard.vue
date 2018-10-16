@@ -4,13 +4,11 @@
       <v-flex xs12>
         <v-card-title primary-title>
           <div>
-            <span class="headline">Task detail of {{post.title}}</span><br>
-            <span>{{post.message}}</span><br>
-
+            <span class="headline">Task detail of {{event.title}}</span><br>
           </div>
           <v-card-text>
-            <span>Starting at: {{post.event.eventTime}}</span><br>
-            <span>Bid will closes in: {{post.event.bidClosingTime}}</span>
+            <span>Starting at: {{event.eventTime}}</span><br>
+            <span>Bid will closes in: {{event.bidClosingTime}}</span>
           </v-card-text>
         </v-card-title>
 
@@ -26,8 +24,8 @@
 
 <script>
 export default {
-  // the data of this post
-  props: ["post"],
+  // the data of this event
+  props: ["event"],
   data() {
     return {};
   }

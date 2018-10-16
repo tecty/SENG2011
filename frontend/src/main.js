@@ -8,7 +8,7 @@ import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 import { isLogin } from "./utils/auth";
-
+import moment from "moment";
 Vue.config.productionTip = false;
 
 // router guard
@@ -29,12 +29,28 @@ router.beforeEach((to, from, next) => {
   // else go to next route :
   next();
 });
+// Vue.filters("stateToText", );
 
+Vue.filter("stateToText", s => {
+  switch (s) {
+    case "BD":
+      return "Bidding";
+    case "DL":
+      return "Deal";
+    case "FN":
+      return "Finished";
+    case "CL":
+      return "Canceled";
+    case "SD":
+      return "Selected";
+    case "US":
+      return "Unselected";
+    default:
+      return "Unknown" + s;
+  }
+});
 new Vue({
   router,
   store,
-  render: h => h(App),
-  created() {
-    this.$store.dispatch('addPosts');
-  }
+  render: h => h(App)
 }).$mount("#app");

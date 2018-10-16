@@ -1,27 +1,32 @@
 <template>
   <v-container fluid grid-list-md>
-    <v-data-iterator :items="posts" content-tag="v-layout" row wrap>
-      <v-flex slot="item" slot-scope="props" sm12 sm6 md4 lg3 >
-        <!-- actual data is iterating at this v-flex layer -->
-        <postCard :post="props.item"/>
-      </v-flex>
-    </v-data-iterator>
+      <v-data-iterator :items="posts" 
+        content-tag="v-layout" row wrap
+        v-if="api_state != 'WAIT'"
+      >
+        <v-flex slot="item" slot-scope="props" sm12 sm6 md4 lg3 >
+          <!-- actual data is iterating at this v-flex layer -->
+          <postCard :post="props.item"/>
+        </v-flex>
+      </v-data-iterator>
+      <div class="text-xs-center" v-else>
+        <v-progress-circular indeterminate color="primary" />
+      </div>
       <v-btn fixed bottom right fab dark color="red" to="/post/create">
       <v-icon dark>add</v-icon>
     </v-btn>
   </v-container>
-  
 </template>
 
 
 <script>
-import axios from "axios";
 import postCard from "@/components/post/Card";
+import { mapState } from 'vuex';
 export default {
-  computed: {
-    posts() {
-      return this.$store.state.posts
-    }
+  computed: mapState(['posts','api_state']),
+  mounted() {
+    // fetch the latest posts 
+    this.$store.dispatch("refreshAll");
   },
   components: {
     postCard
@@ -29,8 +34,5 @@ export default {
 };
 </script>
 
-
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>

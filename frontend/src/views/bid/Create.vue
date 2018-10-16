@@ -26,56 +26,54 @@
 </template>
 
 <script>
-  import { mapActions } from "vuex";
-  import PostDetailCard from "@/components/PostDetailCard";
-  import BidCard from "@/components/BidCard";
-  export default {
-
-    data() {
-      return {
-        // require a valid function.
-        // here just for silence the error
-        message: "",
-        price: "",
-        error: "",
-      };
-    },
-    computed: {
-      post: function () {
-        return this.$store.state.posts[this.$route.params.postId - 1]
-      }
-    },
-    methods: {
-      ...mapActions(["placeBid"]),
-      submit() {
-        this.$validator.validateAll().then(valid => {
-          if (valid) {
-            var data = {
-              post: this.$route.params.postId,
-              offer: this.price,
-              message: this.message
-            };
-            console.log(data);
-            console.log(this.$route.params.postId);
-            this.placeBid(data)
-              .then((response) => {
-
-                this.$router.next("/");
-              })
-              .catch((err) => {
-                this.error = "import is not correct";
-                console.log(err);
-              });
-          }
-        })
-      },
-    },
-    components: {
-      PostDetailCard,
-      BidCard
-    },
-    $_veeValidate: {
-      validator: 'new'
+import { mapActions } from "vuex";
+import PostDetailCard from "@/components/PostDetailCard";
+import BidCard from "@/components/BidCard";
+export default {
+  data() {
+    return {
+      // require a valid function.
+      // here just for silence the error
+      message: "",
+      price: "",
+      error: ""
+    };
+  },
+  computed: {
+    post: function() {
+      return this.$store.state.posts[this.$route.params.postId - 1];
     }
-  };
+  },
+  methods: {
+    ...mapActions(["placeBid"]),
+    submit() {
+      this.$validator.validateAll().then(valid => {
+        if (valid) {
+          var data = {
+            post: this.$route.params.postId,
+            offer: this.price,
+            message: this.message
+          };
+          console.log(data);
+          console.log(this.$route.params.postId);
+          this.placeBid(data)
+            .then(() => {
+              this.$router.next("/");
+            })
+            .catch(err => {
+              this.error = "import is not correct";
+              console.log(err);
+            });
+        }
+      });
+    }
+  },
+  components: {
+    PostDetailCard,
+    BidCard
+  },
+  $_veeValidate: {
+    validator: "new"
+  }
+};
 </script>

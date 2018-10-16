@@ -31,9 +31,6 @@ class ProfileSerializer(serializers.ModelSerializer):
             "is_trusted",
         )
 
-
-
-
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     # password only can be written 
     password = serializers.CharField(write_only = True)
@@ -73,11 +70,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'username',
             "password",
             "password_again",
-            # email somtime will trigger some wired behaviour
-            # not using it at this request stage
-            # 'email',
-            # we don't need the staff info, and we shouldn't change it at frontend 
-            # 'is_staff', 
             "location",
             "tel",
             "is_trusted",
@@ -170,6 +162,8 @@ class MessageSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     owner = UserSerializer(read_only = True)
     location = LocationSerializer()
+    # couldn't choose the post as who event it want 
+    post_set = serializers.PrimaryKeyRelatedField(many = True, read_only = True)
 
     """
     validation code of this serializer
@@ -208,7 +202,8 @@ class EventSerializer(serializers.ModelSerializer):
             "owner",
             "eventTime",
             "bidClosingTime",
-            "location"
+            "location",
+            "post_set"
         )
     
     def create(self,validated_data):
@@ -247,6 +242,8 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
 
     message = serializers.CharField(write_only = True)
 
+    rateOfBidder = serializers.FloatField(read_only = True)
+
     bidderReceivedPoints = serializers.IntegerField(read_only = True)
     class Meta:
         model = Bid
@@ -258,7 +255,8 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
             'message',
             'offer',
             "state",
-            "bidderReceivedPoints"
+            "bidderReceivedPoints",
+            "rateOfBidder"
         )
 
     def update(self, instance,validated_data):
@@ -307,8 +305,7 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    eventId = serializers.IntegerField(write_only = True)
-    event = EventSerializer(read_only = True)
+    # eventId = serializers.IntegerField(write_only = True)
     # set the foreign stat sytle
     # extraParameter =serializers.StringRelatedField(many = True)
     state  = serializers.CharField(read_only = True)
@@ -350,7 +347,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = (
-            "eventId",
+            # "eventId",
             "id",
             'title',
             "event",
@@ -363,22 +360,21 @@ class PostSerializer(serializers.ModelSerializer):
             "message",
             "bid_set",
         )
+    def validate(self,data):
+        if data["event"].owner != self.context['request'].user:
+            raise serializers.ValidationError(
+                {"owner":[
+                    "You'r not the owner of this event."
+                ]}
+            )
+        return data
 
     def create(self, validated_data):
-        # one line to pop the event id and fetch the event object
-        # then attach the event to this post 
-        validated_data["event"] = \
-            Event.objects.get(pk = validated_data.pop("eventId"))
-
-
-
         # pop the message to create the message char 
         msg =  validated_data.pop('message',{})
         # pass this message as string to it 
         validated_data['msg'] = \
             MessageSerializer(context = self.context ).create({"msg": msg})
-
-
 
         # use parents method to create this obj
         post = super(PostSerializer,self).create(validated_data)

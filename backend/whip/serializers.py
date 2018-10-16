@@ -310,8 +310,7 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    eventId = serializers.IntegerField(write_only = True)
-    event = EventSerializer(read_only = True)
+    # eventId = serializers.IntegerField(write_only = True)
     # set the foreign stat sytle
     # extraParameter =serializers.StringRelatedField(many = True)
     state  = serializers.CharField(read_only = True)
@@ -353,7 +352,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = (
-            "eventId",
+            # "eventId",
             "id",
             'title',
             "event",
@@ -370,8 +369,8 @@ class PostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # one line to pop the event id and fetch the event object
         # then attach the event to this post 
-        validated_data["event"] = \
-            Event.objects.get(pk = validated_data.pop("eventId"))
+        # validated_data["event"] = \
+        #     Event.objects.get(pk = validated_data.pop("eventId"))
 
 
 

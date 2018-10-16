@@ -10,7 +10,6 @@
       <v-icon dark>add</v-icon>
     </v-btn>
   </v-container>
-  
 </template>
 
 

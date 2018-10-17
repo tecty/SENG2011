@@ -57,7 +57,7 @@ export default {
           console.log(data);
           console.log(this.$route.params.postId);
           this.placeBid(data)
-            .then(response => {
+            .then(() => {
               this.$router.next("/");
             })
             .catch(err => {

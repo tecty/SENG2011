@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -44,9 +44,6 @@ export default {
         this.event = res;
         console.log(this.event);
       });
-  },
-  validKey(key) {
-    return true;
   }
 };
 </script>

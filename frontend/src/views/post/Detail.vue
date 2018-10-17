@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapState } from "vuex";
 import parmCard from "@/components/post/extraParm.vue";
 export default {
   data() {
@@ -46,9 +46,6 @@ export default {
         this.post = res;
         this.$store.commit("API_READY");
       });
-  },
-  validKey(key) {
-    return true;
   },
   components: {
     parmCard

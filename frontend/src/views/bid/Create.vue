@@ -7,26 +7,29 @@
         <!-- cards of bids -->
         <v-card>
           <v-container fluid grid-list-lg>
-            <bid-card v-for="bid in post.bid_set" :key="bid.id" :bid="bid"></bid-card>
+            <bid-card v-for="bid in post.bid_set" :key="bid.id" :bid="bid" :post="post"></bid-card>
           </v-container>
         </v-card>
         <!-- card for making post -->
-        <v-card>
-          <form @submit.prevent="submit">
-            <v-text-field v-validate="'required|decimal:3'" data-vv-name="price" v-model="price" label="Price" :error-messages="errors.collect('price')"
-              required></v-text-field>
-            <v-textarea v-model="message" v-validate="'required'" data-vv-name="message" label="Message" hint="Write Message to poster in your bid"
-              :error-messages="errors.collect('message')" required></v-textarea>
-            <v-btn type="submit" color="primary" @click="submit">Bid</v-btn>
-          </form>
+        <div v-if="post.event.owner.username != currUser && post.state == 'BD'">
+          <v-card>
+            <form @submit.prevent>
+              <v-text-field v-validate="'required|decimal:3'" data-vv-name="price" v-model="price" label="Price" :error-messages="errors.collect('price')"
+                required></v-text-field>
+              <v-textarea v-model="message" v-validate="'required'" data-vv-name="message" label="Message" hint="Write Message to poster in your bid"
+                :error-messages="errors.collect('message')" required></v-textarea>
+              <v-btn type="submit" color="primary" @click="submit">Bid</v-btn>
+            </form>
+          </v-card>
+        </div>
         </v-card>
-      </v-card>
+        
     </v-flex>
   </v-container>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import PostDetailCard from "@/components/PostDetailCard";
 import BidCard from "@/components/BidCard";
 export default {
@@ -36,29 +39,63 @@ export default {
       // here just for silence the error
       message: "",
       price: "",
-      error: ""
+      error: "",
+      currUser: localStorage.getItem("username"),
+      post: {}
     };
   },
-  computed: {
-    post: function() {
-      return this.$store.state.posts[this.$route.params.postId - 1];
-    }
+  computed: mapState(["api_state"]),
+  mounted() {
+    this.$store.dispatch("requireExtraParams");
+    this.$store
+      .dispatch("refreshAll")
+      .then(() =>
+        this.$store.dispatch("getPostById", this.$route.params.postId)
+      )
+      .then(res => {
+        this.post = res;
+        console.log(this.post);
+      });
   },
+  // computed: mapState({
+  //   // arrow functions can make the code very succinct!
+  //   posts: state => state.posts,
+  //   // passing the string value 'posts' is same as `state => state.count`
+  //   postsAlias: "posts",
+  //   // to access local state with `this`, a normal function must be used
+  //   post(state) {
+  //     return state.posts.find(post => post.id == this.$route.params.postId - 1);
+  //   }
+  // }),
+  // computed: {
+  //   ...mapGetters({
+  //     post: "currPost"
+  //   })
+  // },
+  // computed: {
+  //   post: function() {
+  //     return this.$store.state.posts.find(
+  //       post => post.id == this.$route.params.postId - 1
+  //     );
+  //   }
+  // },
   methods: {
-    ...mapActions(["placeBid"]),
+    ...mapActions(["placeBid", "refreshPosts"]),
     submit() {
       this.$validator.validateAll().then(valid => {
         if (valid) {
           var data = {
-            post: this.$route.params.postId,
+            post: this.$route.params.postId - 1,
             offer: this.price,
             message: this.message
           };
           console.log(data);
-          console.log(this.$route.params.postId);
+          console.log(data.post);
           this.placeBid(data)
-            .then(() => {
-              this.$router.next("/");
+            .then(response => {
+              this.refreshPosts().then(result => {
+                console.log(result);
+              });
             })
             .catch(err => {
               this.error = "import is not correct";

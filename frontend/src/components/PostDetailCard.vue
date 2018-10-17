@@ -5,8 +5,8 @@
         <v-card-title primary-title>
           <div>
             <span class="headline">Task detail of {{post.title}}</span><br>
-            <span>{{post.message}}</span><br>
-
+            <span>Message: {{post.msg.msg}}</span><br>
+            <span>{{post.event.owner.username}}</span>
           </div>
           <v-card-text>
             <span>Starting at: {{post.event.eventTime}}</span><br>

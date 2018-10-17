@@ -1,6 +1,6 @@
 //Proving merge sort
 //ISSUE: it be verified on local IDE, but it times out while verifying on website
-
+//TODO include this issue in report
 predicate permutation(a: seq<int>, b: seq<int>)
 {
   if a == b then true else multiset(a) == multiset(b)

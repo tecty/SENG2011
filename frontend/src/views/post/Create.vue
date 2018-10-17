@@ -9,7 +9,7 @@
           <v-flex xs11 sm5>
             <v-select
               v-model="form.event"
-              :items="events"
+              :items="eventList"
               :rules="[v => !!v || 'Event is required']"
               label="Event"
               item-value="value.title"
@@ -90,7 +90,9 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("refreshEvents");
+    this.$store.dispatch("refreshEvents").then(()=>{
+      this.eventList = this.$store.state.events;
+    });
   },
 };
 </script>

@@ -25,25 +25,28 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-export default{
-  data(){
+import { mapActions, mapState } from "vuex";
+export default {
+  data() {
     return {
-      event:{}
-    }
+      event: {}
+    };
   },
-  computed: mapState(['api_state']),
+  computed: mapState(["api_state"]),
   mounted() {
-    this.$store.dispatch('requireExtraParams');
-    this.$store.dispatch('refreshAll').then(()=>
-      this.$store.dispatch('getEventById', this.$route.params.eventId)
-    ).then(res=> {
-      this.event = res;
-      console.log(this.event);
-    });
+    this.$store.dispatch("requireExtraParams");
+    this.$store
+      .dispatch("refreshAll")
+      .then(() =>
+        this.$store.dispatch("getEventById", this.$route.params.eventId)
+      )
+      .then(res => {
+        this.event = res;
+        console.log(this.event);
+      });
   },
   validKey(key) {
     return true;
   }
-}
+};
 </script>

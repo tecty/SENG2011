@@ -7,10 +7,9 @@ export default {
   props: ["params"],
   data() {
     return {
-      params:[]
+      params: []
     };
   },
-  mounted() {
-  }
+  mounted() {}
 };
 </script>

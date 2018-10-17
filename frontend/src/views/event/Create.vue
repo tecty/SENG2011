@@ -105,7 +105,7 @@ export default {
           eventId: 1, //testing use
           location: this.form.location,
           eventTime: this.form.date + "T" + this.form.time,
-          bidClosingTime: this.form.date10 + "T" + this.form.time11,
+          bidClosingTime: this.form.date10 + "T" + this.form.time11
         })
         .then(response => {
           // JSON responses are automatically parsed.

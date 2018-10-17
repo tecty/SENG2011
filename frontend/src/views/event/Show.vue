@@ -19,11 +19,11 @@
 
 <script>
 import EventCard from "@/components/event/Card";
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 export default {
-  computed: mapState(['events','api_state']),
+  computed: mapState(["events", "api_state"]),
   mounted() {
-    // fetch the latest events 
+    // fetch the latest events
     this.$store.dispatch("refreshAll");
   },
   components: {

@@ -26,25 +26,28 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-export default{
-  data(){
+import { mapActions, mapState } from "vuex";
+export default {
+  data() {
     return {
-      post:{}
-    }
+      post: {}
+    };
   },
-  computed: mapState(['api_state']),
+  computed: mapState(["api_state"]),
   mounted() {
-    this.$store.dispatch('requireExtraParams');
-    this.$store.dispatch('refreshAll').then(()=>
-      this.$store.dispatch('getPostById', this.$route.params.postId)
-    ).then(res=> {
-      this.post = res;
-      console.log(this.post);
-    });
+    this.$store.dispatch("requireExtraParams");
+    this.$store
+      .dispatch("refreshAll")
+      .then(() =>
+        this.$store.dispatch("getPostById", this.$route.params.postId)
+      )
+      .then(res => {
+        this.post = res;
+        console.log(this.post);
+      });
   },
   validKey(key) {
     return true;
   }
-}
+};
 </script>

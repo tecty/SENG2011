@@ -9,10 +9,9 @@
           <v-flex xs11 sm5>
             <v-select
               v-model="form.event"
-              :items="eventList"
+              :items="events"
               :rules="[v => !!v || 'Event is required']"
               label="Event"
-              item-value="value.title"
               required
             ></v-select>
           </v-flex>
@@ -51,14 +50,13 @@ export default {
     return {
       form: {
         title: "test",
-        event:{},
+        event:"",
         message: "test",
         budget: 1,
         peopleCount: 1,
         location: {},
       },
       // this might implement later 
-      eventList:[],
       snackbar: false,
       snackbarColor: "error",
       snackText: "Error You must complete all fields with *"
@@ -68,7 +66,12 @@ export default {
       events: (state) => {
         return state.events.filter((el) => 
           el.owner.username == state.username
-        )
+        ).map(el => {
+          let ret= {}; 
+          ret.text = el.title;
+          ret.value = el.id;
+          return ret
+        })
       }
     })
   ,
@@ -86,13 +89,7 @@ export default {
       //     bidClosingTime: this.form.date10 + "T" + this.form.time11,
       //     extraParameter: [] // TODO extraparameter
       //   })
-      console.log(this.events.title);
     }
-  },
-  mounted() {
-    this.$store.dispatch("refreshEvents").then(()=>{
-      this.eventList = this.$store.state.events;
-    });
   },
 };
 </script>

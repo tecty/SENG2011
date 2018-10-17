@@ -31,6 +31,9 @@ export default new Vuex.Store({
     API_FINISHED: state => {
       state.api_state = "";
     },
+    API_READY: state => {
+      state.api_state = "READY";
+    },
     ADD_TOKEN: (state, token) => {
       // store this token to local storage
       localStorage.setItem("token", token);

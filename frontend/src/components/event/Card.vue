@@ -26,7 +26,7 @@
       <v-list-tile>
         <v-list-tile-content>Location:</v-list-tile-content>
         <v-list-tile-content class="align-end">
-          {{ event.location }}
+          {{ event.location.address }}
         </v-list-tile-content>
       </v-list-tile>
     </v-list>

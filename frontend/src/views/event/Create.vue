@@ -97,13 +97,15 @@ export default {
           eventTime: this.form.date + "T" + this.form.time,
           bidClosingTime: this.form.date10 + "T" + this.form.time11
         })
-        .then(response => {
-          // JSON responses are automatically parsed.
-          this.snackbar = true;
-          this.snackbarColor = "success";
-          this.snackText = "Event has been successfully created";
-          this.events = response.data;
-        })
+        // TODO: just a way to implement the snack bar
+        //        This will be moved to the main frame of the website
+        // .then(response => {
+        //   // JSON responses are automatically parsed.
+        //   this.snackbar = true;
+        //   this.snackbarColor = "success";
+        //   this.snackText = "Event has been successfully created";
+        //   this.events = response.data;
+        // })
         .catch(error => {
           if (error.response) {
             // The request was made and the server responded with a status code

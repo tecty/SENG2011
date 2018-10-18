@@ -16,7 +16,6 @@
           <v-spacer></v-spacer>
           <v-btn flat color="orange">Comment</v-btn>
         </v-card-actions>
-
       </v-flex>
     </v-layout>
   </v-card>

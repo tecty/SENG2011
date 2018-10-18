@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3 class="headline primary--text ">Extra Requirements</h3>
-    <div v-for="item in showParms" >
+    <div v-for="item in showParms" :key="item">
       {{ item.key }}: {{ item.value }}
     </div>
   </div>

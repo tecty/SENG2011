@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <div v-if="api_state != 'WAIT'">
+    <div v-if="api_state == 'READY'">
       <!-- content of the event  -->
       <h3 class="display-1 primary--text">
         <span class="grey--text">#{{ event.id }}</span> {{event.title}}
@@ -15,12 +15,9 @@
         Bid Closing Time
       </h5>{{event.bidClosingTime}} 
     </div>
-    
     <div class="text-xs-center" v-else>
         <v-progress-circular indeterminate color="primary" />
     </div>
-
-    
   </v-container>
 </template>
 
@@ -42,7 +39,7 @@ export default {
       )
       .then(res => {
         this.event = res;
-        console.log(this.event);
+        this.$store.commit("API_READY");
       });
   }
 };

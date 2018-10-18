@@ -44,26 +44,24 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
-import axios from "axios";
-
+import { mapState } from "vuex";
 export default {
   data() {
     return {
       form: {
-        title: "test",
+        title: "",
         event: "",
-        message: "test",
-        budget: 1,
-        peopleCount: 1,
+        message: "",
+        budget: "",
+        peopleCount: "",
         location: {},
-        extraParam:[],
+        extraParam: []
       },
       // this might implement later
       snackbar: false,
       snackbarColor: "error",
       snackText: "Error You must complete all fields with *",
-      error :[]
+      error: []
     };
   },
   computed: mapState({
@@ -88,18 +86,23 @@ export default {
         peopleCount: this.form.peopleCount,
         extraParameter: [] // TODO extraparameter
       };
-      this.$store.dispatch('createPost',data).then(res=> {
-        this.$router.push({name : 'PostDetail' , params:{
-          postId: res.data.id,
-        }})
-        return res;
-      })
-      .catch(err=> this.error = err);
+      this.$store
+        .dispatch("createPost", data)
+        .then(res => {
+          this.$router.push({
+            name: "PostDetail",
+            params: {
+              postId: res.data.id
+            }
+          });
+          return res;
+        })
+        .catch(err => (this.error = err));
     }
   },
   mounted() {
-    this.$store.dispatch('requireExtraParams');
-    this.$store.dispatch('refreshEvents');
-  },
+    this.$store.dispatch("requireExtraParams");
+    this.$store.dispatch("refreshEvents");
+  }
 };
 </script>

@@ -16,8 +16,8 @@ lemma  MutisetAddingLemma(a: array<int>,l:int, m: int, u:int)
 
 predicate sortedBetween(a :array<int>, start : int, end : int)
   reads a;
-  requires 0<= end < a.Length
   requires 0<= start < a.Length
+  requires 0<= end < a.Length
 {
   forall i,j:: start <= i < j <= end ==> a[i] <= a[j]
 }
@@ -92,12 +92,10 @@ method merge(a:array<int>, l:int, m:int, u:int) returns (buf:array<int>)
   requires sortedBetween(a,l,m);
   requires sortedBetween(a,m+1,u);
   ensures a.Length == buf.Length;
-  ensures multiset(buf[..]) == multiset(a[..]);
   ensures multiset(buf[l..u+1]) == multiset(a[l..u+1]);
   ensures sortedBetween(buf,l,u);
   ensures forall i:: (0 <= i < l || u < i < buf.Length) ==> buf[i] == a[i];
 {
-
   buf := new int[a.Length];
   copyArray(a, buf);
 
@@ -126,7 +124,6 @@ method merge(a:array<int>, l:int, m:int, u:int) returns (buf:array<int>)
     // buf is sorted in [l,k+l].
     invariant forall q,r:: l <= q < r <= k+l-1 ==>  buf[q] <= buf[r]; 
     invariant forall q,r:: l <= q < l+k && (i <= r <= m || j <= r <= u) ==> buf[q] <= a[r];
-
   {
     if (i > m)
     {

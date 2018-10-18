@@ -32,6 +32,7 @@
               location = loc;
             }
           "
+          hint="Where's your address?"
         ></addr>
         <p></p>
         <p>{{error}}</p>

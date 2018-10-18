@@ -1,7 +1,7 @@
 <template>
   <places
     v-model="form.country.label"
-    placeholder="Where are we going ?"
+    :placeholder="hint"
     @change="val => {
       form.country.data = val; 
       $emit('confirmLocation', {
@@ -18,6 +18,7 @@
 <script>
 import Places from "vue-places";
 export default {
+  props:['hint'],
   data() {
     return {
       form: {

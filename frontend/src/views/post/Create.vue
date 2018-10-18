@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-xl fluid>
+  <v-container grid-list-xl >
     <v-form ref="form" @submit.prevent="submit">
         <v-layout wrap>
           <v-flex xs11 sm5>

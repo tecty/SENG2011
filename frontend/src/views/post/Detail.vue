@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container full-height fluid>
     <div v-if="api_state == 'READY'">
       <!-- content of the post  -->
       <h3 class="display-1 primary--text">
@@ -19,6 +19,7 @@
         Budget
       </h5>${{post.budget}} 
       <parmCard :criteria="post.extraParameter"></parmCard>
+      <msgBox></msgBox>
     </div>
     <div class="text-xs-center" v-else>
       <v-progress-circular indeterminate color="primary" />
@@ -29,6 +30,7 @@
 <script>
 import { mapState } from "vuex";
 import parmCard from "@/components/post/extraParm.vue";
+import msgBox from "@/components/helper/messageBox.vue";
 export default {
   data() {
     return {
@@ -48,7 +50,7 @@ export default {
       });
   },
   components: {
-    parmCard
+    parmCard,msgBox
   }
 };
 </script>

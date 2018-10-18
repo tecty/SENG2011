@@ -57,28 +57,6 @@ export default {
         console.log(this.post);
       });
   },
-  // computed: mapState({
-  //   // arrow functions can make the code very succinct!
-  //   posts: state => state.posts,
-  //   // passing the string value 'posts' is same as `state => state.count`
-  //   postsAlias: "posts",
-  //   // to access local state with `this`, a normal function must be used
-  //   post(state) {
-  //     return state.posts.find(post => post.id == this.$route.params.postId - 1);
-  //   }
-  // }),
-  // computed: {
-  //   ...mapGetters({
-  //     post: "currPost"
-  //   })
-  // },
-  // computed: {
-  //   post: function() {
-  //     return this.$store.state.posts.find(
-  //       post => post.id == this.$route.params.postId - 1
-  //     );
-  //   }
-  // },
   methods: {
     ...mapActions(["placeBid", "refreshPosts"]),
     submit() {

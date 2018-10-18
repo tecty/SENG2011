@@ -9,7 +9,6 @@
           <span> offer ${{bid.offer}}</span>
         </v-card-title>
        <v-card-text>
-
         <div>message : {{bid.msg.msg}}</div>
        </v-card-text>
         <v-card-actions>
@@ -25,7 +24,6 @@
       </v-card>
     </v-flex>
   </v-layout>
-
 </template>
 
 <script>
@@ -34,9 +32,12 @@ export default {
   // the data of this post
   props: ["bid", "post"],
   data() {
-    return {
-      currUser: localStorage.getItem("username")
-    };
+    return {};
+  },
+  computed:{
+    ...mapState({
+      currUser: 'username'
+    })
   },
   methods: {
     chooseBid() {

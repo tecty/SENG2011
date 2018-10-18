@@ -8,43 +8,44 @@
       <p>{{ post.state | stateToText}}</p>
       <h5 class="headline primary--text ">
         peopleCount
-      </h5>{{post.peopleCount}} 
+      </h5>{{post.peopleCount}}
       <h5 class="headline primary--text ">
         Budget
-      </h5>${{post.budget}} 
+      </h5>${{post.budget}}
       <h5 class="headline primary--text ">
         Criterias
       </h5>{{post.extraParameter}}
     </div>
-    
-    <div class="text-xs-center" v-else>
-        <v-progress-circular indeterminate color="primary" />
-    </div>
 
-    
+    <div class="text-xs-center" v-else>
+      <v-progress-circular indeterminate color="primary" />
+    </div>
   </v-container>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-export default{
-  data(){
-    return {
-      post:{}
+  import {
+    mapActions,
+    mapState
+  } from 'vuex';
+  export default {
+    data() {
+      return {
+        post: {}
+      }
+    },
+    computed: mapState(['api_state']),
+    mounted() {
+      this.$store.dispatch('requireExtraParams');
+      this.$store.dispatch('refreshAll').then(() =>
+        this.$store.dispatch('getPostById', this.$route.params.postId)
+      ).then(res => {
+        this.post = res;
+        console.log(this.post);
+      });
+    },
+    validKey(key) {
+      return true;
     }
-  },
-  computed: mapState(['api_state']),
-  mounted() {
-    this.$store.dispatch('requireExtraParams');
-    this.$store.dispatch('refreshAll').then(()=>
-      this.$store.dispatch('getPostById', this.$route.params.postId)
-    ).then(res=> {
-      this.post = res;
-      console.log(this.post);
-    });
-  },
-  validKey(key) {
-    return true;
   }
-}
 </script>

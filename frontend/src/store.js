@@ -135,11 +135,17 @@ export default new Vuex.Store({
     },
     async requireExtraParams({ state, commit }) {
       if (state.extraParameter.length == 0) {
-        let ret = await axios.get("http://localhost:8000/api-v0/Parameters/");
+        let ret = await axios.get("Parameters/");
         commit("SET_EXTRA_PARAMS", ret.data);
         return ret;
       }
       return null;
+    },
+    async createPost({ commit }, data) {
+      commit("API_WAITING");
+      let ret = await axios.post("posts/", data);
+      commit("API_FINISHED");
+      return ret;
     }
   }
 });

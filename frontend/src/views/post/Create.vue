@@ -33,8 +33,10 @@
             <v-text-field v-model="form.title" 
               label="Extra Requirement *" required />
           </v-flex>
+          <v-flex xs11 sm5 v-for="(item, index) in error" :key="index">
+            {{index}} {{item}}
+          </v-flex>
         </v-layout>
-
         <v-btn color="primary" type="submit">Post</v-btn>
         <!-- <v-btn @click="resetForm">Clear</v-btn> -->
     </v-form>
@@ -50,46 +52,54 @@ export default {
     return {
       form: {
         title: "test",
-        event:"",
+        event: "",
         message: "test",
         budget: 1,
         peopleCount: 1,
         location: {},
+        extraParam:[],
       },
-      // this might implement later 
+      // this might implement later
       snackbar: false,
       snackbarColor: "error",
-      snackText: "Error You must complete all fields with *"
+      snackText: "Error You must complete all fields with *",
+      error :[]
     };
   },
-  computed:mapState({
-      events: (state) => {
-        return state.events.filter((el) => 
-          el.owner.username == state.username
-        ).map(el => {
-          let ret= {}; 
+  computed: mapState({
+    events: state => {
+      return state.events
+        .filter(el => el.owner.username == state.username)
+        .map(el => {
+          let ret = {};
           ret.text = el.title;
           ret.value = el.id;
-          return ret
-        })
-      }
-    })
-  ,
+          return ret;
+        });
+    }
+  }),
   methods: {
     submit() {
-      // axios
-      //   .post("posts/", {
-      //     title: this.form.title,
-      //     message: this.form.message,
-      //     eventId: form.event.id, //testing use
-      //     location: this.form.location,
-      //     budget: this.form.budget,
-      //     peopleCount: this.form.peopleCount,
-      //     eventTime: this.form.date + "T" + this.form.time,
-      //     bidClosingTime: this.form.date10 + "T" + this.form.time11,
-      //     extraParameter: [] // TODO extraparameter
-      //   })
+      let data = {
+        title: this.form.title,
+        message: this.form.message,
+        event: this.form.event,
+        budget: this.form.budget,
+        peopleCount: this.form.peopleCount,
+        extraParameter: [] // TODO extraparameter
+      };
+      this.$store.dispatch('createPost',data).then(res=> {
+        this.$router.push({name : 'PostDetail' , params:{
+          postId: res.data.id,
+        }})
+        return res;
+      })
+      .catch(err=> this.error = err);
     }
+  },
+  mounted() {
+    this.$store.dispatch('requireExtraParams');
+    this.$store.dispatch('refreshEvents');
   },
 };
 </script>

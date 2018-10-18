@@ -1,11 +1,5 @@
 <template>
   <v-card flat>
-    <v-snackbar v-model="snackbar" absolute top right auto-height :color="snackbarColor">
-      <span>{{ snackText }}</span>
-      <v-btn dark flat @click="snackbar = false">
-        <v-icon dark>check_circle</v-icon>
-      </v-btn>
-    </v-snackbar>
     <v-form ref="form" @submit.prevent="submit">
       <v-container grid-list-xl fluid>
         <v-layout wrap>
@@ -72,21 +66,22 @@
 import axios from "axios";
 export default {
   data() {
-    const defaultForm = Object.freeze({
-      title: "test",
-      message: "test",
-      location: "test",
-      date: "2018-11-13",
-      menu: false,
-      time: "03:30",
-      menu2: false,
-      date10: "2018-11-12",
-      menu10: false,
-      time11: "03:30",
-      menu11: false
-    });
+    const defaultForm = Object.freeze();
     return {
-      form: Object.assign({}, defaultForm),
+      form: {
+        title: "test",
+        message: "test",
+        location: "test",
+        date: "2018-11-13",
+        menu: false,
+        time: "03:30",
+        menu2: false,
+        date10: "2018-11-12",
+        menu10: false,
+        time11: "03:30",
+        menu11: false
+      },
+      // TODO: may be antoher model 
       snackbar: false,
       snackbarColor: "error",
       snackText: "Error You must complete all fields with *"
@@ -109,7 +104,6 @@ export default {
         })
         .then(response => {
           // JSON responses are automatically parsed.
-          console.log(response);
           this.snackbar = true;
           this.snackbarColor = "success";
           this.snackText = "Event has been successfully created";
@@ -120,22 +114,10 @@ export default {
           if (error.response) {
             // The request was made and the server responded with a status code
             // that falls out of the range of 2xx
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
             this.snackbar = true;
             this.snackbarColor = "error";
             this.snackText = "Error: " + JSON.stringify(error.response.data); // TODO improve error looking.
-          } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.log(error.request);
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log("Error", error.message.data);
           }
-          console.log(error.config);
         });
       // this.resetForm()
     }

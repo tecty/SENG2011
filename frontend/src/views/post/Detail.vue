@@ -1,5 +1,5 @@
 <template>
-  <v-container full-height fluid>
+  <v-container full-height>
     <div v-if="api_state == 'READY'">
       <!-- content of the post  -->
       <h3 class="display-1 primary--text">
@@ -7,18 +7,20 @@
       </h3>
       <p>{{ post.state | stateToText}}</p>
       <h5 class="headline primary--text ">Issuer:</h5>
-      {{ post.event.owner.username }}
+      <p>{{ post.event.owner.username }}</p>
       <h5 class="headline primary--text ">Event Time:</h5>
-      {{ post.event.eventTime }}
+      <p>{{ post.event.eventTime }}</p>
       <h5 class="headline primary--text ">Bid End:</h5>
-      {{ post.event.bidClosingTime }}
+      <p>{{ post.event.bidClosingTime }}</p>
       <h5 class="headline primary--text ">
         peopleCount
-      </h5>{{post.peopleCount}} 
+      </h5>
+      <p>{{post.peopleCount}} </p>
       <h5 class="headline primary--text ">
         Budget
-      </h5>${{post.budget}} 
-      <parmCard :criteria="post.extraParameter"></parmCard>
+      </h5>
+      <p>${{post.budget}}</p>
+      <parmCard :criteria="post.extraParameter" />
       <msgBox></msgBox>
     </div>
     <div class="text-xs-center" v-else>

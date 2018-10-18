@@ -18,14 +18,14 @@
 </template>
 
 <script>
-import messageBox from './messageBox.vue';
+import messageBox from "./messageBox.vue";
 export default {
-  props:['msg'],
+  props: ["msg"],
   data() {
-    return {}
+    return {};
   },
-  components:{
-    messageBox,
+  components: {
+    messageBox
   }
-}
+};
 </script>

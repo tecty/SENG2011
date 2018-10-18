@@ -50,7 +50,8 @@ export default {
       });
   },
   components: {
-    parmCard,msgBox
+    parmCard,
+    msgBox
   }
 };
 </script>

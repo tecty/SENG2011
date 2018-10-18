@@ -10,6 +10,7 @@
             <v-card-actions>
               <v-btn flat dark>Reply</v-btn>
             </v-card-actions>
+            <messageBox />
           </v-card>
         </v-flex>
     </v-layout>

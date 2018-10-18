@@ -8,7 +8,7 @@ import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 import { isLogin } from "./utils/auth";
-import moment from "moment";
+
 Vue.config.productionTip = false;
 
 // router guard

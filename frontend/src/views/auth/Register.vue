@@ -32,6 +32,7 @@
               location = loc;
             }
           "
+          hint="Where's your address?"
         ></addr>
         <p></p>
         <p>{{error}}</p>
@@ -45,7 +46,6 @@
 import { mapActions } from "vuex";
 // import postCard from "@/components/helper/addressInput";
 import addr from "@/components/helper/addressInput.vue";
-
 export default {
   data() {
     return {

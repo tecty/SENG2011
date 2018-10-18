@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import AppHome from "@/views/AppHome.vue";
 import { isLogin } from "@/utils/auth";
+import event from "./event";
 import post from "./post";
 import bid from "./bid";
 
@@ -76,6 +77,7 @@ var routeLists = [
 ];
 
 // acquire the routes sotre in seperate files
+routeLists.push(...event);
 routeLists.push(...post);
 routeLists.push(...bid);
 

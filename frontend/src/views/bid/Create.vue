@@ -2,7 +2,6 @@
   <v-container>
     <v-flex xs12 sm6 offset-sm3>
       <!-- card  for the detail of the post -->
-      <post-detail-card :post="post" />
       <v-card>
         <!-- cards of bids -->
         <v-card>
@@ -22,14 +21,13 @@
             </form>
           </v-card>
         </div>
-        </v-card>
+      </v-card>
     </v-flex>
   </v-container>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
-import PostDetailCard from "@/components/PostDetailCard";
 import BidCard from "@/components/BidCard";
 export default {
   data() {
@@ -46,7 +44,8 @@ export default {
   computed: mapState(["api_state"]),
   mounted() {
     this.$store.dispatch("requireExtraParams");
-    this.$store.dispatch("refreshAll")
+    this.$store
+      .dispatch("refreshAll")
       .then(() =>
         this.$store.dispatch("getPostById", this.$route.params.postId)
       )
@@ -60,14 +59,13 @@ export default {
       this.$validator.validateAll().then(valid => {
         if (valid) {
           var data = {
-            post: this.$route.params.postId - 1,
+            post: this.$route.params.postId,
             offer: this.price,
             message: this.message
           };
           this.placeBid(data)
             .then(() => {
-              this.refreshPosts().then(result => {
-              });
+              this.refreshPosts().then(result => {});
             })
             .catch(err => {
               this.error = "import is not correct";
@@ -77,7 +75,6 @@ export default {
     }
   },
   components: {
-    PostDetailCard,
     BidCard
   },
   $_veeValidate: {

@@ -158,6 +158,18 @@ export default new Vuex.Store({
       let ret = await axios.post("events/", data);
       commit("API_FINISHED");
       return ret;
+    },
+    async chooseBidById({ commit }, postId, bidId) {
+      commit("API_WAITING");
+      let ret = await axios.post(`posts/${postId}/choose/`, { id: bidId });
+      commit("API_FINISHED");
+      return ret;
+    },
+    async deleteBidById({ commit }, bidId) {
+      commit("API_WAITING");
+      let ret = await axios.delete(`bids/${bidId}`);
+      commit("API_FINISHED");
+      return ret;
     }
   }
 });

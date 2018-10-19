@@ -1,5 +1,4 @@
 <template>
-
   <v-layout row wrap>
     <v-flex xs12>
       <v-card color="blue-grey darken-2" class="white--text">
@@ -27,7 +26,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   // the data of this post
   props: ["bid", "post"],
@@ -40,31 +39,16 @@ export default {
     })
   },
   methods: {
+    ...mapActions(['chooseBidById', 'deleteBidById']),
     chooseBid() {
-      axios
-        .post("posts/" + this.post.id + "/choose/", { id: this.bid.id })
-        .then(response => {
-          // JSON responses are automatically parsed.
-          console.log(response);
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.log(error);
-          console.log(error.response);
-        });
+      this.chooseBidById(this.post.id, this.bid.id).then(() => {
+        this.$state.dispatch('refreshAll');
+      });
     },
     deleteBid() {
-      axios
-        .delete("bids/" + this.bid.id + "/")
-        .then(response => {
-          // JSON responses are automatically parsed.
-          console.log(response);
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.log(error);
-          console.log(error.response);
-        });
+      this.deleteBidById(this.bid.id).then(()=>{
+        this.$state.dispatch('refreshAll')
+      });
     }
   }
 };

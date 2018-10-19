@@ -23,13 +23,12 @@
           </v-card>
         </div>
         </v-card>
-        
     </v-flex>
   </v-container>
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 import PostDetailCard from "@/components/PostDetailCard";
 import BidCard from "@/components/BidCard";
 export default {
@@ -47,14 +46,12 @@ export default {
   computed: mapState(["api_state"]),
   mounted() {
     this.$store.dispatch("requireExtraParams");
-    this.$store
-      .dispatch("refreshAll")
+    this.$store.dispatch("refreshAll")
       .then(() =>
         this.$store.dispatch("getPostById", this.$route.params.postId)
       )
       .then(res => {
         this.post = res;
-        console.log(this.post);
       });
   },
   methods: {
@@ -67,17 +64,13 @@ export default {
             offer: this.price,
             message: this.message
           };
-          console.log(data);
-          console.log(data.post);
           this.placeBid(data)
-            .then(response => {
+            .then(() => {
               this.refreshPosts().then(result => {
-                console.log(result);
               });
             })
             .catch(err => {
               this.error = "import is not correct";
-              console.log(err);
             });
         }
       });

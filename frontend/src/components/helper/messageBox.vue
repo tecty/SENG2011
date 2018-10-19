@@ -22,6 +22,6 @@ export default {
   props: ["msg"],
   data() {
     return {};
-  },
+  }
 };
 </script>

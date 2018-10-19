@@ -18,7 +18,7 @@
 <script>
 import Places from "vue-places";
 export default {
-  props:['hint'],
+  props: ["hint"],
   data() {
     return {
       form: {

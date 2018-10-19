@@ -60,27 +60,27 @@ export default {
     };
   },
   computed: mapState({
-    api_state:"api_state",
-    currUser: state=> state.username,
+    api_state: "api_state",
+    currUser: state => state.username
   }),
   methods: {
-    ...mapActions([ "refreshAll","getPostById"]),
-    canBid(){
+    ...mapActions(["refreshAll", "getPostById"]),
+    canBid() {
       return (
-        this.api_state=="READY" && 
+        this.api_state == "READY" &&
         this.post.event.owner.username != this.currUser &&
-        this.post.state == 'BD'
+        this.post.state == "BD"
       );
     },
-    refreshContent(){
+    refreshContent() {
       this.refreshAll()
-      .then(()=> this.getPostById(this.$route.params.postId))
-      .then((post) => {
-        // assign the new post object 
-        this.post = post;
-        // declear the page is re-rendered 
-        this.$store.commit('API_READY')
-      });
+        .then(() => this.getPostById(this.$route.params.postId))
+        .then(post => {
+          // assign the new post object
+          this.post = post;
+          // declear the page is re-rendered
+          this.$store.commit("API_READY");
+        });
     }
   },
   mounted() {

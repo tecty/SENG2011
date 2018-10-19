@@ -16,23 +16,22 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from "vuex";
 
 export default {
-  props:['postId'],
-  data(){
-    return{
-      price:"",
-      message:"",
-      error:{},
-    }
+  props: ["postId"],
+  data() {
+    return {
+      price: "",
+      message: "",
+      error: {}
+    };
   },
-  computed:{
-  },
-  methods:{
+  computed: {},
+  methods: {
     ...mapActions(["placeBid"]),
     submit() {
-      this.$validator.validateAll().then(valid => {
+      this.$validator.validateAll().then(() => {
         var data = {
           post: this.$route.params.postId,
           offer: this.price,
@@ -46,9 +45,7 @@ export default {
             this.error = err;
           });
       });
-    },
-
+    }
   }
-
-}
+};
 </script>

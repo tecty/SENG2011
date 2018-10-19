@@ -1,34 +1,23 @@
 <template>
   <v-container>
-    <v-flex xs12 sm6 offset-sm3>
-      <!-- card  for the detail of the post -->
-      <v-card>
+    <v-layout>
+      <v-flex xs12 >
         <!-- cards of bids -->
-        <v-card>
-          <v-container fluid grid-list-lg>
-            <bid-card v-for="bid in post.bid_set" :key="bid.id" :bid="bid" :post="post"></bid-card>
-          </v-container>
-        </v-card>
-        <!-- card for making post -->
-        <div v-if="post.event.owner.username != currUser && post.state == 'BD'">
-          <v-card>
-            <form @submit.prevent>
-              <v-text-field v-validate="'required|decimal:3'" data-vv-name="price" v-model="price" label="Price" :error-messages="errors.collect('price')"
-                required></v-text-field>
-              <v-textarea v-model="message" v-validate="'required'" data-vv-name="message" label="Message" hint="Write Message to poster in your bid"
-                :error-messages="errors.collect('message')" required></v-textarea>
-              <v-btn type="submit" color="primary" @click="submit">Bid</v-btn>
-            </form>
-          </v-card>
+        <div v-for="bid in post.bid_set" :key="bid.id">
+          <bid-card :bid="bid" :post="post"></bid-card>
+          <br/>
         </div>
-      </v-card>
-    </v-flex>
+        <!-- card for bidding -->
+        <CreateCard v-if="canBid()"/>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
-import BidCard from "@/components/BidCard";
+import BidCard from "@/components/bid/BidCard";
+import CreateCard from "@/components/bid/CreateCard";
 export default {
   data() {
     return {
@@ -54,28 +43,16 @@ export default {
       });
   },
   methods: {
-    ...mapActions(["placeBid", "refreshPosts"]),
-    submit() {
-      this.$validator.validateAll().then(valid => {
-        if (valid) {
-          var data = {
-            post: this.$route.params.postId,
-            offer: this.price,
-            message: this.message
-          };
-          this.placeBid(data)
-            .then(() => {
-              this.refreshPosts().then(result => {});
-            })
-            .catch(err => {
-              this.error = "import is not correct";
-            });
-        }
-      });
-    }
+    ...mapActions([ "refreshPosts"]),
+    canBid:() => (
+      true || 
+      this.post.event.owner.username != currUser && 
+      this.post.state == 'BD'
+    )
   },
   components: {
-    BidCard
+    BidCard,
+    CreateCard
   },
   $_veeValidate: {
     validator: "new"

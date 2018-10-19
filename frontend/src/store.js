@@ -167,7 +167,8 @@ export default new Vuex.Store({
     },
     async deleteBidById({ commit }, bidId) {
       commit("API_WAITING");
-      let ret = await axios.delete(`bids/${bidId}`);
+      // send the actual delete
+      let ret = await axios.delete(`bids/${bidId}/`);
       commit("API_FINISHED");
       return ret;
     }

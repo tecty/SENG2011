@@ -41,14 +41,10 @@ export default {
   methods: {
     ...mapActions(["chooseBidById", "deleteBidById"]),
     chooseBid() {
-      this.chooseBidById(this.post.id, this.bid.id).then(() => {
-        this.$state.dispatch("refreshAll");
-      });
+      this.chooseBidById(this.post.id, this.bid.id);
     },
     deleteBid() {
-      this.deleteBidById(this.bid.id).then(() => {
-        this.$state.dispatch("refreshAll");
-      });
+      this.deleteBidById(this.bid.id);
     }
   }
 };

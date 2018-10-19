@@ -61,7 +61,7 @@
 </template>
 
 <script>
-// TODO: remove axios 
+// TODO: remove axios
 import axios from "axios";
 import addr from "@/components/helper/addressInput.vue";
 export default {
@@ -80,7 +80,7 @@ export default {
         time11: "03:30",
         menu11: false
       },
-      // TODO: may be antoher model 
+      // TODO: may be antoher model
       snackbar: false,
       snackbarColor: "error",
       snackText: "Error You must complete all fields with *"

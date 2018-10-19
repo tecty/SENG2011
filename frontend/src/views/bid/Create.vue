@@ -1,16 +1,6 @@
 <template>
   <v-container>
-    <v-layout>
-      <v-flex xs12 >
-        <!-- cards of bids -->
-        <div v-for="bid in post.bid_set" :key="bid.id">
-          <bid-card :bid="bid" :post="post"></bid-card>
-          <br/>
-        </div>
-        <!-- card for bidding -->
-        <CreateCard v-if="canBid()"/>
-      </v-flex>
-    </v-layout>
+
   </v-container>
 </template>
 
@@ -23,14 +13,13 @@ export default {
     return {
       // require a valid function.
       // here just for silence the error
-      message: "",
-      price: "",
-      error: "",
-      currUser: localStorage.getItem("username"),
       post: {}
     };
   },
-  computed: mapState(["api_state"]),
+  computed: mapState({
+    "api_state": 'api_state',
+    currUser: state => state.username,
+  }),
   mounted() {
     this.$store.dispatch("requireExtraParams");
     this.$store

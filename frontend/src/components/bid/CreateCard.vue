@@ -5,7 +5,9 @@
         <v-text-field v-validate="'required|decimal:3'" data-vv-name="price" 
           v-model="price" label="Price"
           :error-messages="errors.collect('price')" required />
-        <v-textarea v-model="message" v-validate="'required'" data-vv-name="message" label="Message" hint="Write Message to poster in your bid"
+        <v-textarea v-model="message" v-validate="'required'" 
+          data-vv-name="message" label="Message" 
+          hint="Leave a message to help you win the bid."
           :error-messages="errors.collect('message')" required />        
         <v-btn type="submit" color="success" @click="submit">Bid</v-btn>
       </form>
@@ -14,7 +16,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   props:['postId'],
@@ -24,6 +26,8 @@ export default {
       message:"",
       error:{},
     }
+  },
+  computed:{
   },
   methods:{
     ...mapActions(["placeBid"]),

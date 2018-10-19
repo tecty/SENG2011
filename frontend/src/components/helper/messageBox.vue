@@ -12,8 +12,8 @@
           <v-btn flat dark>Reply</v-btn>
         </v-card-actions>
       </v-card>
+      <br>
     </v-flex>
-   
   </v-layout>
 </template>
 

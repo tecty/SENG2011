@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="criteria.length > 0">
     <h3 class="headline primary--text ">Extra Requirements</h3>
     <div v-for="item in showParms" :key="item">
       {{ item.key }}: {{ item.value }}

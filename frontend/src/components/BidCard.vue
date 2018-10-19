@@ -34,9 +34,9 @@ export default {
   data() {
     return {};
   },
-  computed:{
+  computed: {
     ...mapState({
-      currUser: 'username'
+      currUser: "username"
     })
   },
   methods: {

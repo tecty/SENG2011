@@ -21,11 +21,11 @@
 
 <script>
 import postCard from "@/components/post/Card";
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 export default {
-  computed: mapState(['posts','api_state']),
+  computed: mapState(["posts", "api_state"]),
   mounted() {
-    // fetch the latest posts 
+    // fetch the latest posts
     this.$store.dispatch("refreshAll");
   },
   components: {

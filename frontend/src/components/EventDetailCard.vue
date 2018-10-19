@@ -11,7 +11,6 @@
             <span>Bid will closes in: {{event.bidClosingTime}}</span>
           </v-card-text>
         </v-card-title>
-
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn flat color="orange">Comment</v-btn>

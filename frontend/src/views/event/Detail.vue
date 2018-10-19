@@ -5,15 +5,20 @@
       <h3 class="display-1 primary--text">
         <span class="grey--text">#{{ event.id }}</span> {{event.title}}
       </h3>
+      <h5 class="headline primary--text ">Owner:</h5>
+      <p>{{ event.owner.username }}</p>
       <h5 class="headline primary--text ">
         Location
-      </h5>{{event.location.address}} 
+      </h5>
+      <p>{{event.location.address}}</p>
       <h5 class="headline primary--text ">
         Event Time
-      </h5>{{event.eventTime}} 
+      </h5>
+      <p>{{event.eventTime}}</p>
       <h5 class="headline primary--text ">
         Bid Closing Time
-      </h5>{{event.bidClosingTime}} 
+      </h5>
+      <p>{{event.bidClosingTime}}</p>
     </div>
     <div class="text-xs-center" v-else>
         <v-progress-circular indeterminate color="primary" />

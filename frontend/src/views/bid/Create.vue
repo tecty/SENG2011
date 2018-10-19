@@ -1,76 +1,47 @@
 <template>
   <v-container>
-    <v-flex xs12 sm6 offset-sm3>
-      <!-- card  for the detail of the post -->
-      <post-detail-card :post="post" />
-      <v-card>
-        <!-- cards of bids -->
-        <v-card>
-          <v-container fluid grid-list-lg>
-            <bid-card v-for="bid in post.bid_set" :key="bid.id" :bid="bid"></bid-card>
-          </v-container>
-        </v-card>
-        <!-- card for making post -->
-        <v-card>
-          <form @submit.prevent="submit">
-            <v-text-field v-validate="'required|decimal:3'" data-vv-name="price" v-model="price" label="Price" :error-messages="errors.collect('price')"
-              required></v-text-field>
-            <v-textarea v-model="message" v-validate="'required'" data-vv-name="message" label="Message" hint="Write Message to poster in your bid"
-              :error-messages="errors.collect('message')" required></v-textarea>
-            <v-btn type="submit" color="primary" @click="submit">Bid</v-btn>
-          </form>
-        </v-card>
-      </v-card>
-    </v-flex>
+
   </v-container>
 </template>
 
 <script>
-import { mapActions } from "vuex";
-import PostDetailCard from "@/components/PostDetailCard";
-import BidCard from "@/components/BidCard";
+import { mapActions, mapState } from "vuex";
+import BidCard from "@/components/bid/BidCard";
+import CreateCard from "@/components/bid/CreateCard";
 export default {
   data() {
     return {
       // require a valid function.
       // here just for silence the error
-      message: "",
-      price: "",
-      error: ""
+      post: {}
     };
   },
-  computed: {
-    post: function() {
-      return this.$store.state.posts[this.$route.params.postId - 1];
-    }
+  computed: mapState({
+    "api_state": 'api_state',
+    currUser: state => state.username,
+  }),
+  mounted() {
+    this.$store.dispatch("requireExtraParams");
+    this.$store
+      .dispatch("refreshAll")
+      .then(() =>
+        this.$store.dispatch("getPostById", this.$route.params.postId)
+      )
+      .then(res => {
+        this.post = res;
+      });
   },
   methods: {
-    ...mapActions(["placeBid"]),
-    submit() {
-      this.$validator.validateAll().then(valid => {
-        if (valid) {
-          var data = {
-            post: this.$route.params.postId,
-            offer: this.price,
-            message: this.message
-          };
-          console.log(data);
-          console.log(this.$route.params.postId);
-          this.placeBid(data)
-            .then(() => {
-              this.$router.next("/");
-            })
-            .catch(err => {
-              this.error = "import is not correct";
-              console.log(err);
-            });
-        }
-      });
-    }
+    ...mapActions([ "refreshPosts"]),
+    canBid:() => (
+      true || 
+      this.post.event.owner.username != currUser && 
+      this.post.state == 'BD'
+    )
   },
   components: {
-    PostDetailCard,
-    BidCard
+    BidCard,
+    CreateCard
   },
   $_veeValidate: {
     validator: "new"

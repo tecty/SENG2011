@@ -31,6 +31,9 @@ export default new Vuex.Store({
     API_FINISHED: state => {
       state.api_state = "";
     },
+    API_READY: state => {
+      state.api_state = "READY";
+    },
     ADD_TOKEN: (state, token) => {
       // store this token to local storage
       localStorage.setItem("token", token);
@@ -127,13 +130,34 @@ export default new Vuex.Store({
     async getPostById({ state }, id) {
       return state.posts.find(el => el.id == id);
     },
+    async getEventById({ state }, id) {
+      return state.events.find(el => el.id == id);
+    },
     async requireExtraParams({ state, commit }) {
       if (state.extraParameter.length == 0) {
-        let ret = await axios.get("http://localhost:8000/api-v0/Parameters/");
+        let ret = await axios.get("Parameters/");
         commit("SET_EXTRA_PARAMS", ret.data);
         return ret;
       }
       return null;
+    },
+    async createPost({ commit }, data) {
+      commit("API_WAITING");
+      let ret = await axios.post("posts/", data);
+      commit("API_FINISHED");
+      return ret;
+    },
+    async createEvent({ commit }, data) {
+      commit("API_WAITING");
+      let ret = await axios.post("events/", data);
+      commit("API_FINISHED");
+      return ret;
+    },
+    async createMsg({ commit }, data) {
+      commit("API_WAITING");
+      let ret = await axios.post("events/", data);
+      commit("API_FINISHED");
+      return ret;
     }
   }
 });

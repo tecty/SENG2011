@@ -151,10 +151,8 @@ export default new Vuex.Store({
       commit("API_FINISHED");
       return ret;
     },
-    async createMsg({ commit }, data) {
-      commit("API_WAITING");
-      let ret = await axios.post("events/", data);
-      commit("API_FINISHED");
+    async createMsg(store, data) {
+      let ret = await axios.post("msgs/", data);
       return ret;
     },
     async chooseBidById({ commit }, postId, bidId) {

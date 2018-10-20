@@ -37,11 +37,13 @@ _axios.interceptors.request.use(
 // Add a response interceptor
 _axios.interceptors.response.use(
   function(response) {
+    console.log("imhere");
     // Do something with response data
     return response;
   },
   function(error) {
     // Do something with response error
+    console.log("imhere");
     return Promise.reject(error);
   }
 );

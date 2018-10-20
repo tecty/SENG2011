@@ -1,8 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-// import api from "./store/api"
-// import auth from "./store/auth"
 import { getToken, getUsername } from "./utils/auth";
 import moment from "moment";
 Vue.use(Vuex);

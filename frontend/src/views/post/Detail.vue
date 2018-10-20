@@ -36,11 +36,13 @@
         </h5>
         <!-- cards of bids -->
         <div v-for="bid in post.bid_set" :key="bid.id">
-          <bid-card :bid="bid" :post="post"></bid-card>
+          <bid-card :bid="bid" :post="post" 
+            @requireRefresh="()=> refreshContent()" />
           <br/>
         </div>
         <!-- card for bidding -->
-        <CreateCard v-if="canBid()" :postId="post.id"/>
+        <CreateCard v-if="canBid()" :postId="post.id" 
+        @requireRefresh="()=> refreshContent()" />
       </v-flex>
     </v-layout>
   </v-container>

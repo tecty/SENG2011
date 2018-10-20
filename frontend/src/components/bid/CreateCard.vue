@@ -39,7 +39,7 @@ export default {
         };
         this.placeBid(data)
           .then(() => {
-            // this.refreshPosts().then(result => {});
+            this.$emit("requireRefresh");
           })
           .catch(err => {
             this.error = err;

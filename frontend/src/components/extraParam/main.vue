@@ -29,7 +29,7 @@ export default {
       // bind the new ids array to the input event
       this.$emit(
         "input",
-        // i don't know why i can't use getter here. 
+        // i don't know why i can't use getter here.
         this.$store.state.extraParam.selected.filter(el => el != undefined)
       );
     }

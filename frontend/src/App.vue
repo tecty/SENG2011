@@ -15,18 +15,16 @@
             </v-flex>
           </v-layout>
           <v-divider v-else-if="item.divider" :key="i" dark class="my-3"></v-divider>
-          <router-link :to="item.href"  v-else :key="i">
-            <v-list-tile>
-                <v-list-tile-action>
-                  <v-icon>{{ item.icon }}</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="grey--text">
-                    {{ item.text }}
-                  </v-list-tile-title>
-                </v-list-tile-content>
-            </v-list-tile>
-          </router-link>
+          <v-list-tile :to="item.href" v-else :key="i">
+            <v-list-tile-action>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title >
+                {{ item.text }}
+              </v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
         </template>
       </v-list>
     </v-navigation-drawer>
@@ -37,8 +35,8 @@
         <v-toolbar-title class="black--text">PartyWhip</v-toolbar-title>
       </router-link>
       <v-spacer />
-      <v-btn v-if="!token" to="login" flat>Login</v-btn>
-      <v-btn v-else @click="logoutWrapper" flat>Logout</v-btn>
+      <v-btn v-if="!username" to="login" flat>Login</v-btn>
+      <v-btn v-else @click="logout" flat>Logout</v-btn>
     </v-toolbar>
     <!-- main content -->
     <v-content>
@@ -48,37 +46,45 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        drawer: null,
-        items: [
-          {
-            icon: "home",
-            text: "Home",
-            href: "/"
-          },
-          { divider: true },
-          {
-            icon: "restaurant",
-            text: "Event",
-            href: "/event"
-          },
-          {
-            icon: "restaurant",
-            text: "Post",
-            href: "/post"
-          }
-        ],
-      }
-    }
+import { mapState, mapActions } from "vuex";
+export default {
+  data() {
+    return {
+      drawer: null,
+      clipped: null,
+      items: [
+        {
+          icon: "home",
+          text: "Home",
+          href: "/"
+        },
+        { divider: true },
+        {
+          icon: "restaurant",
+          text: "Event",
+          href: "/event"
+        },
+        {
+          icon: "restaurant",
+          text: "Post",
+          href: "/post"
+        }
+      ]
+    };
+  },
+  computed: {
+    ...mapState(["username"])
+  },
+  methods: {
+    ...mapActions(["logout"])
   }
+};
 </script>
 
 <style>
-  a {
-    color: black;
-    /* remove the underline in link */
-    text-decoration: none;
-  }
+a {
+  color: black;
+  /* remove the underline in link */
+  text-decoration: none;
+}
 </style>

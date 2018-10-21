@@ -12,7 +12,8 @@ const s = {
     },
     ADD_SELECTED: (state, data) => {
       state.selected[data.index] = data.id;
-    }
+    },
+    SET_SELECTED: (state, selected) => (state.selected = selected)
   },
   actions: {
     async requireExtraParams({ state, commit }) {

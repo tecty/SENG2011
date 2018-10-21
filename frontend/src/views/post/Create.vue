@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import extraParamSelector from '@/components/extraParam/main.vue'
+import extraParamSelector from "@/components/extraParam/main.vue";
 import { mapState } from "vuex";
 export default {
   data() {
@@ -109,6 +109,5 @@ export default {
   components: {
     extraParamSelector
   }
-
 };
 </script>

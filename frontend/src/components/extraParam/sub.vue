@@ -16,48 +16,47 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapState, mapMutations } from "vuex";
 
 export default {
-  props:['index'],
-  data(){
+  props: ["index"],
+  data() {
     return {
-      key:"",
-      id:"",
-    }
+      key: "",
+      id: ""
+    };
   },
   methods: {
-    ...mapMutations(['ADD_SELECTED']),
-    declearChange(){
-      // add this selected id 
+    ...mapMutations(["ADD_SELECTED"]),
+    declearChange() {
+      // add this selected id
       this.ADD_SELECTED({
         index: this.index,
         id: this.id
       });
-      // emit a changed event 
-      this.$emit('change');
+      // emit a changed event
+      this.$emit("change");
     }
   },
-  computed:{
+  computed: {
     ...mapState({
-      eps: (state)=> (state.extraParam.extraParameter),
-      keyList: (state)=> {
+      eps: state => state.extraParam.extraParameter,
+      keyList: state => {
         return Object.keys(state.extraParam.extraParameter);
-      },
+      }
     }),
-    valList(){
-      if (this.key){
+    valList() {
+      if (this.key) {
         return this.eps[this.key];
       }
-      return []
+      return [];
     }
   },
-  mounted(){
-    this.$store.dispatch('requireExtraParams');
+  mounted() {
+    this.$store.dispatch("requireExtraParams");
   }
-}
+};
 </script>
 
 <style>
-
 </style>

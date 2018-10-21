@@ -60,7 +60,7 @@ export default {
         },
         { divider: true },
         {
-          icon: "restaurant",
+          icon: "group",
           text: "Event",
           href: "/event"
         },

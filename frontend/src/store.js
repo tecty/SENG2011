@@ -152,7 +152,7 @@ export default new Vuex.Store({
       return ret;
     },
     async createMsg(store, data) {
-      let ret = await axios.post("msgs/", data);
+      let ret = await axios.post("msg/", data);
       return ret;
     },
     async chooseBidById({ commit }, postId, bidId) {

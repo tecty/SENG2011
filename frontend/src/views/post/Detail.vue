@@ -12,9 +12,9 @@
       <h5 class="headline primary--text ">Issuer:</h5>
       <p>{{ post.event.owner.username }}</p>
       <h5 class="headline primary--text ">Event Time:</h5>
-      <p>{{ post.event.eventTime }}</p>
+      <p>{{ post.event.eventTime | showDateTime }}</p>
       <h5 class="headline primary--text ">Bid End:</h5>
-      <p>{{ post.event.bidClosingTime }}</p>
+      <p>{{ post.event.bidClosingTime | showDateTime }}</p>
       <h5 class="headline primary--text ">
         peopleCount
       </h5>
@@ -27,7 +27,8 @@
       <h5 class="headline primary--text ">
         Message
       </h5>
-      <msgBox></msgBox>
+      <msgBox :msg="post.msg" @requireRefresh="()=> {
+        refreshContent()}" />
     </div>
     <v-layout>
       <v-flex xs12 >
@@ -36,11 +37,13 @@
         </h5>
         <!-- cards of bids -->
         <div v-for="bid in post.bid_set" :key="bid.id">
-          <bid-card :bid="bid" :post="post"></bid-card>
+          <bid-card :bid="bid" :post="post" 
+            @requireRefresh="()=> refreshContent()" />
           <br/>
         </div>
         <!-- card for bidding -->
-        <CreateCard v-if="canBid()" :postId="post.id"/>
+        <CreateCard v-if="canBid()" :postId="post.id" 
+        @requireRefresh="()=> refreshContent()" />
       </v-flex>
     </v-layout>
   </v-container>
@@ -60,27 +63,27 @@ export default {
     };
   },
   computed: mapState({
-    api_state:"api_state",
-    currUser: state=> state.username,
+    api_state: "api_state",
+    currUser: state => state.username
   }),
   methods: {
-    ...mapActions([ "refreshAll","getPostById"]),
-    canBid(){
+    ...mapActions(["refreshAll", "getPostById"]),
+    canBid() {
       return (
-        this.api_state=="READY" && 
+        this.api_state == "READY" &&
         this.post.event.owner.username != this.currUser &&
-        this.post.state == 'BD'
+        this.post.state == "BD"
       );
     },
-    refreshContent(){
+    refreshContent() {
       this.refreshAll()
-      .then(()=> this.getPostById(this.$route.params.postId))
-      .then((post) => {
-        // assign the new post object 
-        this.post = post;
-        // declear the page is re-rendered 
-        this.$store.commit('API_READY')
-      });
+        .then(() => this.getPostById(this.$route.params.postId))
+        .then(post => {
+          // assign the new post object
+          this.post = post;
+          // declear the page is re-rendered
+          this.$store.commit("API_READY");
+        });
     }
   },
   mounted() {

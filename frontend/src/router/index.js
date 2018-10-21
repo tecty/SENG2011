@@ -4,7 +4,6 @@ import AppHome from "@/views/AppHome.vue";
 import { isLogin } from "@/utils/auth";
 import event from "./event";
 import post from "./post";
-import bid from "./bid";
 
 Vue.use(Router);
 
@@ -79,7 +78,6 @@ var routeLists = [
 // acquire the routes sotre in seperate files
 routeLists.push(...event);
 routeLists.push(...post);
-routeLists.push(...bid);
 
 export default new Router({
   mode: "history",

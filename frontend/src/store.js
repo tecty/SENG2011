@@ -1,11 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-// import api from "./store/api"
-// import auth from "./store/auth"
 import { getToken, getUsername } from "./utils/auth";
-import moment from "moment";
 Vue.use(Vuex);
+import extraParam from "./store/extraParam.js";
 
 export default new Vuex.Store({
   state: {
@@ -16,8 +14,7 @@ export default new Vuex.Store({
     error: "",
     data: "",
     posts: [],
-    events: [],
-    extraParameter: []
+    events: []
   },
   mutations: {
     API_ERROR: (state, error_type, error) => {
@@ -59,8 +56,7 @@ export default new Vuex.Store({
     },
     SET_EVENTS: (state, events) => {
       state.events = events;
-    },
-    SET_EXTRA_PARAMS: (state, ep) => (state.extraParameter = ep)
+    }
   },
   actions: {
     async loginByCredential({ commit, state }, credential) {
@@ -101,10 +97,6 @@ export default new Vuex.Store({
     },
     async refreshEvents({ commit }) {
       const res = await axios.get("events/");
-      res.data.forEach(e => {
-        e.eventTime = moment(e.eventTime).format("YYYY MMM DD h:mm");
-        e.bidClosingTime = moment(e.bidClosingTime).format("YYYY MMM DD h:mm");
-      });
       commit("SET_EVENTS", res.data);
       return res;
     },
@@ -130,17 +122,13 @@ export default new Vuex.Store({
     async getPostById({ state }, id) {
       return state.posts.find(el => el.id == id);
     },
-    async getEventById({ state }, id) {
-      return state.events.find(el => el.id == id);
+    async getEventById({ commit }, id) {
+      commit("API_WAITING");
+      let ret = await axios.get(`events/${id}/`);
+      commit("API_FINISHED");
+      return ret;
     },
-    async requireExtraParams({ state, commit }) {
-      if (state.extraParameter.length == 0) {
-        let ret = await axios.get("Parameters/");
-        commit("SET_EXTRA_PARAMS", ret.data);
-        return ret;
-      }
-      return null;
-    },
+
     async createPost({ commit }, data) {
       commit("API_WAITING");
       let ret = await axios.post("posts/", data);
@@ -153,10 +141,14 @@ export default new Vuex.Store({
       commit("API_FINISHED");
       return ret;
     },
-    async createMsg({ commit }, data) {
+    async editEvent({ commit }, data) {
       commit("API_WAITING");
-      let ret = await axios.post("events/", data);
+      let ret = await axios.put(`events/${data.id}/`, data);
       commit("API_FINISHED");
+      return ret;
+    },
+    async createMsg(store, data) {
+      let ret = await axios.post("msg/", data);
       return ret;
     },
     async chooseBidById({ commit }, postId, bidId) {
@@ -172,5 +164,8 @@ export default new Vuex.Store({
       commit("API_FINISHED");
       return ret;
     }
+  },
+  modules: {
+    extraParam: extraParam
   }
 });

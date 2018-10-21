@@ -9,6 +9,7 @@ import store from "./store";
 import "./registerServiceWorker";
 import { isLogin } from "./utils/auth";
 Vue.config.productionTip = false;
+import moment from "moment";
 
 // router guard
 router.beforeEach((to, from, next) => {
@@ -48,6 +49,11 @@ Vue.filter("stateToText", s => {
       return "Unknown" + s;
   }
 });
+
+Vue.filter("showDateTime", s => {
+  return moment(s).format("YYYY MMM DD h:mm");
+});
+
 new Vue({
   router,
   store,

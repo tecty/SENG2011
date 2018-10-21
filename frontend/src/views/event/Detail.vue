@@ -14,11 +14,11 @@
       <h5 class="headline primary--text ">
         Event Time
       </h5>
-      <p>{{event.eventTime}}</p>
+      <p>{{event.eventTime | showDateTime }}</p>
       <h5 class="headline primary--text ">
         Bid Closing Time
       </h5>
-      <p>{{event.bidClosingTime}}</p>
+      <p>{{event.bidClosingTime | showDateTime }}</p>
     </div>
     <div class="text-xs-center" v-else>
         <v-progress-circular indeterminate color="primary" />

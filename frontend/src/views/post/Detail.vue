@@ -12,9 +12,9 @@
       <h5 class="headline primary--text ">Issuer:</h5>
       <p>{{ post.event.owner.username }}</p>
       <h5 class="headline primary--text ">Event Time:</h5>
-      <p>{{ post.event.eventTime }}</p>
+      <p>{{ post.event.eventTime | showDateTime }}</p>
       <h5 class="headline primary--text ">Bid End:</h5>
-      <p>{{ post.event.bidClosingTime }}</p>
+      <p>{{ post.event.bidClosingTime | showDateTime }}</p>
       <h5 class="headline primary--text ">
         peopleCount
       </h5>

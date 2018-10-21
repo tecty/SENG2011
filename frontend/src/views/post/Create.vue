@@ -30,10 +30,8 @@
             <v-text-field v-model="form.budget" label="Budget *" required></v-text-field>
           </v-flex>
           
-          <v-flex xs12>
-            <!-- the selection box of extraparams -->
-            <extraParamSelector />
-          </v-flex>
+          <!-- the selection box of extraparams -->
+          <extraParamSelector />
           <v-flex xs12 sm6 v-for="(item, index) in error" :key="index">
             {{index}} {{item}}
           </v-flex>

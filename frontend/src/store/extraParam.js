@@ -21,10 +21,11 @@ const s = {
           }
           // push a new object which will have the id and value paire.
           obj[el.key].push({
-            id: el.id,
-            value: el.value
+            value: el.id,
+            text: el.value
           });
         });
+        // push the treelike object into the vuex
         commit("SET_EXTRA_PARAMS", obj);
         return ret;
       }

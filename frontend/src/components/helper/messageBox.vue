@@ -46,9 +46,9 @@ export default {
       this.createMsg({
         parentMsg: this.msg.id,
         msg: this.replyMsg
-      }).then(()=> {
+      }).then(() => {
         console.log("emit at submit");
-        this.$emit("requireRefresh")
+        this.$emit("requireRefresh");
       });
     }
   }

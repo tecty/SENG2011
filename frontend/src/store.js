@@ -4,6 +4,7 @@ import axios from "axios";
 import { getToken, getUsername } from "./utils/auth";
 import moment from "moment";
 Vue.use(Vuex);
+import extraParam from "./store/extraParam.js";
 
 export default new Vuex.Store({
   state: {
@@ -14,8 +15,7 @@ export default new Vuex.Store({
     error: "",
     data: "",
     posts: [],
-    events: [],
-    extraParameter: []
+    events: []
   },
   mutations: {
     API_ERROR: (state, error_type, error) => {
@@ -57,8 +57,7 @@ export default new Vuex.Store({
     },
     SET_EVENTS: (state, events) => {
       state.events = events;
-    },
-    SET_EXTRA_PARAMS: (state, ep) => (state.extraParameter = ep)
+    }
   },
   actions: {
     async loginByCredential({ commit, state }, credential) {
@@ -131,14 +130,7 @@ export default new Vuex.Store({
     async getEventById({ state }, id) {
       return state.events.find(el => el.id == id);
     },
-    async requireExtraParams({ state, commit }) {
-      if (state.extraParameter.length == 0) {
-        let ret = await axios.get("Parameters/");
-        commit("SET_EXTRA_PARAMS", ret.data);
-        return ret;
-      }
-      return null;
-    },
+
     async createPost({ commit }, data) {
       commit("API_WAITING");
       let ret = await axios.post("posts/", data);
@@ -168,5 +160,8 @@ export default new Vuex.Store({
       commit("API_FINISHED");
       return ret;
     }
+  },
+  modules: {
+    extraParam: extraParam
   }
 });

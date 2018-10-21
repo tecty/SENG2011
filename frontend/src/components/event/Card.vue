@@ -31,7 +31,7 @@
         <v-list-tile-content>Location:</v-list-tile-content><br>
       </v-list-tile>
       <v-list-tile>
-        <v-list-tile-content >
+        <v-list-tile-content>
           {{ event.location.address }}
         </v-list-tile-content>
       </v-list-tile>

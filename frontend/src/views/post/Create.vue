@@ -2,11 +2,11 @@
   <v-container grid-list-xl >
     <v-form ref="form" @submit.prevent="submit">
         <v-layout wrap>
-          <v-flex xs11 sm5>
+          <v-flex xs12 sm6>
             <v-text-field v-model="form.title" 
               label="Title *" required />
           </v-flex>
-          <v-flex xs11 sm5>
+          <v-flex xs12 sm6>
             <v-select
               v-model="form.event"
               :items="events"
@@ -22,18 +22,19 @@
               </div>
             </v-textarea>
           </v-flex>
-          <v-flex xs11 sm5>
+          <v-flex xs12 sm6>
             <v-text-field v-model="form.peopleCount" 
               label="Number of people *" required />
           </v-flex>
-          <v-flex xs11 sm5>
+          <v-flex xs12 sm6>
             <v-text-field v-model="form.budget" label="Budget *" required></v-text-field>
           </v-flex>
-          <v-flex xs11 sm5>
-            <v-text-field v-model="form.title" 
-              label="Extra Requirement *" required />
+          
+          <v-flex xs12>
+            <!-- the selection box of extraparams -->
+            <extraParamSelector />
           </v-flex>
-          <v-flex xs11 sm5 v-for="(item, index) in error" :key="index">
+          <v-flex xs12 sm6 v-for="(item, index) in error" :key="index">
             {{index}} {{item}}
           </v-flex>
         </v-layout>
@@ -44,6 +45,7 @@
 </template>
 
 <script>
+import extraParamSelector from '@/components/extraParam/main.vue'
 import { mapState } from "vuex";
 export default {
   data() {
@@ -103,6 +105,10 @@ export default {
   mounted() {
     this.$store.dispatch("requireExtraParams");
     this.$store.dispatch("refreshEvents");
+  },
+  components: {
+    extraParamSelector
   }
+
 };
 </script>

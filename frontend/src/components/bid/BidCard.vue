@@ -8,7 +8,10 @@
           <span> offer ${{bid.offer}}</span>
         </v-card-title>
        <v-card-text>
-        <div>message : {{bid.msg.msg}}</div>
+        <msgCard :msg="bid.msg" 
+          @requireRefresh="()=> {
+            $emit('requireRefresh')
+          }"/>
        </v-card-text>
         <v-card-actions>
           <div v-if="post.event.owner.username == currUser && post.state == 'BD'">
@@ -26,6 +29,7 @@
 </template>
 
 <script>
+import msgCard from "@/components/helper/messageBox.vue";
 import { mapState, mapActions } from "vuex";
 export default {
   // the data of this post
@@ -50,6 +54,9 @@ export default {
         this.$emit("requireRefresh");
       });
     }
+  },
+  components: {
+    msgCard
   }
 };
 </script>

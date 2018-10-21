@@ -48,6 +48,7 @@ export default {
         msg: this.replyMsg
       }).then(() => {
         console.log("emit at submit");
+        this.isReply = false;
         this.$emit("requireRefresh");
       });
     }

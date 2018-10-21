@@ -61,9 +61,8 @@
 </template>
 
 <script>
-// TODO: remove axios
-import axios from "axios";
 import addr from "@/components/helper/addressInput.vue";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -87,35 +86,32 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["createEvent"]),
     submit() {
-      axios
-        .post("events/", {
-          title: this.form.title,
-          message: this.form.message,
-          eventId: 1, //testing use
-          location: this.form.location,
-          eventTime: this.form.date + "T" + this.form.time,
-          bidClosingTime: this.form.date10 + "T" + this.form.time11
+      this.createEvent({
+        title: this.form.title,
+        message: this.form.message,
+        eventId: 1, //testing use
+        location: this.form.location,
+        eventTime: this.form.date + "T" + this.form.time,
+        bidClosingTime: this.form.date10 + "T" + this.form.time11
+      })
+        .then(res => {
+          let eventId = res.data.id;
+          this.$router.push({
+            name: "EventDetail",
+            params: {
+              eventId: eventId
+            }
+          });
         })
-        // TODO: just a way to implement the snack bar
-        //        This will be moved to the main frame of the website
-        // .then(response => {
-        //   // JSON responses are automatically parsed.
-        //   this.snackbar = true;
-        //   this.snackbarColor = "success";
-        //   this.snackText = "Event has been successfully created";
-        //   this.events = response.data;
-        // })
-        .catch(error => {
-          if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            this.snackbar = true;
-            this.snackbarColor = "error";
-            this.snackText = "Error: " + JSON.stringify(error.response.data); // TODO improve error looking.
-          }
+        .catch(err => {
+          // TODO: just a way to implement the snack bar
+          this.snackbar = true;
+          this.snackbarColor = "error";
+          // TODO improve err looking.
+          this.snackText = "Error: " + JSON.stringify(err.response.data);
         });
-      // this.resetForm()
     }
   },
   components: {

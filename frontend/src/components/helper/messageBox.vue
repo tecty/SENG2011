@@ -8,9 +8,10 @@
             {{ msg.msg }}
           </div>
           <!-- these two reply button has different meaning -->
-          <form v-if="isReply" >
-
-          </form>
+          <v-form v-if="isReply" lazy-validation>
+            <v-text-field v-model="replyMsg" label="Message" required />
+            <v-btn flat color="primary" @click="submit">Reply</v-btn>
+          </v-form>
           <v-btn v-else flat color="primary" @click="()=>{isReply=true}" >Reply</v-btn>
         </v-card-media>
         <div v-for="msg in msg.sub_msg" :key="msg.id">
@@ -22,23 +23,24 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
 export default {
   name: "msgBox",
   props: ["msg"],
   data() {
     return {
-      // indicate the return box is expanded 
+      // indicate the return box is expanded
       isReply: false,
+      replyMsg: ""
     };
   },
-  methods:{
-    ...mapActions(['createMsg']),
-    reply(){
+  methods: {
+    ...mapActions(["createMsg"]),
+    submit() {
       this.createMsg({
-        parentMsg: msg.id, 
-        msg:this.from.msg
-      }).then(this.$emit('refreshRequired'));
+        parentMsg: this.msg.id,
+        msg: this.from.msg
+      }).then(this.$emit("refreshRequired"));
     }
   }
 };

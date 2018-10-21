@@ -1,28 +1,84 @@
 <template>
   <v-app>
-    <app-toolbar />
+    <!-- nav drawer -->
+    <v-navigation-drawer v-model="drawer" absolute temporary class="grey lighten-4">
+      <v-list class="grey lighten-4">
+        <template v-for="(item, i) in items">
+          <v-layout v-if="item.heading" :key="i" row align-center>
+            <v-flex xs6>
+              <v-subheader v-if="item.heading">
+                {{ item.heading }}
+              </v-subheader>
+            </v-flex>
+            <v-flex xs6 class="text-xs-right">
+              <v-btn small flat>edit</v-btn>
+            </v-flex>
+          </v-layout>
+          <v-divider v-else-if="item.divider" :key="i" dark class="my-3"></v-divider>
+          <router-link :to="item.href"  v-else :key="i">
+            <v-list-tile>
+                <v-list-tile-action>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="grey--text">
+                    {{ item.text }}
+                  </v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+          </router-link>
+        </template>
+      </v-list>
+    </v-navigation-drawer>
+    <!-- nav toolbar -->
+    <v-toolbar app :clipped-left="clipped">
+      <v-toolbar-side-icon @click.stop="drawer = !drawer" />
+      <router-link to="/">
+        <v-toolbar-title class="black--text">PartyWhip</v-toolbar-title>
+      </router-link>
+      <v-spacer />
+      <v-btn v-if="!token" to="login" flat>Login</v-btn>
+      <v-btn v-else @click="logoutWrapper" flat>Logout</v-btn>
+    </v-toolbar>
+    <!-- main content -->
     <v-content>
-      <router-view/>
+      <router-view />
     </v-content>
-    <v-footer app>
-      <span>SENG2011 PartyWhip &copy; 2018</span>
-    </v-footer>
-  </v-app>  
+  </v-app>
 </template>
 
-
 <script>
-import AppToolbar from "./components/AppToolbar.vue";
-export default {
-  name: "App",
-  components: { AppToolbar }
-};
+  export default {
+    data() {
+      return {
+        drawer: null,
+        items: [
+          {
+            icon: "home",
+            text: "Home",
+            href: "/"
+          },
+          { divider: true },
+          {
+            icon: "restaurant",
+            text: "Event",
+            href: "/event"
+          },
+          {
+            icon: "restaurant",
+            text: "Post",
+            href: "/post"
+          }
+        ],
+      }
+    }
+  }
 </script>
 
 <style>
-a {
-  color: black;
-  /* remove the underline in link */
-  text-decoration: none;
-}
+  a {
+    color: black;
+    /* remove the underline in link */
+    text-decoration: none;
+  }
 </style>

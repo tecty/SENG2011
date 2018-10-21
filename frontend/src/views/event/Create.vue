@@ -1,6 +1,9 @@
 <template>
   <v-container grid-list-xl >
-    <v-form ref="form" @submit.prevent="submit">
+    <div v-if="api_state != 'READY'" class="text-xs-center">
+      <v-progress-circular indeterminate color="primary" />
+    </div>
+    <v-form ref="form" @submit.prevent="submit" v-else>
       <v-layout wrap>
         <v-flex xs12 sm6>
           <v-text-field v-model="form.title" label="Title *" required></v-text-field>
@@ -11,14 +14,8 @@
               // this property 
               form.location = loc;
             }
-          " hint="Where this event be held?"/>
-        <v-flex xs12>
-          <v-textarea v-model="form.message" color="teal">
-            <div slot="label">
-              Description
-            </div>
-          </v-textarea>
-        </v-flex>
+          " :address="form.location.address"  hint="Where this event be held?"/>
+
         <v-flex xs12>
           <dateTime v-model="form.eventTime" title="Event"/>
         </v-flex>
@@ -30,20 +27,19 @@
         </v-flex>
       </v-layout>
     </v-form>
-</v-container>
+  </v-container>
 </template>
 
 <script>
 import addr from "@/components/helper/addressInput.vue";
 import dateTime from "@/components/helper/dataTimePicker";
 
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
       form: {
         title: "",
-        message: "",
         location: {},
         eventTime: null,
         bidClosingTime: null
@@ -54,33 +50,60 @@ export default {
       snackText: "Error You must complete all fields with *"
     };
   },
+  computed: {
+    ...mapState(["api_state"]),
+    isEdit() {
+      return this.$route.name == "EventEdit";
+    }
+  },
   methods: {
-    ...mapActions(["createEvent"]),
+    ...mapActions(["createEvent", "editEvent"]),
     submit() {
-      this.createEvent({
-        title: this.form.title,
-        message: this.form.message,
-        eventId: 1, //testing use
-        location: this.form.location,
-        eventTime: this.eventTime,
-        bidClosingTime: this.bidClosingTime
-      })
-        .then(res => {
-          let eventId = res.data.id;
+      if (this.isEdit) {
+        this.editEvent(this.form).then(ret => {
           this.$router.push({
             name: "EventDetail",
             params: {
-              eventId: eventId
+              eventId: ret.data.id
             }
           });
-        })
-        .catch(err => {
-          // TODO: just a way to implement the snack bar
-          this.snackbar = true;
-          this.snackbarColor = "error";
-          // TODO improve err looking.
-          this.snackText = "Error: " + JSON.stringify(err.response.data);
         });
+      } else {
+        // create the event
+        this.createEvent({
+          title: this.form.title,
+          location: this.form.location,
+          eventTime: this.eventTime,
+          bidClosingTime: this.bidClosingTime
+        })
+          .then(res => {
+            let eventId = res.data.id;
+            this.$router.push({
+              name: "EventDetail",
+              params: {
+                eventId: eventId
+              }
+            });
+          })
+          .catch(err => {
+            // TODO: just a way to implement the snack bar
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            // TODO improve err looking.
+            this.snackText = "Error: " + JSON.stringify(err.response.data);
+          });
+      }
+    }
+  },
+  mounted() {
+    // assign the detail from vuex
+    if (this.isEdit) {
+      // handy event id fetch from route
+      let eventId = this.$route.params.eventId;
+      this.$store.dispatch("getEventById", eventId).then(res => {
+        this.form = res.data;
+        this.$store.commit("API_READY");
+      });
     }
   },
   components: {

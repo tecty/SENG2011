@@ -10,7 +10,8 @@
         lng: val.latlng.lng
       })
     }"
-    :options="{ countries: ['AU'] }">
+    :options="{ countries: ['AU'] }"
+  >
   </places>
 </template>
 
@@ -19,7 +20,7 @@
 <script>
 import Places from "vue-places";
 export default {
-  props: ["hint"],
+  props: ["hint", "address"],
   data() {
     return {
       form: {
@@ -32,6 +33,11 @@ export default {
   },
   components: {
     Places
+  },
+  mounted() {
+    if (this.address) {
+      this.form.country.label = this.address;
+    }
   }
 };
 </script>

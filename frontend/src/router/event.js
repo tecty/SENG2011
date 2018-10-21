@@ -14,5 +14,10 @@ export default [
     path: "/event/:eventId",
     name: "EventDetail",
     component: () => import("@/views/event/Detail.vue")
+  },
+  {
+    path: "/event/:eventId/edit",
+    name: "EventEdit",
+    component: () => import("@/views/event/Create.vue")
   }
 ];

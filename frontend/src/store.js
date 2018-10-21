@@ -122,8 +122,11 @@ export default new Vuex.Store({
     async getPostById({ state }, id) {
       return state.posts.find(el => el.id == id);
     },
-    async getEventById({ state }, id) {
-      return state.events.find(el => el.id == id);
+    async getEventById({ commit }, id) {
+      commit("API_WAITING");
+      let ret = await axios.get(`events/${id}/`);
+      commit("API_FINISHED");
+      return ret;
     },
 
     async createPost({ commit }, data) {
@@ -135,6 +138,12 @@ export default new Vuex.Store({
     async createEvent({ commit }, data) {
       commit("API_WAITING");
       let ret = await axios.post("events/", data);
+      commit("API_FINISHED");
+      return ret;
+    },
+    async editEvent({ commit }, data) {
+      commit("API_WAITING");
+      let ret = await axios.put(`events/${data.id}/`, data);
       commit("API_FINISHED");
       return ret;
     },

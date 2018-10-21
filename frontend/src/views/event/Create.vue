@@ -19,43 +19,52 @@
             </div>
           </v-textarea>
         </v-flex>
-
-        <v-flex xs12 sm6 md4>
-          <v-menu ref="menu" :close-on-content-click="false" v-model="form.menu" :nudge-right="40" :return-value.sync="form.date" lazy
-            transition="scale-transition" offset-y full-width min-width="290px">
-            <v-text-field slot="activator" v-model="form.date" label="Event Date *" prepend-icon="event" readonly required></v-text-field>
-            <v-date-picker v-model="form.date" no-title scrollable>
-              <v-spacer></v-spacer>
-              <v-btn flat color="primary" @click="$refs.menu.save(form.date)">OK</v-btn>
-            </v-date-picker>
-          </v-menu>
+        <v-flex xs12>
+          <v-layout row wrap>
+            <v-flex xs12 sm6 md4>
+              <v-menu ref="menu" :close-on-content-click="false" v-model="form.menu" :nudge-right="40" :return-value.sync="form.date" lazy
+                transition="scale-transition" offset-y full-width min-width="290px">
+                <v-text-field slot="activator" v-model="form.date" label="Event Date *" prepend-icon="event" readonly required></v-text-field>
+                <v-date-picker v-model="form.date" no-title scrollable>
+                  <v-spacer></v-spacer>
+                  <v-btn flat color="primary" @click="$refs.menu.save(form.date)">OK</v-btn>
+                </v-date-picker>
+              </v-menu>
+            </v-flex>
+            <v-flex xs12 sm6 md4>
+              <v-menu ref="menu2" :close-on-content-click="false" v-model="form.menu2" :nudge-right="40" :return-value.sync="form.time"
+                lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
+                <v-text-field slot="activator" v-model="form.time" label="Event Time *" prepend-icon="access_time" readonly required></v-text-field>
+                <v-time-picker v-if="form.menu2" v-model="form.time" @change="$refs.menu2.save(form.time)"></v-time-picker>
+              </v-menu>
+            </v-flex>
+          </v-layout>
         </v-flex>
-        <v-flex xs11 sm5>
-          <v-menu ref="menu2" :close-on-content-click="false" v-model="form.menu2" :nudge-right="40" :return-value.sync="form.time"
-            lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
-            <v-text-field slot="activator" v-model="form.time" label="Event Time *" prepend-icon="access_time" readonly required></v-text-field>
-            <v-time-picker v-if="form.menu2" v-model="form.time" @change="$refs.menu2.save(form.time)"></v-time-picker>
-          </v-menu>
+        <v-flex xs12>
+          <v-layout row wrap>
+            <v-flex xs12 sm6 md4>
+              <v-menu ref="menu10" :close-on-content-click="false" v-model="form.menu10" :nudge-right="40" :return-value.sync="form.date10"
+                lazy transition="scale-transition" offset-y full-width min-width="290px">
+                <v-text-field slot="activator" v-model="form.date10" label="Bid Closing Date *" prepend-icon="event" readonly required></v-text-field>
+                <v-date-picker v-model="form.date10" no-title scrollable>
+                  <v-spacer></v-spacer>
+                  <v-btn flat color="primary" @click="$refs.menu10.save(form.date10)">OK</v-btn>
+                </v-date-picker>
+              </v-menu>
+            </v-flex>
+            <v-flex xs12 sm6 md4>
+              <v-menu ref="menu11" :close-on-content-click="false" v-model="form.menu11" :nudge-right="40" :return-value.sync="form.time11"
+                lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
+                <v-text-field slot="activator" v-model="form.time11" label="Bid Closing Time *" prepend-icon="access_time" readonly required></v-text-field>
+                <v-time-picker v-if="form.menu11" v-model="form.time11" @change="$refs.menu11.save(form.time11)"></v-time-picker>
+              </v-menu>
+            </v-flex>
+          </v-layout>
         </v-flex>
-        <v-flex xs12 sm6 md4>
-          <v-menu ref="menu10" :close-on-content-click="false" v-model="form.menu10" :nudge-right="40" :return-value.sync="form.date10"
-            lazy transition="scale-transition" offset-y full-width min-width="290px">
-            <v-text-field slot="activator" v-model="form.date10" label="Bid Closing Date *" prepend-icon="event" readonly required></v-text-field>
-            <v-date-picker v-model="form.date10" no-title scrollable>
-              <v-spacer></v-spacer>
-              <v-btn flat color="primary" @click="$refs.menu10.save(form.date10)">OK</v-btn>
-            </v-date-picker>
-          </v-menu>
-        </v-flex>
-        <v-flex xs11 sm5>
-          <v-menu ref="menu11" :close-on-content-click="false" v-model="form.menu11" :nudge-right="40" :return-value.sync="form.time11"
-            lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
-            <v-text-field slot="activator" v-model="form.time11" label="Bid Closing Time *" prepend-icon="access_time" readonly required></v-text-field>
-            <v-time-picker v-if="form.menu11" v-model="form.time11" @change="$refs.menu11.save(form.time11)"></v-time-picker>
-          </v-menu>
+        <v-flex xs1 ma-0 pa-0>
+          <v-btn color="success" type="submit">Submit</v-btn>
         </v-flex>
       </v-layout>
-      <v-btn color="success" type="submit">Submit</v-btn>
     </v-form>
 </v-container>
 </template>
@@ -67,16 +76,16 @@ export default {
   data() {
     return {
       form: {
-        title: "test",
-        message: "test",
+        title: "",
+        message: "",
         location: {},
-        date: "2018-11-13",
+        date: "",
         menu: false,
-        time: "03:30",
+        time: null,
         menu2: false,
-        date10: "2018-11-12",
+        date10: "",
         menu10: false,
-        time11: "03:30",
+        time11: null,
         menu11: false
       },
       // TODO: may be antoher model

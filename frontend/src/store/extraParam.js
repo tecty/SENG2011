@@ -6,7 +6,13 @@ const s = {
     selected: []
   },
   mutations: {
-    SET_EXTRA_PARAMS: (state, ep) => (state.extraParameter = ep)
+    SET_EXTRA_PARAMS: (state, ep) => (state.extraParameter = ep),
+    CLEAR_SELECTED: state => {
+      state.selected = [];
+    },
+    ADD_SELECTED: (state, data) => {
+      state.selected[data.index] = data.id;
+    }
   },
   actions: {
     async requireExtraParams({ state, commit }) {

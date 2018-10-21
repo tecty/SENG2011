@@ -4,7 +4,7 @@
         <v-layout wrap>
           <v-flex xs12 sm6>
             <v-text-field v-model="form.title" 
-              label="Title *" required />
+              label="Title *" required autofocus/>
           </v-flex>
           <v-flex xs12 sm6>
             <v-select
@@ -29,14 +29,16 @@
           <v-flex xs12 sm6>
             <v-text-field v-model="form.budget" label="Budget *" required></v-text-field>
           </v-flex>
-          
-          <!-- the selection box of extraparams -->
-          <extraParamSelector />
+          <v-flex xs12>
+            <!-- the selection box of extraparams -->
+            {{form.extraParam}}
+            <extraParamSelector v-model="form.extraParam"/>
+          </v-flex>
           <v-flex xs12 sm6 v-for="(item, index) in error" :key="index">
             {{index}} {{item}}
           </v-flex>
+          <v-btn pa-0 color="primary" type="submit">Post</v-btn>
         </v-layout>
-        <v-btn color="primary" type="submit">Post</v-btn>
         <!-- <v-btn @click="resetForm">Clear</v-btn> -->
     </v-form>
   </v-container>

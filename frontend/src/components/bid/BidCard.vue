@@ -8,10 +8,7 @@
           <span> offer ${{bid.offer}}</span>
         </v-card-title>
        <v-card-text>
-        <msgCard :msg="bid.msg" 
-          @requireRefresh="()=> {
-            $emit('requireRefresh')
-          }"/>
+        <msgCard :msg="bid.msg" />
        </v-card-text>
         <v-card-actions>
           <div v-if="post.event.owner.username == currUser && post.state == 'BD'">

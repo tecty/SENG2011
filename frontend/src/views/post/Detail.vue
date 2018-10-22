@@ -27,8 +27,7 @@
       <h5 class="headline primary--text ">
         Message
       </h5>
-      <msgBox :msg="post.msg" @requireRefresh="()=> {
-        refreshContent()}" />
+      <msgBox :msg="post.msg" />
     </div>
     <v-layout>
       <v-flex xs12 >

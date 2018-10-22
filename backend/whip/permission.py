@@ -38,3 +38,16 @@ class IsAdminOrReadOnly(permissions.BasePermission):
             return True
         # else
         return False
+
+
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    message = "You're not the owner."
+    def has_object_permission(self, request, view,obj):
+        if obj.owner == request.user:
+            # owner has all premission
+            return True
+        if request.method == "GET":
+            # otherwise, they can only have read premission
+            return True
+        # premission deny 
+        return False

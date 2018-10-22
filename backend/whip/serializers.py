@@ -221,6 +221,15 @@ class EventSerializer(serializers.ModelSerializer):
         # return back this created obj
         return post 
 
+    def update(self, instance ,validated_data):
+        owner = validated_data.pop("owner", {})
+        if owner != instance.owner or instance.owner != self.context['request'].user:
+            # old owner isn't equal to this owner, or the request user isn't equal 
+            # to the owner, then permission deny 
+            raise serializers.ValidationError({"owner":[
+                "Premission deny"
+            ]})
+
 
 class ParameterSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

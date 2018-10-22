@@ -12,7 +12,8 @@ from rest_framework.decorators import action
 
 
 # Own premission  
-from .permission import GuestCreateOnly,OwnerUpdateOnly,IsAdminOrReadOnly
+from .permission import GuestCreateOnly,OwnerUpdateOnly,\
+    IsAdminOrReadOnly,IsOwnerOrReadOnly
 
 class LocationViewset(viewsets.ModelViewSet):
     queryset = Location.objects.all()
@@ -39,19 +40,19 @@ class ParameterViewSet(viewsets.ModelViewSet):
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+    permission_classes = [IsOwnerOrReadOnly]
 
     @action(detail= True, methods = ["POST"], url_name = "create_sub_post")
     def post(self, request, pk = None):
         # get the meta data of this event 
         event = self.get_object()
 
-        print(event)        
-
-
 
 class BidViewSet(viewsets.ModelViewSet):
     queryset = Bid.objects.all()
     serializer_class = BidSerializer
+    # only bidder bidder can change it post
+    permission_classes = [IsOwnerOrReadOnly]
 
     @action(detail = True, methods = ['POST'], url_name='Rate-Poster')
     def rate(self, request,pk= None):
@@ -69,7 +70,7 @@ class BidViewSet(viewsets.ModelViewSet):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-
+    permission_classes = [IsOwnerOrReadOnly]
     
     """
     TODO: need to prevent mutiple time state change
@@ -87,8 +88,6 @@ class PostViewSet(viewsets.ModelViewSet):
 
         # return back this post detail 
         return Response(serializer.data)
-
-
 
     @action(detail = True, methods = ['POST','GET'], url_name='Finish Post')
     def finish(self, request,pk= None):

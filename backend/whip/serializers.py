@@ -224,7 +224,6 @@ class EventSerializer(serializers.ModelSerializer):
     def update(self, instance ,validated_data):
         # these field won't update 
         validated_data.pop("owner", {})
-        validated_data.pop("id",'')
         validated_data.pop("post_set",{})
         # get or create the new location instance 
         #  location data may not exist 
@@ -328,13 +327,13 @@ class PostSerializer(serializers.ModelSerializer):
     # extraParameter =serializers.StringRelatedField(many = True)
     state  = serializers.CharField(read_only = True)
     bid_set = BidSerializer(many=True,read_only = True)
-
     posterReceivedPoints =serializers.IntegerField(read_only = True)
 
     # inherentant the context fcfrom this class 
     msg = MessageSerializer(read_only = True)
 
-    message = serializers.CharField(write_only = True)
+    message = serializers.CharField(write_only = True,
+        required = False ,allow_blank = True)
 
     """
     validation code of this serializer
@@ -389,7 +388,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # pop the message to create the message char 
-        msg =  validated_data.pop('message',{})
+        msg =  validated_data.pop('message',"")
         # pass this message as string to it 
         validated_data['msg'] = \
             MessageSerializer(context = self.context ).create({"msg": msg})
@@ -399,3 +398,12 @@ class PostSerializer(serializers.ModelSerializer):
 
         # return back this created obj
         return post 
+
+    def update(self, instance ,validated_data):
+        # these field won't update 
+        validated_data.pop("event", "")
+        print(validated_data);
+        # use this serializer to update the data
+        instance = super(PostSerializer, self)\
+            .update(instance, validated_data)
+        return instance

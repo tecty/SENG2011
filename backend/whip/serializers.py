@@ -222,13 +222,22 @@ class EventSerializer(serializers.ModelSerializer):
         return post 
 
     def update(self, instance ,validated_data):
-        owner = validated_data.pop("owner", {})
-        if owner != instance.owner or instance.owner != self.context['request'].user:
-            # old owner isn't equal to this owner, or the request user isn't equal 
-            # to the owner, then permission deny 
-            raise serializers.ValidationError({"owner":[
-                "Premission deny"
-            ]})
+        # these field won't update 
+        validated_data.pop("owner", {})
+        validated_data.pop("id",'')
+        validated_data.pop("post_set",{})
+        # get or create the new location instance 
+        #  location data may not exist 
+        location = validated_data.pop("location",{})
+        # get or create a location 
+        validated_data["location"] = \
+            LocationSerializer().create(location)
+
+        # use the serializer to update this instance
+        event = super(EventSerializer, self).update(instance,validated_data)
+
+        # return back the updated instance 
+        return event
 
 
 class ParameterSerializer(serializers.HyperlinkedModelSerializer):

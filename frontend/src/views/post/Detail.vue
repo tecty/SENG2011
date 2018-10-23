@@ -5,9 +5,21 @@
     </div>
     <div v-else>
       <!-- content of the post  -->
-      <h3 class="display-1 primary--text">
-        <span class="grey--text">#{{ post.id }}</span> {{post.title}}
-      </h3>
+      <v-layout row wrap>
+        <v-flex xs11>
+          <h3 class="display-1 primary--text">
+            <span class="grey--text">#{{ post.id }}</span> {{post.title}}
+          </h3>
+        </v-flex>
+        <v-flex xs1>
+          <v-btn color="primary" :to="{
+            name:'PostEdit',
+            params: {
+              postId:post.id,
+            }
+          }">Edit</v-btn>
+        </v-flex>
+      </v-layout>
       <p>{{ post.state | stateToText}}</p>
       <h5 class="headline primary--text ">Issuer:</h5>
       <p>{{ post.event.owner.username }}</p>

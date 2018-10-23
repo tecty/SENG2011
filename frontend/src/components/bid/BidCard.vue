@@ -17,8 +17,6 @@
           <div v-if="bid.owner.username == currUser">
             <v-btn flat dark @click="deleteBid()">Delete</v-btn>
           </div>
-          <v-spacer></v-spacer>
-          <v-btn flat color="orange">Comment</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>

@@ -19,7 +19,7 @@
 import { mapState, mapMutations } from "vuex";
 
 export default {
-  props: ["index"],
+  props: ["index", "value"],
   data() {
     return {
       key: "",

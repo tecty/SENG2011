@@ -1,7 +1,8 @@
 <template>
   <v-layout column>
+    {{value}}
     <v-flex xs12>
-      <extraSelect v-for="i in count" :key="i"  :index="i" @change ="declearChange"/>
+      <extraSelect v-for="i in value.length" :key="i" v-model="value[i]"/>
     </v-flex>
     <v-flex xs12 pa-0>
       <v-btn color="success" @click="addCount">+ More Extra Requirements</v-btn>

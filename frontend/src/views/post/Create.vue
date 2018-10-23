@@ -1,6 +1,9 @@
 <template>
   <v-container grid-list-xl >
-    <v-form ref="form" @submit.prevent="submit">
+    <div v-if="api_state != 'READY'" class="text-xs-center">
+      <v-progress-circular indeterminate color="primary" />
+    </div>
+    <v-form v-else ref="form" @submit.prevent="submit">
         <v-layout row wrap>
           <v-flex xs12 sm6>
             <v-text-field v-model="form.title" 
@@ -83,7 +86,9 @@ export default {
             ret.value = el.id;
             return ret;
           });
-      }}),
+      },
+      api_state: 'api_state'
+      }),
     isEdit() {
       // check whether it is edit state 
       return this.$route.name == "PostEdit";
@@ -120,7 +125,11 @@ export default {
     this.$store.dispatch("requireExtraParams");
     this.$store.dispatch("refreshEvents");
     this.$store.dispatch("getPostById", this.$route.params.postId)
-    .then(r=> {this.form = r.data ; console.log(r.data)});
+    .then(r=> {
+      this.form = r.data ;
+      this.$store.commit("API_READY");
+
+    });
   },
   components: {
     extraParamSelector

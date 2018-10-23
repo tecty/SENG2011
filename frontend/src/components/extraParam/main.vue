@@ -2,29 +2,47 @@
   <v-layout column>
     {{value}}
     <v-flex xs12>
-      <extraSelect v-for="i in value.length" :key="i" v-model="value[i]"/>
+      <!-- this array will have index +1 i don't knwo why -->
+      <extraSelect 
+        v-for="i in count" :key="i" :index="i-1"
+        @change="declearChange"
+      />
     </v-flex>
     <v-flex xs12 pa-0>
-      <v-btn color="success" @click="addCount">+ More Extra Requirements</v-btn>
+      <v-btn color="success" 
+      @click="()=>{
+        this.PUSH_EMPTY_SELECTED(); 
+        this.declearChange()}">
+        + More Extra Requirements
+      </v-btn>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
 import extraSelect from "./sub";
+import { mapState, mapMutations } from 'vuex';
 export default {
   // this will accept the original value of extraparams
   props: ["value"],
   data() {
     return {
       keys: [],
-      count: 1
     };
   },
+  computed:{
+    ...mapState({
+      selected: state=> state.extraParam.selected
+    }),
+    count(){
+      if (this.selected && this.selected.length > 0){
+        return this.selected.length;
+      }
+      return 0;
+    }
+  },
   methods: {
-    addCount() {
-      this.count++;
-    },
+    ...mapMutations(['PUSH_EMPTY_SELECTED']),
     declearChange() {
       // as the https://cn.vuejs.org/v2/guide/components.html
       // bind the new ids array to the input event
@@ -37,10 +55,10 @@ export default {
   },
   mounted() {
     this.$store.dispatch("requireExtraParams");
-    // clear all the selected param id
-    this.$store.commit("CLEAR_SELECTED");
+
     // assign the old selected from the post to vuex
     this.$store.commit("SET_SELECTED", this.value);
+   
   },
   components: {
     extraSelect

@@ -2,7 +2,6 @@
   <v-layout row fill-height>
     <v-flex xs12 sm6>
       <!-- selection of the key  -->
-      {{ key }}
       <v-select
         v-model="key"
         :items="keyList"
@@ -10,9 +9,8 @@
       />
     </v-flex >
     <v-flex xs12 sm6>
-      {{id }}
       <!-- selection of the value -->
-      <v-select v-if="key" :items="valList" v-model="value" />
+      <v-select v-if="key" :items="valList" v-model="id" @change="declearIdChange" />
     </v-flex>
   </v-layout>
 </template>
@@ -21,13 +19,35 @@
 import { mapState, mapMutations } from "vuex";
 
 export default {
-  props: ["index", "value"],
+  props: ["index"],
   data() {
     return {
-      // record the temporary selection of key by user 
-      tmpKey: "",
+      key: "",
       id: ""
     };
+  },
+  methods: {
+    ...mapMutations(["ADD_SELECTED"]),
+    declearKeyChange() {
+      // revoke the selected id 
+      this.id = undefined
+      // add this selected id
+      this.ADD_SELECTED({
+        index: this.index,
+        id: this.id
+      });
+      // emit a changed event
+      this.$emit("change");
+    },
+    declearIdChange() {
+      // add this selected id
+      this.ADD_SELECTED({
+        index: this.index,
+        id: this.id
+      });
+      // emit a changed event
+      this.$emit("change");
+    }
   },
   computed: {
     ...mapState({
@@ -38,44 +58,23 @@ export default {
     }),
     valList() {
       if (this.key) {
-        return this.eps[this.key];
+        let ret = this.eps[this.key];
+        console.log(ret)
+        ret.unshift({value:null,text:"removed"})
+        return ret
       }
       return [];
-    },
-    key: {
-      get: () =>{
-        if (value) {
-          // there's a selected ep
-          let selectedEp = this.eps.find( ep => ep.id == value);
-          // setup the tmp key 
-          this.tmpKey = selectedEp.key;
-        }
-        return this.tmpKey;
-      },
-      set: (newKey) => {
-        if (newKey != this.tmpKey){
-          // try to update and revoke the value 
-          this.value = undefined;
-          // set the tmp key to new one 
-          this.tmpKey = newKey;
-        }
-      }
-    }
-  },
-  methods: {
-    ...mapMutations(["ADD_SELECTED"]),
-    declearChange() {
-      // add this selected id
-      this.ADD_SELECTED({
-        index: this.index,
-        id: this.id
-      });
-      // emit a changed event
-      this.$emit("change");
     }
   },
   mounted() {
-    this.$store.dispatch("requireExtraParams");
+    this.id =this.$store.state.extraParam.selected[this.index];
+    if (this.id != undefined){
+      this.$store.dispatch(
+        'getEpById', this.id
+      ).then(ep=> this.key = ep.key)
+    }
+    // reset the key to mek the revoke id in key work
+    this.id =this.$store.state.extraParam.selected[this.index];
   }
 };
 </script>

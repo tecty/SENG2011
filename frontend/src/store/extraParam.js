@@ -8,9 +8,7 @@ const s = {
   },
   mutations: {
     SET_EXTRA_PARAMS: (state, ep) => (state.extraParameter = ep),
-    CLEAR_SELECTED: state => {
-      state.selected = [];
-    },
+    PUSH_EMPTY_SELECTED: state => state.selected.push(undefined),
     ADD_SELECTED: (state, data) => {
       state.selected[data.index] = data.id;
     },
@@ -41,7 +39,8 @@ const s = {
         commit("SET_EXTRA_PARAMS", obj);
         return ret;
       }
-    }
+    },
+    getEpById: ({ state }, id) => state.epList.find(el => el.id == id)
   }
 };
 

@@ -1,6 +1,5 @@
 <template>
   <v-layout column>
-    {{value}}
     <v-flex xs12>
       <!-- this array will have index +1 i don't knwo why -->
       <extraSelect 

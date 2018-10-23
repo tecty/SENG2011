@@ -105,10 +105,7 @@ export default new Vuex.Store({
       return Promise.all([
         dispatch("refreshEvents"),
         dispatch("refreshPosts")
-      ]).then(res => {
-        dispatch("wireEvents").then(() => commit("API_FINISHED"));
-        return res;
-      });
+      ]).then(() => dispatch("wireEvents").then(() => commit("API_FINISHED")));
     },
     async wireEvents({ state, commit }) {
       let posts = state.posts;

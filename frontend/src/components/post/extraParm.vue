@@ -1,9 +1,11 @@
 <template>
   <div v-if="criteria.length > 0">
     <h3 class="headline primary--text ">Extra Requirements</h3>
-    <div v-for="item in showParms" :key="item.id">
-      {{ item.key }}: {{ item.value }}
-    </div>
+    <p>
+      <span v-for="item in showParms" :key="item.id">
+        {{item}}<br>
+      </span> 
+    </p>
   </div>
 </template>
 <script>
@@ -20,7 +22,8 @@ export default {
       epList: state => state.extraParam.epList
     }),
     showParms() {
-      return this.epList.filter(el => this.criteria.includes(el.id));
+      return this.epList.filter(el => this.criteria.includes(el.id))
+      .map(el=> `${el.key}: ${el.value}`);
     }
   },
   mounted() {

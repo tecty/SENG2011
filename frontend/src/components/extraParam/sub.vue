@@ -12,7 +12,7 @@
     <v-flex xs12 sm6>
       {{id }}
       <!-- selection of the value -->
-      <v-select v-if="key" :items="valList" v-model="id" @change="declearChange" />
+      <v-select v-if="key" :items="valList" v-model="value" />
     </v-flex>
   </v-layout>
 </template>

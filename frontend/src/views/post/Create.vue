@@ -75,9 +75,9 @@ export default {
   computed: {
     ...mapState({
       events: state => {
-        // map the event as an array of name and id 
-        // in this way, the vuetify selector will show 
-        // properly 
+        // map the event as an array of name and id
+        // in this way, the vuetify selector will show
+        // properly
         return state.events
           .filter(el => el.owner.username == state.username)
           .map(el => {
@@ -87,10 +87,10 @@ export default {
             return ret;
           });
       },
-      api_state: 'api_state'
-      }),
+      api_state: "api_state"
+    }),
     isEdit() {
-      // check whether it is edit state 
+      // check whether it is edit state
       return this.$route.name == "PostEdit";
     }
   },
@@ -101,14 +101,23 @@ export default {
         message: this.form.message,
         budget: this.form.budget,
         peopleCount: this.form.peopleCount,
-        extraParameter: this.form.extraParameter
+        extraParameter: this.form.extraParameter,
+        event: this.form.event
       };
-      if (! this.isEdit){
-        // only the create mode can have capability to change event 
-        data.event= this.form.event;
+
+      // to store the promise object from vuex
+      let promise;
+      if (!this.isEdit) {
+        // only the create mode can have capability to change event
+        // perform the create event action
+        promise = this.$store.dispatch("createPost", data);
+      } else {
+        // edit mode will require an id of the post
+        data.id = this.form.id;
+        // perfrom the edit action by vuex
+        promise = this.$store.dispatch("editPost", data);
       }
-      this.$store
-        .dispatch("createPost", data)
+      promise
         .then(res => {
           this.$router.push({
             name: "PostDetail",
@@ -124,11 +133,9 @@ export default {
   mounted() {
     this.$store.dispatch("requireExtraParams");
     this.$store.dispatch("refreshEvents");
-    this.$store.dispatch("getPostById", this.$route.params.postId)
-    .then(r=> {
-      this.form = r.data ;
+    this.$store.dispatch("getPostById", this.$route.params.postId).then(r => {
+      this.form = r.data;
       this.$store.commit("API_READY");
-
     });
   },
   components: {

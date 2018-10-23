@@ -22,8 +22,9 @@ export default {
       epList: state => state.extraParam.epList
     }),
     showParms() {
-      return this.epList.filter(el => this.criteria.includes(el.id))
-      .map(el=> `${el.key}: ${el.value}`);
+      return this.epList
+        .filter(el => this.criteria.includes(el.id))
+        .map(el => `${el.key}: ${el.value}`);
     }
   },
   mounted() {

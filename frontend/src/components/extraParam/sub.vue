@@ -29,8 +29,8 @@ export default {
   methods: {
     ...mapMutations(["ADD_SELECTED"]),
     declearKeyChange() {
-      // revoke the selected id 
-      this.id = undefined
+      // revoke the selected id
+      this.id = undefined;
       // add this selected id
       this.ADD_SELECTED({
         index: this.index,
@@ -59,22 +59,21 @@ export default {
     valList() {
       if (this.key) {
         let ret = this.eps[this.key];
-        console.log(ret)
-        ret.unshift({value:null,text:"removed"})
-        return ret
+        ret.unshift({ value: null, text: "removed" });
+        return ret;
       }
       return [];
     }
   },
   mounted() {
-    this.id =this.$store.state.extraParam.selected[this.index];
-    if (this.id != undefined){
-      this.$store.dispatch(
-        'getEpById', this.id
-      ).then(ep=> this.key = ep.key)
+    this.id = this.$store.state.extraParam.selected[this.index];
+    if (this.id != undefined) {
+      this.$store
+        .dispatch("getEpById", this.id)
+        .then(ep => (this.key = ep.key));
     }
     // reset the key to mek the revoke id in key work
-    this.id =this.$store.state.extraParam.selected[this.index];
+    this.id = this.$store.state.extraParam.selected[this.index];
   }
 };
 </script>

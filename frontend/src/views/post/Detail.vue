@@ -11,7 +11,7 @@
             <span class="grey--text">#{{ post.id }}</span> {{post.title}}
           </h3>
         </v-flex>
-        <v-flex xs1>
+        <v-flex xs1 v-if="post.event.owner.username == username">
           <v-btn color="primary" :to="{
             name:'PostEdit',
             params: {
@@ -75,39 +75,33 @@ export default {
   },
   computed: mapState({
     api_state: "api_state",
-    currUser: state => state.username
+    username: state => state.username
   }),
   methods: {
     ...mapActions(["refreshAll", "getPostById"]),
     canBid() {
       return (
         this.api_state == "READY" &&
-        this.post.event.owner.username != this.currUser &&
+        this.post.event.owner.username != this.username &&
         this.post.state == "BD"
       );
     },
     refreshContent() {
-      this.refreshAll()
-        .then(() => this.getPostById(this.$route.params.postId))
-        .then(post => {
-          // assign the new post object
-          this.post = post;
-          // declear the page is re-rendered
-          this.$store.commit("API_READY");
-        });
+      this.refreshAll().then(() => {
+        // assign the new post object
+        this.post = this.$store.posts.find(el => el.id == this.post.id);
+        // declear the page is re-rendered
+        this.$store.commit("API_READY");
+      });
     }
   },
   mounted() {
-    this.$store
-      .dispatch("refreshAll")
-      .then(() =>{
-        this.post = this.$store.state.posts.find(
-          el=> {
-            return el.id == this.$route.params.postId
-          }
-        )
-        this.$store.commit("API_READY");
-      })
+    this.$store.dispatch("refreshAll").then(() => {
+      this.post = this.$store.state.posts.find(el => {
+        return el.id == this.$route.params.postId;
+      });
+      this.$store.commit("API_READY");
+    });
   },
   components: {
     msgBox,

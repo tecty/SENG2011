@@ -19,9 +19,7 @@
           <!-- these two reply button has different meaning -->
         </div>
         <div v-for="msg in msg.sub_msg" :key="msg.id">
-          <msgBox class="ml-1" :msg="msg" @requireRefresh="()=> {
-            $emit('requireRefresh')
-          }"/>
+          <msgBox class="ml-1" :msg="msg"/>
         </div>
       </v-card>
     </v-flex>
@@ -46,10 +44,11 @@ export default {
       this.createMsg({
         parentMsg: this.msg.id,
         msg: this.replyMsg
-      }).then(() => {
-        console.log("emit at submit");
+      }).then(ret => {
+        // push the reply message to the sub tree
+        // this will prevent hard reload
+        this.msg.sub_msg.push(ret.data);
         this.isReply = false;
-        this.$emit("requireRefresh");
       });
     }
   }

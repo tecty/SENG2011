@@ -105,10 +105,7 @@ export default new Vuex.Store({
       return Promise.all([
         dispatch("refreshEvents"),
         dispatch("refreshPosts")
-      ]).then(res => {
-        dispatch("wireEvents").then(() => commit("API_FINISHED"));
-        return res;
-      });
+      ]).then(() => dispatch("wireEvents").then(() => commit("API_FINISHED")));
     },
     async wireEvents({ state, commit }) {
       let posts = state.posts;
@@ -119,8 +116,11 @@ export default new Vuex.Store({
       // commit these wired post into store
       commit("SET_POSTS", posts);
     },
-    async getPostById({ state }, id) {
-      return state.posts.find(el => el.id == id);
+    async getPostById({ commit }, id) {
+      commit("API_WAITING");
+      let ret = await axios.get(`posts/${id}/`);
+      commit("API_FINISHED");
+      return ret;
     },
     async getEventById({ commit }, id) {
       commit("API_WAITING");

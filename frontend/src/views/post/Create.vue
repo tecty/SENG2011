@@ -1,12 +1,15 @@
 <template>
   <v-container grid-list-xl >
-    <v-form ref="form" @submit.prevent="submit">
-        <v-layout wrap>
+    <div v-if="api_state != 'READY'" class="text-xs-center">
+      <v-progress-circular indeterminate color="primary" />
+    </div>
+    <v-form v-else ref="form" @submit.prevent="submit">
+        <v-layout row wrap>
           <v-flex xs12 sm6>
             <v-text-field v-model="form.title" 
               label="Title *" required autofocus/>
           </v-flex>
-          <v-flex xs12 sm6>
+          <v-flex xs12 sm6 v-if="!isEdit">
             <v-select
               v-model="form.event"
               :items="events"
@@ -15,7 +18,9 @@
               required
             ></v-select>
           </v-flex>
-          <v-flex xs12>
+        </v-layout>
+        <v-layout row wrap>
+          <v-flex xs12 v-if="!isEdit">
             <v-textarea v-model="form.message" color="teal">
               <div slot="label">
                 Description
@@ -29,10 +34,11 @@
           <v-flex xs12 sm6>
             <v-text-field v-model="form.budget" label="Budget *" required></v-text-field>
           </v-flex>
+        </v-layout>
+        <v-layout row wrap>
           <v-flex xs12>
             <!-- the selection box of extraparams -->
-            {{form.extraParam}}
-            <extraParamSelector v-model="form.extraParam"/>
+            <extraParamSelector v-model="form.extraParameter"/>
           </v-flex>
           <v-flex xs12 sm6 v-for="(item, index) in error" :key="index">
             {{index}} {{item}}
@@ -66,28 +72,41 @@ export default {
       error: []
     };
   },
-  computed: mapState({
-    events: state => {
-      return state.events
-        .filter(el => el.owner.username == state.username)
-        .map(el => {
-          let ret = {};
-          ret.text = el.title;
-          ret.value = el.id;
-          return ret;
-        });
+  computed: {
+    ...mapState({
+      events: state => {
+        // map the event as an array of name and id 
+        // in this way, the vuetify selector will show 
+        // properly 
+        return state.events
+          .filter(el => el.owner.username == state.username)
+          .map(el => {
+            let ret = {};
+            ret.text = el.title;
+            ret.value = el.id;
+            return ret;
+          });
+      },
+      api_state: 'api_state'
+      }),
+    isEdit() {
+      // check whether it is edit state 
+      return this.$route.name == "PostEdit";
     }
-  }),
+  },
   methods: {
     submit() {
       let data = {
         title: this.form.title,
         message: this.form.message,
-        event: this.form.event,
         budget: this.form.budget,
         peopleCount: this.form.peopleCount,
-        extraParameter: [] // TODO extraparameter
+        extraParameter: this.form.extraParameter
       };
+      if (! this.isEdit){
+        // only the create mode can have capability to change event 
+        data.event= this.form.event;
+      }
       this.$store
         .dispatch("createPost", data)
         .then(res => {
@@ -105,6 +124,12 @@ export default {
   mounted() {
     this.$store.dispatch("requireExtraParams");
     this.$store.dispatch("refreshEvents");
+    this.$store.dispatch("getPostById", this.$route.params.postId)
+    .then(r=> {
+      this.form = r.data ;
+      this.$store.commit("API_READY");
+
+    });
   },
   components: {
     extraParamSelector

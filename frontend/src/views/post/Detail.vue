@@ -5,9 +5,21 @@
     </div>
     <div v-else>
       <!-- content of the post  -->
-      <h3 class="display-1 primary--text">
-        <span class="grey--text">#{{ post.id }}</span> {{post.title}}
-      </h3>
+      <v-layout row wrap>
+        <v-flex xs11>
+          <h3 class="display-1 primary--text">
+            <span class="grey--text">#{{ post.id }}</span> {{post.title}}
+          </h3>
+        </v-flex>
+        <v-flex xs1>
+          <v-btn color="primary" :to="{
+            name:'PostEdit',
+            params: {
+              postId:post.id,
+            }
+          }">Edit</v-btn>
+        </v-flex>
+      </v-layout>
       <p>{{ post.state | stateToText}}</p>
       <h5 class="headline primary--text ">Issuer:</h5>
       <p>{{ post.event.owner.username }}</p>
@@ -27,25 +39,24 @@
       <h5 class="headline primary--text ">
         Message
       </h5>
-      <msgBox :msg="post.msg" @requireRefresh="()=> {
-        refreshContent()}" />
+      <msgBox :msg="post.msg" />
+      <v-layout>
+        <v-flex xs12 >
+          <h5 class="headline primary--text ">
+            Bid
+          </h5>
+          <!-- cards of bids -->
+          <div v-for="bid in post.bid_set" :key="bid.id">
+            <bid-card :bid="bid" :post="post" 
+              @requireRefresh="()=> refreshContent()" />
+            <br/>
+          </div>
+          <!-- card for bidding -->
+          <CreateCard v-if="canBid()" :postId="post.id" 
+          @requireRefresh="()=> refreshContent()" />
+        </v-flex>
+      </v-layout>
     </div>
-    <v-layout>
-      <v-flex xs12 >
-        <h5 class="headline primary--text ">
-          Bid
-        </h5>
-        <!-- cards of bids -->
-        <div v-for="bid in post.bid_set" :key="bid.id">
-          <bid-card :bid="bid" :post="post" 
-            @requireRefresh="()=> refreshContent()" />
-          <br/>
-        </div>
-        <!-- card for bidding -->
-        <CreateCard v-if="canBid()" :postId="post.id" 
-        @requireRefresh="()=> refreshContent()" />
-      </v-flex>
-    </v-layout>
   </v-container>
 </template>
 
@@ -89,13 +100,14 @@ export default {
   mounted() {
     this.$store
       .dispatch("refreshAll")
-      .then(() =>
-        this.$store.dispatch("getPostById", this.$route.params.postId)
-      )
-      .then(res => {
-        this.post = res;
+      .then(() =>{
+        this.post = this.$store.state.posts.find(
+          el=> {
+            return el.id == this.$route.params.postId
+          }
+        )
         this.$store.commit("API_READY");
-      });
+      })
   },
   components: {
     msgBox,

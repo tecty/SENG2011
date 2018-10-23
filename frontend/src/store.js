@@ -135,6 +135,12 @@ export default new Vuex.Store({
       commit("API_FINISHED");
       return ret;
     },
+    async editPost({ commit }, data) {
+      commit("API_WAITING");
+      let ret = await axios.put(`posts/${data.id}/`, data);
+      commit("API_FINISHED");
+      return ret;
+    },
     async createEvent({ commit }, data) {
       commit("API_WAITING");
       let ret = await axios.post("events/", data);

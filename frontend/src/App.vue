@@ -76,7 +76,13 @@ export default {
     ...mapState(["username"])
   },
   methods: {
-    ...mapActions(["logout"])
+    ...mapActions({
+      logoutInVuex: "logout"
+    }),
+    logout() {
+      this.logoutInVuex();
+      this.$router.push("/");
+    }
   }
 };
 </script>

@@ -19,5 +19,5 @@ export default [
     path: "/post/:postId/edit",
     name: "PostEdit",
     component: () => import("@/views/post/Create.vue")
-  },
+  }
 ];

@@ -138,6 +138,8 @@ export default {
         this.form = r.data;
         this.$store.commit("API_READY");
       });
+    } else {
+      this.$store.commit("API_READY");
     }
   },
   components: {

@@ -40,24 +40,22 @@
         Message
       </h5>
       <msgBox :msg="post.msg" />
-    <v-layout>
-      <v-flex xs12 >
-        <h5 class="headline primary--text ">
-          Bid
-        </h5>
-        <!-- select sorting parameter  -->
-      <sortingSelector :sortBy="sortParameter" :list="bidsShow" @sorted="sortbidsShow"/>
-        <!-- cards of bids -->
-        <div v-for="bid in bidsShow" :key="bid.id">
-          <bid-card :bid="bid" :post="post" 
-            @requireRefresh="()=> refreshContent()" />
-          <br/>
-        </div>
-        <!-- card for bidding -->
-        <CreateCard v-if="canBid()" :postId="post.id" 
-        @requireRefresh="()=> refreshContent()" />
-      </v-flex>
-    </v-layout>
+      <v-layout>
+        <v-flex xs12>
+          <h5 class="headline primary--text ">
+            Bid
+          </h5>
+          <!-- select sorting parameter  -->
+          <sortingSelector :sortBy="sortParameter" :list="bidsShow" @sorted="sortbidsShow" />
+          <!-- cards of bids -->
+          <div v-for="bid in bidsShow" :key="bid.id">
+            <bid-card :bid="bid" :post="post" @requireRefresh="()=> refreshContent()" />
+            <br/>
+          </div>
+          <!-- card for bidding -->
+          <CreateCard v-if="canBid()" :postId="post.id" @requireRefresh="()=> refreshContent()" />
+        </v-flex>
+      </v-layout>
     </div>
   </v-container>
 </template>

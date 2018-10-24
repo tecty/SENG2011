@@ -120,6 +120,11 @@ class Post(models.Model):
     def __str__(self):
         return self.__unicode__()
 
+    @property
+    def owner(self):
+        # post will have same owner as it's event 
+        return self.event.owner
+
     def choose(self,bidder_id):
         """
         Use this function, user will choose a bid and make a deal

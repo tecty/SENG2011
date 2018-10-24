@@ -47,6 +47,11 @@ export default {
             return a.event.owner.username.localeCompare(b.event.owner.username);
           };
           break;
+        case "Sort by Event owner Name":
+          compareFunc = (a, b) => {
+            return a.owner.username.localeCompare(b.owner.username);
+          };
+          break;
         case "Sort by Budget":
           compareFunc = (a, b) => {
             return parseInt(a.budget, 10) - parseInt(b.budget, 10);
@@ -62,17 +67,36 @@ export default {
             return a.peopleCount - b.peopleCount;
           };
           break;
+        case "Sort by Number of Posts under an Event":
+          compareFunc = (a, b) => {
+            return a.post_set.length - b.post_set.length;
+          };
+          break;
         case "Sort by Event time":
           compareFunc = (a, b) => {
-            let da = new Date(a.event.eventTime);
-            let db = new Date(b.event.eventTime);
+            let da;
+            let db;
+            if (a.event) {
+              da = new Date(a.event.eventTime);
+              db = new Date(b.event.eventTime);
+            } else {
+              da = new Date(a.eventTime);
+              db = new Date(b.eventTime);
+            }
             return da - db;
           };
           break;
         case "Sort by Bid Ending time":
           compareFunc = (a, b) => {
-            let da = new Date(a.event.bidClosingTime);
-            let db = new Date(b.event.bidClosingTime);
+            let da;
+            let db;
+            if (a.event) {
+              da = new Date(a.event.bidClosingTime);
+              db = new Date(b.event.bidClosingTime);
+            } else {
+              da = new Date(a.bidClosingTime);
+              db = new Date(b.bidClosingTime);
+            }
             return da - db;
           };
 

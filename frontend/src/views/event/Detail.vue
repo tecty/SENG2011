@@ -4,7 +4,6 @@
       <!-- content of the event  -->
       <v-layout row wrap>
         <v-flex xs11>
-          
           <h3 class="display-1 primary--text">
             <span class="grey--text">#{{ event.id }}</span> {{event.title}}
           </h3>

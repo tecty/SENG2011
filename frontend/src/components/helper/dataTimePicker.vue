@@ -86,9 +86,11 @@ export default {
   mounted() {
     // TODO: check the binded whether the bind value is given, if
     // it's, assign the value to time and date
-    let arr = this.value.split("T");
-    this.date = arr[0];
-    this.time = arr[1].substring(0, 5);
+    if (this.value && this.value !== "") {
+      let arr = this.value.split("T");
+      this.date = arr[0];
+      this.time = arr[1].substring(0, 5);
+    }
   }
 };
 </script>

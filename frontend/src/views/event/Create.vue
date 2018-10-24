@@ -1,6 +1,6 @@
 <template>
   <v-container grid-list-xl >
-    <div v-if="api_state != 'READY'" class="text-xs-center">
+    <div v-if="api_state != 'READY' && api_state != 'ERROR'" class="text-xs-center">
       <v-progress-circular indeterminate color="primary" />
     </div>
     <v-form ref="form" @submit.prevent="submit" v-else>
@@ -73,8 +73,8 @@ export default {
         this.createEvent({
           title: this.form.title,
           location: this.form.location,
-          eventTime: this.eventTime,
-          bidClosingTime: this.bidClosingTime
+          eventTime: this.form.eventTime,
+          bidClosingTime: this.form.bidClosingTime
         })
           .then(res => {
             let eventId = res.data.id;
@@ -104,6 +104,8 @@ export default {
         this.form = res.data;
         this.$store.commit("API_READY");
       });
+    } else {
+      this.$store.commit("API_READY");
     }
   },
   components: {

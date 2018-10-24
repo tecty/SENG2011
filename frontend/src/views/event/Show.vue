@@ -1,5 +1,6 @@
 <template>
   <v-container fluid grid-list-md>
+      <sortingSelector :sortBy="sortParameter" :list="events" @sorted="sortEvents"/>
     <v-data-iterator :items="events"
       content-tag="v-layout" row wrap
       v-if="api_state != 'WAIT'"
@@ -18,16 +19,44 @@
 
 
 <script>
+import sortingSelector from "@/components/helper/mergeSort.vue";
 import EventCard from "@/components/event/Card";
 import { mapState } from "vuex";
 export default {
-  computed: mapState(["events", "api_state"]),
+  data() {
+    return {
+      sortParameter: [
+        "Sort by Bid Ending time",
+        "Sort by Event time",
+        "Sort by Number of Posts under an Event",
+        "Sort by Event owner Name",
+        "Default"
+      ]
+    };
+  },
+  computed: {
+    events: {
+      get() {
+        return this.$store.state.events;
+      },
+      set(newList) {
+        return this.$store.commit("SET_EVENTS", newList);
+      }
+    },
+    ...mapState(["api_state"])
+  },
+  methods: {
+    sortEvents(list) {
+      this.events = list;
+    }
+  },
   mounted() {
     // fetch the latest events
     this.$store.dispatch("refreshAll");
   },
   components: {
-    EventCard
+    EventCard,
+    sortingSelector
   }
 };
 </script>

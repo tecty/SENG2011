@@ -14,5 +14,10 @@ export default [
     path: "/post/:postId",
     name: "PostDetail",
     component: () => import("@/views/post/Detail.vue")
+  },
+  {
+    path: "/post/:postId/edit",
+    name: "PostEdit",
+    component: () => import("@/views/post/Create.vue")
   }
 ];

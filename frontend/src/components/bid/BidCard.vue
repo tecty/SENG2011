@@ -8,10 +8,7 @@
           <span> offer ${{bid.offer}}</span>
         </v-card-title>
        <v-card-text>
-        <msgCard :msg="bid.msg" 
-          @requireRefresh="()=> {
-            $emit('requireRefresh')
-          }"/>
+        <msgCard :msg="bid.msg" />
        </v-card-text>
         <v-card-actions>
           <div v-if="post.event.owner.username == currUser && post.state == 'BD'">
@@ -20,8 +17,6 @@
           <div v-if="bid.owner.username == currUser">
             <v-btn flat dark @click="deleteBid()">Delete</v-btn>
           </div>
-          <v-spacer></v-spacer>
-          <v-btn flat color="orange">Comment</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -51,7 +46,9 @@ export default {
     },
     deleteBid() {
       this.deleteBidById(this.bid.id).then(() => {
+        console.log("imhere")
         this.$emit("requireRefresh");
+        console.log("after event emit")
       });
     }
   },

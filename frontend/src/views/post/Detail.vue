@@ -39,7 +39,7 @@
       <h5 class="headline primary--text ">
         Message
       </h5>
-      <msgBox :msg="post.msg" />
+      <msgBox :msg="post.msg" class="mb-3"/>
       <v-layout>
         <v-flex xs12 >
           <h5 class="headline primary--text ">
@@ -49,7 +49,6 @@
           <div v-for="bid in post.bid_set" :key="bid.id">
             <bid-card :post="post" :bid="bid"
             @requireRefresh="refreshContent" />
-            <br/>
           </div>
           <!-- card for bidding -->
           <CreateCard v-if="canBid" :postId="post.id" 
@@ -84,11 +83,11 @@ export default {
         this.post.event.owner.username != this.username &&
         this.post.state == "BD"
       );
-    },
+    }
   },
   methods: {
     ...mapActions(["refreshAll", "getPostById"]),
-    
+
     refreshContent() {
       this.refreshAll().then(() => {
         // assign the new post object

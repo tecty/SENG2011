@@ -133,10 +133,12 @@ export default {
   mounted() {
     this.$store.dispatch("requireExtraParams");
     this.$store.dispatch("refreshEvents");
-    this.$store.dispatch("getPostById", this.$route.params.postId).then(r => {
-      this.form = r.data;
-      this.$store.commit("API_READY");
-    });
+    if (this.isEdit) {
+      this.$store.dispatch("getPostById", this.$route.params.postId).then(r => {
+        this.form = r.data;
+        this.$store.commit("API_READY");
+      });
+    }
   },
   components: {
     extraParamSelector

@@ -46,13 +46,13 @@
             Bid
           </h5>
           <!-- cards of bids -->
-          <div v-for="i in post.bid_set.length" :key="i">
-            <bid-card :index="i-1" :post="post" v-model="post.bid_set"
-              @requireRefresh="refreshContent" />
+          <div v-for="bid in post.bid_set" :key="bid.id">
+            <bid-card :post="post" :bid="bid"
+            @requireRefresh="refreshContent" />
             <br/>
           </div>
           <!-- card for bidding -->
-          <CreateCard v-if="canBid()" :postId="post.id" 
+          <CreateCard v-if="canBid" :postId="post.id" 
           @requireRefresh="refreshContent" />
         </v-flex>
       </v-layout>
@@ -73,12 +73,11 @@ export default {
       post: {}
     };
   },
-  computed: mapState({
-    api_state: "api_state",
-    username: state => state.username
-  }),
-  methods: {
-    ...mapActions(["refreshAll", "getPostById"]),
+  computed: {
+    ...mapState({
+      api_state: "api_state",
+      username: state => state.username
+    }),
     canBid() {
       return (
         this.api_state == "READY" &&
@@ -86,6 +85,10 @@ export default {
         this.post.state == "BD"
       );
     },
+  },
+  methods: {
+    ...mapActions(["refreshAll", "getPostById"]),
+    
     refreshContent() {
       this.refreshAll().then(() => {
         // assign the new post object

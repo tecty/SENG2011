@@ -28,14 +28,9 @@ import msgCard from "@/components/helper/messageBox.vue";
 import { mapState, mapActions } from "vuex";
 export default {
   // the data of this post
-  props: ["value","index", "post"],
+  props: ["bid", "post"],
   data() {
     return {
-      bid:{
-        owner:{
-          username:""
-        }
-      }
     };
   },
   computed: {
@@ -52,9 +47,7 @@ export default {
     },
     deleteBid() {
       this.deleteBidById(this.bid.id).then(() => {
-        console.log("imhere")
         this.$emit("requireRefresh");
-        console.log("after event emit")
       });
     }
   },
@@ -63,7 +56,6 @@ export default {
   },
   mounted() {
     this.bid = this.value[this.index];
-    console.log(this.bid)
   },
 };
 </script>

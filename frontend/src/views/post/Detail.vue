@@ -35,14 +35,8 @@
         <h5 class="headline primary--text ">
           Bid
         </h5>
-        <!-- sort buttons -->
-      <div>
-        <v-select
-          :items="sortBy"
-          label="Sort bids by"
-          @change="selecteSortBy"
-        ></v-select>
-      </div>
+        <!-- select sorting parameter  -->
+      <sortingSelector :sortBy="sortParameter" :list="bidsShow" @sorted="sortbidsShow"/>
         <!-- cards of bids -->
         <div v-for="bid in bidsShow" :key="bid.id">
           <bid-card :bid="bid" :post="post" 
@@ -61,6 +55,7 @@
 import { mapState, mapActions } from "vuex";
 import parmCard from "@/components/post/extraParm.vue";
 import msgBox from "@/components/helper/messageBox.vue";
+import sortingSelector from "@/components/helper/mergeSort.vue";
 import BidCard from "@/components/bid/BidCard";
 import CreateCard from "@/components/bid/CreateCard";
 
@@ -68,41 +63,23 @@ export default {
   data() {
     return {
       post: {},
-      sortBy: [
+      sortParameter: [
         "Lastest",
         "Sort by offer price",
         "Sort by bidder name",
         "Default"
-      ],
-      selectVal: ""
+      ]
     };
   },
   computed: {
-    bidsShow() {
-      var compareFunc = (a, b) => {
-        return a.id - b.id;
-      };
-      switch (this.selectVal) {
-        case "Sort by offer price":
-          compareFunc = (a, b) => {
-            return parseInt(a.price, 10) - parseInt(b.price, 10);
-          };
-          break;
-        case "Lastest":
-          compareFunc = (a, b) => {
-            return a.id - b.id;
-          };
-          break;
-        case "Sort by bidder name":
-          compareFunc = (a, b) => {
-            return a.owner.username.localeCompare(b.owner.username);
-          };
-          break;
-        default:
-          return this.post.bid_set;
-          break;
+    bidsShow: {
+      get: function() {
+        return this.post.bid_set;
+      },
+      // setter
+      set: function(newList) {
+        this.post.bid_set = newList;
       }
-      return this.mergeSort(this.post.bid_set, compareFunc);
     },
     ...mapState({
       api_state: "api_state",
@@ -111,6 +88,9 @@ export default {
   },
   methods: {
     ...mapActions(["refreshAll", "getPostById"]),
+    sortbidsShow(sortedList) {
+      this.bidsShow = sortedList;
+    },
     canBid() {
       return (
         this.api_state == "READY" &&
@@ -127,49 +107,6 @@ export default {
           // declear the page is re-rendered
           this.$store.commit("API_READY");
         });
-    },
-    selecteSortBy(label) {
-      console.log(label);
-      this.selectVal = label;
-    },
-    mergeSort(list, compareFunc) {
-      var temp = this.mergeSortRecu(list, 0, list.length - 1, compareFunc);
-      return temp;
-    },
-    mergeSortRecu(list, lo, hi, compareFunc) {
-      var newList = list.slice();
-      if (lo < hi) {
-        var mid = Math.floor((lo + hi) / 2);
-        newList = this.mergeSortRecu(list, lo, mid, compareFunc);
-        newList = this.mergeSortRecu(newList, mid + 1, hi, compareFunc);
-        newList = this.merge(newList, lo, mid, hi, compareFunc);
-      }
-      return newList;
-    },
-    merge(newList, lo, mid, hi, compareFunc) {
-      var buffer = newList.slice();
-      // console.log(buffer);
-      var i = lo;
-      var j = mid + 1;
-      var k = 0;
-      while (k < hi - lo + 1) {
-        if (i > mid) {
-          buffer[lo + k] = newList[j];
-          j++;
-        } else if (j > hi) {
-          buffer[lo + k] = newList[i];
-          i++;
-        } else if (compareFunc(newList[i], newList[j]) <= 0) {
-          //newList[i] sits before newList[j] ==>  compareFunc(newList[i],newList[j]) < 0
-          buffer[lo + k] = newList[i];
-          i++;
-        } else {
-          buffer[lo + k] = newList[j];
-          j++;
-        }
-        k++;
-      }
-      return buffer;
     }
   },
   mounted() {
@@ -187,7 +124,8 @@ export default {
     msgBox,
     BidCard,
     CreateCard,
-    parmCard
+    parmCard,
+    sortingSelector
   },
   $_veeValidate: {
     validator: "new"

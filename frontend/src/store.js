@@ -18,6 +18,7 @@ export default new Vuex.Store({
   },
   mutations: {
     API_ERROR: (state, error) => {
+      state.api_state = "ERROR";
       // claim an error
       state.error = error;
     },
@@ -104,7 +105,12 @@ export default new Vuex.Store({
       return Promise.all([
         dispatch("refreshEvents"),
         dispatch("refreshPosts")
-      ]).then(() => dispatch("wireEvents").then(() => commit("API_FINISHED")));
+      ]).then(() =>
+        dispatch("wireEvents").then(ret => {
+          commit("API_FINISHED");
+          return ret;
+        })
+      );
     },
     async wireEvents({ state, commit }) {
       let posts = state.posts;

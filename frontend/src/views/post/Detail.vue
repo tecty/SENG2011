@@ -1,6 +1,6 @@
 <template>
   <v-container full-height>
-    <div v-if="api_state != 'READY'" class="text-xs-center">
+    <div v-if="api_state != 'READY' && api_state != 'ERROR'" class="text-xs-center">
       <v-progress-circular indeterminate color="primary" />
     </div>
     <div v-else>
@@ -48,12 +48,12 @@
           <!-- cards of bids -->
           <div v-for="bid in post.bid_set" :key="bid.id">
             <bid-card :bid="bid" :post="post" 
-              @requireRefresh="()=> refreshContent()" />
+              @requireRefresh="refreshContent" />
             <br/>
           </div>
           <!-- card for bidding -->
           <CreateCard v-if="canBid()" :postId="post.id" 
-          @requireRefresh="()=> refreshContent()" />
+          @requireRefresh="refreshContent" />
         </v-flex>
       </v-layout>
     </div>
@@ -89,7 +89,7 @@ export default {
     refreshContent() {
       this.refreshAll().then(() => {
         // assign the new post object
-        this.post = this.$store.posts.find(el => el.id == this.post.id);
+        this.post = this.$store.state.posts.find(el => el.id == this.post.id);
         // declear the page is re-rendered
         this.$store.commit("API_READY");
       });

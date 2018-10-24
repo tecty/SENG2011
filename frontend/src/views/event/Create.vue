@@ -1,6 +1,6 @@
 <template>
   <v-container grid-list-xl >
-    <div v-if="api_state != 'READY'" class="text-xs-center">
+    <div v-if="api_state != 'READY' && api_state != 'ERROR'" class="text-xs-center">
       <v-progress-circular indeterminate color="primary" />
     </div>
     <v-form ref="form" @submit.prevent="submit" v-else>

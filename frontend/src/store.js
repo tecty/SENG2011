@@ -176,7 +176,7 @@ export default new Vuex.Store({
         .catch(err => commit("API_ERROR", err));
       return ret;
     },
-    async chooseBidById({ commit }, postId, bidId) {
+    async chooseBidById({ commit }, { postId, bidId }) {
       commit("API_WAITING");
       let ret = await axios
         .post(`posts/${postId}/choose/`, {

@@ -28,9 +28,15 @@ import msgCard from "@/components/helper/messageBox.vue";
 import { mapState, mapActions } from "vuex";
 export default {
   // the data of this post
-  props: ["bid", "post"],
+  props: ["value","index", "post"],
   data() {
-    return {};
+    return {
+      bid:{
+        owner:{
+          username:""
+        }
+      }
+    };
   },
   computed: {
     ...mapState({
@@ -54,6 +60,10 @@ export default {
   },
   components: {
     msgCard
-  }
+  },
+  mounted() {
+    this.bid = this.value[this.index];
+    console.log(this.bid)
+  },
 };
 </script>

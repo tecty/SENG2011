@@ -46,8 +46,8 @@
             Bid
           </h5>
           <!-- cards of bids -->
-          <div v-for="bid in post.bid_set" :key="bid.id">
-            <bid-card :bid="bid" :post="post" 
+          <div v-for="i in post.bid_set.length" :key="i">
+            <bid-card :index="i-1" :post="post" v-model="post.bid_set"
               @requireRefresh="refreshContent" />
             <br/>
           </div>

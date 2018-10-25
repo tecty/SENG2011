@@ -73,10 +73,42 @@ export default {
     return {
       post: {},
       sortParameter: [
-        "Lastest",
-        "Sort by offer price",
-        "Sort by bidder name",
-        "Default"
+        {
+          text: "Lastest",
+          value: {
+            id: 0,
+            f: (a, b) => {
+              return a.id - b.id;
+            }
+          }
+        },
+        {
+          text: "Sort by offer price",
+          value: {
+            id: 1,
+            f: (a, b) => {
+              return parseInt(a.price, 10) - parseInt(b.price, 10);
+            }
+          }
+        },
+        {
+          text: "Sort by bidder name",
+          value: {
+            id: 2,
+            f: (a, b) => {
+              return a.owner.username.localeCompare(b.owner.username);
+            }
+          }
+        },
+        {
+          text: "Default",
+          value: {
+            id: 3,
+            f: (a, b) => {
+              return a.id - b.id;
+            }
+          }
+        }
       ]
     };
   },

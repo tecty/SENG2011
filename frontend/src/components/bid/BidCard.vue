@@ -46,9 +46,9 @@ export default {
     },
     deleteBid() {
       this.deleteBidById(this.bid.id).then(() => {
-        console.log("imhere")
+        console.log("imhere");
         this.$emit("requireRefresh");
-        console.log("after event emit")
+        console.log("after event emit");
       });
     }
   },

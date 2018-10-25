@@ -49,7 +49,7 @@
       </v-layout>
       <v-layout row wrap>
         <v-flex xs12 sm8 md6 lg3>
-          <sortingSelector :sortBy="sortParameter" v-model="post.bid_set" :list="bidsShow" @sorted="sortbidsShow" />
+          <sortingSelector :sortBy="sortParameter" v-model="post.bid_set" />
         </v-flex>
       </v-layout>
       <v-layout row wrap>
@@ -89,14 +89,14 @@ export default {
           }
         },
         {
-          text: "Sort by offer price",
+          text: "Offer Price",
           value: {
             id: 1,
             f: (a, b) => parseInt(a.price, 10) - parseInt(b.price, 10)
           }
         },
         {
-          text: "Sort by bidder name",
+          text: "Bidder Name",
           value: {
             id: 2,
             f: (a, b) => a.owner.username.localeCompare(b.owner.username)
@@ -113,15 +113,6 @@ export default {
     };
   },
   computed: {
-    bidsShow: {
-      get: function() {
-        return this.post.bid_set;
-      },
-      // setter
-      set: function(newList) {
-        this.post.bid_set = newList;
-      }
-    },
     ...mapState({
       api_state: "api_state",
       username: state => state.username
@@ -129,9 +120,6 @@ export default {
   },
   methods: {
     ...mapActions(["refreshAll", "getPostById"]),
-    sortbidsShow(sortedList) {
-      this.bidsShow = sortedList;
-    },
     canBid() {
       return (
         this.api_state == "READY" &&

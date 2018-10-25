@@ -29,7 +29,7 @@ export default {
     return {
       sortParameter: [
         {
-          text: "Sort by Bid Ending time",
+          text: "Bid Ending time",
           value: {
             id: 1,
             f: (a, b) =>
@@ -37,21 +37,21 @@ export default {
           }
         },
         {
-          text: "Sort by Event time",
+          text: "Event time",
           value: {
             id: 2,
             f: (a, b) => Date.parse(a.eventTime) - Date.parse(b.eventTime)
           }
         },
         {
-          text: "Sort by Number of Posts under an Event",
+          text: "Number of Posts under an Event",
           value: {
             id: 3,
             f: (a, b) => a.post_set.length - b.post_set.length
           }
         },
         {
-          text: "Sort by Event owner Name",
+          text: "Event owner Name",
           value: {
             id: 4,
             f: (a, b) => a.owner.username.localeCompare(b.owner.username)
@@ -68,20 +68,9 @@ export default {
     };
   },
   computed: {
-    events: {
-      get() {
-        return this.$store.state.events;
-      },
-      set(newList) {
-        return this.$store.commit("SET_EVENTS", newList);
-      }
-    },
-    ...mapState(["api_state"])
+    ...mapState(["api_state","events"])
   },
   methods: {
-    sortEvents(list) {
-      this.events = list;
-    }
   },
   mounted() {
     // fetch the latest events

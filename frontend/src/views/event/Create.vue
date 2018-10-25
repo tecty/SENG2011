@@ -3,10 +3,12 @@
     <div v-if="api_state != 'READY' && api_state != 'ERROR'" class="text-xs-center">
       <v-progress-circular indeterminate color="primary" />
     </div>
-    <v-form ref="form" @submit.prevent="submit" v-else>
+    <form ref="form" @submit.prevent="submit" v-else>
       <v-layout wrap>
         <v-flex xs12 sm6>
-          <v-text-field v-model="form.title" label="Title *" required></v-text-field>
+          <v-text-field v-model="form.title"
+          v-validate="'required'" data-vv-name="title"  :error-messages="errors.collect('title')"
+           label="Title *"></v-text-field>
         </v-flex>
         <addr @confirmLocation="
             loc => {
@@ -17,7 +19,9 @@
           " :address="form.location.address"  hint="Where this event be held?"/>
 
         <v-flex xs12>
-          <dateTime v-model="form.eventTime" title="Event"/>
+          <dateTime v-model="form.eventTime" 
+          v-validate="'required'" data-vv-name="event date and time"  :error-messages="errors.collect('event date and time')"
+          title="Event"/>
         </v-flex>
         <v-flex xs12>
           <dateTime v-model="form.bidClosingTime" title="Bid Clossing"/>
@@ -26,7 +30,7 @@
           <v-btn color="success" type="submit">Submit</v-btn>
         </v-flex>
       </v-layout>
-    </v-form>
+    </form>
   </v-container>
 </template>
 
@@ -59,40 +63,46 @@ export default {
   methods: {
     ...mapActions(["createEvent", "editEvent"]),
     submit() {
-      if (this.isEdit) {
-        this.editEvent(this.form).then(ret => {
-          this.$router.push({
-            name: "EventDetail",
-            params: {
-              eventId: ret.data.id
-            }
-          });
-        });
-      } else {
-        // create the event
-        this.createEvent({
-          title: this.form.title,
-          location: this.form.location,
-          eventTime: this.form.eventTime,
-          bidClosingTime: this.form.bidClosingTime
-        })
-          .then(res => {
-            let eventId = res.data.id;
-            this.$router.push({
-              name: "EventDetail",
-              params: {
-                eventId: eventId
-              }
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          console.log("it's oging");
+          if (this.isEdit) {
+            this.editEvent(this.form).then(ret => {
+              this.$router.push({
+                name: "EventDetail",
+                params: {
+                  eventId: ret.data.id
+                }
+              });
             });
-          })
-          .catch(err => {
-            // TODO: just a way to implement the snack bar
-            this.snackbar = true;
-            this.snackbarColor = "error";
-            // TODO improve err looking.
-            this.snackText = "Error: " + JSON.stringify(err.response.data);
-          });
-      }
+          } else {
+            // create the event
+            this.createEvent({
+              title: this.form.title,
+              location: this.form.location,
+              eventTime: this.form.eventTime,
+              bidClosingTime: this.form.bidClosingTime
+            })
+              .then(res => {
+                let eventId = res.data.id;
+                this.$router.push({
+                  name: "EventDetail",
+                  params: {
+                    eventId: eventId
+                  }
+                });
+              })
+              .catch(err => {
+                // TODO: just a way to implement the snack bar
+                this.snackbar = true;
+                this.snackbarColor = "error";
+                // TODO improve err looking.
+                this.snackText = "Error: " + JSON.stringify(err.response.data);
+                this.$store.commit("API_READY");
+              });
+          }
+        }
+      });
     }
   },
   mounted() {

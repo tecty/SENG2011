@@ -44,6 +44,7 @@ export default {
             })
             .catch(err => {
               this.error = err;
+              this.$store.commit("API_READY");
             });
         }
       });

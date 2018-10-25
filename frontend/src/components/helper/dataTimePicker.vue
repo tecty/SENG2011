@@ -28,7 +28,8 @@
     <v-flex xs12 sm6 md4 pt-0>
       <v-menu ref="timeMenu" :close-on-content-click="false" v-model="timeMenu" :nudge-right="40" :return-value.sync="time"
         lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
-        <v-text-field slot="activator" v-model="time" :label="getTimeTitle" prepend-icon="access_time" readonly required></v-text-field>
+        <v-text-field slot="activator" v-model="time" :label="getTimeTitle"
+         prepend-icon="access_time" readonly required></v-text-field>
         <v-time-picker v-if="timeMenu" v-model="time" @change="timeChanged" format="24hr"></v-time-picker>
       </v-menu>
     </v-flex>

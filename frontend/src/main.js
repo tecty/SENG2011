@@ -55,9 +55,6 @@ Vue.filter("showDateTime", s => {
 });
 
 new Vue({
-  $_veeValidate: {
-    validator: "new"
-  },
   router,
   store,
   render: h => h(App)

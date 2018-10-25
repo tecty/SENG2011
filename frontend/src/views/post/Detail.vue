@@ -62,7 +62,7 @@
           </v-flex>
           <!-- card for bidding -->
         <v-flex xs12 md6 lg4>
-          <CreateCard v-if="canBid()" :postId="post.id" @requireRefresh="()=> refreshContent()" />
+          <CreateCard v-if="canBid" :postId="post.id" @requireRefresh="()=> refreshContent()" />
         </v-flex>
       </v-layout>
     </div>
@@ -93,7 +93,7 @@ export default {
           text: "Offer Price",
           value: {
             id: 1,
-            f: (a, b) => parseInt(a.price, 10) - parseInt(b.price, 10)
+            f: (a, b) => -(parseInt(a.price, 10) - parseInt(b.price, 10))
           }
         },
         {

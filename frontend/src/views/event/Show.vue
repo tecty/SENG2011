@@ -2,6 +2,7 @@
   <v-container fluid grid-list-md>
     <v-data-iterator :items="events"
       content-tag="v-layout" row wrap
+      :rows-per-page-items="[12]"
       v-if="api_state != 'WAIT'"
     >
       <v-flex slot="item" slot-scope="props" sm12 sm6 md4 lg3 >

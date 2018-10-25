@@ -197,9 +197,12 @@ export default new Vuex.Store({
         .catch(err => commit("API_ERROR", err));
       return ret;
     },
-    async rateBidder({ commit }, postId) {
+    async rateBidder({ commit }, { postId, rate }) {
       let ret = await axios
-        .get(`posts/${postId}/finish/`)
+        // post the rate to backend
+        .post(`posts/${postId}/rate/`, {
+          rate: rate
+        })
         .catch(err => commit("API_ERROR", err));
       return ret;
     }

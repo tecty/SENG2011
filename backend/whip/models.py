@@ -203,7 +203,13 @@ class Bid(models.Model):
         proof by Dafny
         '''
         bidset = Bid.objects\
-            .filter(owner = self.owner,state = "FN")\
+            .filter(
+                owner = self.owner,
+                state = "FN"
+            )\
+            .exclude(
+                bidderReceivedPoints=0
+            )\
             .aggregate(
                 Avg('bidderReceivedPoints')
             )['bidderReceivedPoints__avg']

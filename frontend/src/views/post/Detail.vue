@@ -85,36 +85,28 @@ export default {
           text: "Lastest",
           value: {
             id: 0,
-            f: (a, b) => {
-              return a.id - b.id;
-            }
+            f: (a, b) => a.id - b.id
           }
         },
         {
           text: "Sort by offer price",
           value: {
             id: 1,
-            f: (a, b) => {
-              return parseInt(a.price, 10) - parseInt(b.price, 10);
-            }
+            f: (a, b) => parseInt(a.price, 10) - parseInt(b.price, 10)
           }
         },
         {
           text: "Sort by bidder name",
           value: {
             id: 2,
-            f: (a, b) => {
-              return a.owner.username.localeCompare(b.owner.username);
-            }
+            f: (a, b) => a.owner.username.localeCompare(b.owner.username)
           }
         },
         {
           text: "Default",
           value: {
             id: 3,
-            f: (a, b) => {
-              return a.id - b.id;
-            }
+            f: (a, b) => a.id - b.id
           }
         }
       ]

@@ -1,8 +1,9 @@
 <template>
   <v-container fluid grid-list-md>
-    <!-- select sorting parameter  -->
-    <sortingSelector :sortBy="sortParameter" :list="posts" @sorted="sortPosts" />
-
+    <v-flex xs12 sm8 md6 lg3>
+      <!-- select sorting parameter  -->
+      <sortingSelector v-model="posts" :sortBy="sortParameter"  />
+    </v-flex>
     <v-data-iterator :items="posts" content-tag="v-layout" row wrap v-if="api_state != 'WAIT'">
 
       <v-flex slot="item" slot-scope="props" sm12 sm6 md4 lg3>
@@ -29,13 +30,53 @@ export default {
   data() {
     return {
       sortParameter: [
-        "Sort by Bid Ending time",
-        "Sort by Event time",
-        "Sort by Budget",
-        "Sort by Number of bids",
-        "Sort by issuer name",
-        "Sort by Number of people",
-        "Default"
+        {
+          text: "Sort by Bid Ending time",
+          value: {
+            id: 0,
+            f: (a, b) =>
+              Date.parse(a.event.bidClosingTime) -
+              Date.parse(b.event.bidClosingTime)
+          }
+        },
+        {
+          text: "Sort by Event time",
+          value: {
+            id: 1,
+            f: (a, b) =>
+              Date.parse(a.event.eventTime) - Date.parse(b.event.eventTime)
+          }
+        },
+        {
+          text: "Sort by Budget",
+          value: {
+            id: 2,
+            f: (a, b) => parseInt(a.budget, 10) - parseInt(b.budget, 10)
+          }
+        },
+        {
+          text: "Sort by Number of bids",
+          value: {
+            id: 3,
+            f: (a, b) => a.bid_set.length - b.bid_set.length
+          }
+        },
+        {
+          text: "Sort by issuer name",
+          value: {
+            id: 4,
+            f: (a, b) =>
+              a.event.owner.username.localeCompare(b.event.owner.username)
+          }
+        },
+        {
+          text: "Sort by Number of people",
+          value: {
+            id: 5,
+            f: (a, b) => a.peopleCount - b.peopleCount
+          }
+        },
+        { text: "Default", value: { id: 6, f: (a, b) => a.id - b.id } }
       ]
     };
   },

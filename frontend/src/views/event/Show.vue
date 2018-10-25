@@ -6,7 +6,7 @@
     <v-data-iterator :items="events"
       content-tag="v-layout" row wrap
       :rows-per-page-items="[12]"
-      v-if="api_state != 'WAIT'"
+      v-if="api_state == 'READY'"
     >
       <v-flex slot="item" slot-scope="props" sm12 sm6 md4 lg3 >
         <!-- actual data is iterating at this v-flex layer -->
@@ -28,6 +28,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
+      events:[],
       sortParameter: [
         {
           text: "Bid Ending time",
@@ -69,13 +70,16 @@ export default {
     };
   },
   computed: {
-    ...mapState(["api_state","events"])
+    ...mapState(["api_state"])
   },
   methods: {
   },
   mounted() {
     // fetch the latest events
-    this.$store.dispatch("refreshAll");
+    this.$store.dispatch("refreshAll").then(()=>{ 
+      this.events = this.$store.state.events;
+      this.$store.commit('API_READY');
+    });
   },
   components: {
     EventCard,

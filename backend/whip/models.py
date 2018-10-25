@@ -79,6 +79,11 @@ class Event(models.Model):
     def __str__(self):
         return self.__unicode__()
 
+
+
+"""
+Verified At state.dfy
+"""
 class Post(models.Model):
     # Parent of the post model have neccessary infomation 
     # Move majority information that would have collesion to Event model 

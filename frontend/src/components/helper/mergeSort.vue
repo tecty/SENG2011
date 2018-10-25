@@ -35,6 +35,10 @@ export default {
         this.compareFunc
       ));
     },
+    /**
+     * Recursive call of merge sort
+     * Verified at MergeSort.dfy
+     */
     mergeSortRecu(list, lo, hi, compareFunc) {
       var newList = list.slice();
       if (lo < hi) {
@@ -45,6 +49,10 @@ export default {
       }
       return newList;
     },
+    /**
+     * Merge of two array
+     * Verified at MergeSort.dfy
+     */
     merge(newList, lo, mid, hi, compareFunc) {
       var buffer = newList.slice();
       // console.log(buffer);

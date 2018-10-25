@@ -43,18 +43,26 @@
       </h5>
       <msgBox :msg="post.msg" class="mb-3"/>
       <v-layout>
-        <v-flex xs12 >
+        <v-flex xs12>
           <h5 class="headline primary--text ">
             Bid
           </h5>
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap>
+        <v-flex xs12 sm8 md6 lg3>
+          <sortingSelector :sortBy="sortParameter" v-model="post.bid_set" />
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap>
+          <!-- select sorting parameter  -->
           <!-- cards of bids -->
-          <div v-for="bid in post.bid_set" :key="bid.id">
-            <bid-card :post="post" :bid="bid"
-            @requireRefresh="refreshContent" />
-          </div>
+          <v-flex xs12 md6 lg4 v-for="bid in post.bid_set" :key="bid.id">
+            <bid-card :bid="bid" :post="post" @requireRefresh="()=> refreshContent()" />
+          </v-flex>
           <!-- card for bidding -->
-          <CreateCard v-if="canBid" :postId="post.id" 
-          @requireRefresh="refreshContent" />
+        <v-flex xs12 md6 lg4>
+          <CreateCard v-if="canBid()" :postId="post.id" @requireRefresh="()=> refreshContent()" />
         </v-flex>
       </v-layout>
     </div>
@@ -65,13 +73,44 @@
 import { mapState, mapActions } from "vuex";
 import parmCard from "@/components/post/extraParm.vue";
 import msgBox from "@/components/helper/messageBox.vue";
+import sortingSelector from "@/components/helper/mergeSort.vue";
 import BidCard from "@/components/bid/BidCard";
 import CreateCard from "@/components/bid/CreateCard";
 
 export default {
   data() {
     return {
-      post: {}
+      post: {},
+      sortParameter: [
+        {
+          text: "Lastest",
+          value: {
+            id: 0,
+            f: (a, b) => a.id - b.id
+          }
+        },
+        {
+          text: "Offer Price",
+          value: {
+            id: 1,
+            f: (a, b) => parseInt(a.price, 10) - parseInt(b.price, 10)
+          }
+        },
+        {
+          text: "Bidder Name",
+          value: {
+            id: 2,
+            f: (a, b) => a.owner.username.localeCompare(b.owner.username)
+          }
+        },
+        {
+          text: "Default",
+          value: {
+            id: 3,
+            f: (a, b) => a.id - b.id
+          }
+        }
+      ]
     };
   },
   computed: {
@@ -117,7 +156,8 @@ export default {
     msgBox,
     BidCard,
     CreateCard,
-    parmCard
+    parmCard,
+    sortingSelector
   },
   $_veeValidate: {
     validator: "new"

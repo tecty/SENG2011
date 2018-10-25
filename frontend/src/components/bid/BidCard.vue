@@ -1,6 +1,5 @@
 <template>
-  <v-layout row wrap mb-3>
-    <v-flex xs12>
+  <div class="ml-0 mr-4 mb-2">
       <v-card color="blue-grey darken-2" class="white--text">
         <v-card-title primary-title>
           <span class="headline">
@@ -35,8 +34,7 @@
           </div>
         </v-card-actions>
       </v-card>
-    </v-flex>
-  </v-layout>
+  </div>
 </template>
 
 <script>

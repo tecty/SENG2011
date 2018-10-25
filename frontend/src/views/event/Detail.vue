@@ -33,7 +33,7 @@
       <p>{{event.bidClosingTime | showDateTime }}</p>
     </div>
     <div class="text-xs-center" v-else>
-        <v-progress-circular indeterminate color="primary" />
+      <v-progress-circular indeterminate color="primary" />
     </div>
   </v-container>
 </template>

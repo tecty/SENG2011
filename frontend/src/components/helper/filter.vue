@@ -13,27 +13,24 @@ export default {
   data() {
     return {
       // default value is all thing is true
-      selected: { f: a => true }
+      selected: { f: () => true }
     };
   },
-  computed:{
-    condition(){
+  computed: {
+    condition() {
       return this.selected.f;
     }
   },
   methods: {
-    doFilter(){
+    doFilter() {
       // filter the passed in array
-      this.$emit(
-        'input'
-        ,this.filter(this.value, this.selected)
-      );
+      this.$emit("input", this.filter(this.value, this.selected));
     },
     /**
      * Filter of an array
      * Verify by Filter.dfy
      */
-    filter(list, condition) {
+    filter(list) {
       let ret = [];
       for (var i = 0; i < list.length; i++) {
         if (this.condition(list[i])) {
@@ -44,12 +41,12 @@ export default {
     }
   },
   mounted() {
-    // push an empty condition 
+    // push an empty condition
     this.$emit(
       "input",
       this.filterBy.unshift({
         text: "Default",
-        value: { id: 0, f: a => true }
+        value: { id: 0, f: () => true }
       })
     );
   }

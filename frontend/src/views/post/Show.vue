@@ -35,7 +35,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      posts:[],
+      posts: [],
       sortParameter: [
         {
           text: "Bid Ending time",
@@ -85,20 +85,30 @@ export default {
         },
         { text: "Default", value: { id: 6, f: (a, b) => a.id - b.id } }
       ],
-      filterBy:[
-        {text:"Current Valid", value:{id:1, f:(el)=> Date.parse(el.eventTime) >= Date.now()}},
-        {text:"I'm Owner", value:{id:2, f:(el)=> el.event.owner.username == this.username}}
+      filterBy: [
+        {
+          text: "Current Valid",
+          value: {
+            id: 1,
+            f: el =>
+              Date.parse(el.event.eventTime) >= Date.now() && el.state != "FN"
+          }
+        },
+        {
+          text: "I'm Owner",
+          value: { id: 2, f: el => el.event.owner.username == this.username }
+        }
       ]
     };
   },
   computed: {
-    ...mapState(["api_state","username"])
+    ...mapState(["api_state", "username"])
   },
   mounted() {
     // fetch the latest posts
-    this.$store.dispatch("refreshAll").then(()=> {
+    this.$store.dispatch("refreshAll").then(() => {
       this.posts = this.$store.state.posts;
-      this.$store.commit('API_READY');
+      this.$store.commit("API_READY");
     });
   },
   components: {

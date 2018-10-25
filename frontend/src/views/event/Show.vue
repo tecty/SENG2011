@@ -28,7 +28,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      events:[],
+      events: [],
       sortParameter: [
         {
           text: "Bid Ending time",
@@ -72,13 +72,14 @@ export default {
   computed: {
     ...mapState(["api_state"])
   },
-  methods: {
-  },
+  methods: {},
   mounted() {
     // fetch the latest events
-    this.$store.dispatch("refreshAll").then(()=>{ 
-      this.events = this.$store.state.events;
-      this.$store.commit('API_READY');
+    this.$store.dispatch("refreshAll").then(() => {
+      this.events = this.$store.state.events.filter(
+        el => el.owner.username == this.$store.state.username
+      );
+      this.$store.commit("API_READY");
     });
   },
   components: {

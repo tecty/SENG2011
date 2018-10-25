@@ -28,12 +28,15 @@ export default {
     mergeSort() {
       // console.log(this.compareFunc)
       // call the merge sort
-      this.$emit("input", this.mergeSortRecu(
-        this.value,
-        0,
-        this.value.length - 1,
-        this.compareFunc
-      ));
+      this.$emit(
+        "input",
+        this.mergeSortRecu(
+          this.value,
+          0,
+          this.value.length - 1,
+          this.compareFunc
+        )
+      );
     },
     /**
      * Recursive call of merge sort

@@ -6,19 +6,20 @@
     <div v-else>
       <!-- content of the post  -->
       <v-layout row wrap>
-        <v-flex xs11>
-          <h3 class="display-1 primary--text">
-            <span class="grey--text">#{{ post.id }}</span> {{post.title}}
-          </h3>
-        </v-flex>
-        <v-flex xs1 v-if="canEdit">
+        <h3 class="display-1 primary--text">
+          <span class="grey--text">#{{ post.id }}</span> {{post.title}}
+        </h3>
+        <v-spacer></v-spacer>
+        <div v-if="canEdit">
+          <v-btn color="error" @click="cancel">Cancel</v-btn>
           <v-btn color="primary" :to="{
             name:'PostEdit',
             params: {
               postId:post.id,
             }
           }">Edit</v-btn>
-        </v-flex>
+
+        </div>
       </v-layout>
       <p>{{ post.state | stateToText}}</p>
       <h5 class="headline primary--text ">Issuer:</h5>
@@ -133,7 +134,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["refreshAll", "getPostById"]),
+    ...mapActions(["refreshAll", "getPostById", "cancelPostById"]),
 
     refreshContent() {
       this.refreshAll().then(() => {
@@ -142,6 +143,9 @@ export default {
         // declear the page is re-rendered
         this.$store.commit("API_READY");
       });
+    },
+    cancel(){
+      this.cancelPostById(this.post.id).then(()=> this.$router.push('/'));
     }
   },
   mounted() {

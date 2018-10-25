@@ -8,13 +8,13 @@
 - [x] [1]1.1.1.7. budget for whole event  
 - [x] [1]1.1.1.8. status of the request // change by the progress (incl.  
 - [x] [1]1.2. Posters can view requests they posted // Even if it is finished  
-- [ ] [1]1.2.1. Posters can view all requests they posted in a list // sorted by status  
+- [x] [1]1.2.1. Posters can view all requests they posted in a list // sorted by status  
 - [x] [1]1.2.2. Posters can choose bidders for an open request // change state  
 - [x] [1]1.2.3. Posters can manage his posts  
-- [ ] [1]1.2.3.1. Posters can cancel a processing or deal state request which  
+- [x] [1]1.2.3.1. Posters can cancel a processing or deal state request which  
 - [x] [1]1.3. Posters can register and log in  
 - [x] [1]2.1. Parameters can only be CRUD (Change Read Update Delete) by admin  
-- [ ] [1]2.1.1. Parameters cannot be hard deleted // need to verify, implement by a  
+- [x] [1]2.1.1. Parameters cannot be hard deleted // need to verify, implement by a  
 - [x] [1]3.1. Bidders can view a list of posted requests  
 - [x] [1]3.2. Bidders can place bids on requests  
 - [x] [1]3.2.1. Bid need to provide the offer budget and leave some comments  
@@ -23,8 +23,8 @@
 - [x] [2]1.1.2. Posters can specify some other parametes  
 - [x] [2]1.1.2.1. A post can only select one parameter value for a field  
 - [x] [2]1.1.2.2. Poster can see all the provided parameters  
-- [ ] [2]1.2.1.2. Posters can filter requests by their status  
-- [ ] [2]1.2.2.1. bidders will be sorted based on their bidding price and  
+- [x] [2]1.2.1.2. Posters can filter requests by their status  
+- [x] [2]1.2.2.1. bidders can be sorted based on their bidding price and  
 - [x] [2]1.2.2.2. Poster can see all bidders’ comments written by previous  
 - [ ] [2]1.2.2.4. When a request is overdue, it should be automatically  
 - [x] [2]1.2.3.2. Posters can edit details of a request created by themselves  
@@ -40,10 +40,10 @@
 - [x] [2]2.2.8. indoor/outdoor  
 - [ ] [2]3.1.1. Default list is sorted by relevant rate // need to verify  
 - [ ] [2]3.1.2. Bidders can sort requests  
-- [ ] [2]3.1.2.1. sort by latest bidding price  
+- [ ] [2]3.1.2.1. sort by bidding price  
 - [ ] [2]3.1.2.2. sort by latest bidding time  
 - [ ] [2]3.1.2.3. sort by relevance  
-- [ ] [2]3.1.3. Bidders can filter requests  
+- [x] [2]3.1.3. Bidders can filter requests  
 - [ ] [2]3.1.3.1. filter by food type  
 - [ ] [2]3.1.3.2. filter by region  
 - [ ] [2]3.1.3.3. filter by due time  
@@ -54,17 +54,17 @@
 - [ ] [3]1.2.2.5.1. Poster can only rate his post  
 - [ ] [3]1.2.2.5.2. The rate should be one to five stars in intergers  
 - [ ] [3]1.2.2.5.3. Posters can rate the bidder for this request  
-- [ ] [3]1.2.2.6. Poster will see the recommend stars of all the bidders who  
-- [ ] [3]1.2.2.6.1. The recommend starts is base on the rate of other  
+- [x] [3]1.2.2.6. Poster will see the recommend stars of all the bidders who  
+- [x] [3]1.2.2.6.1. The recommend starts is base on the rate of other  
 - [ ] [3]1.2.2.6.2. The recommend starts is base on the parameters of  
-- [ ] [3]1.2.2.6.3. Appear 0 rate if these rules are not applied, such as  
+- [x] [3]1.2.2.6.3. Appear 0 rate if these rules are not applied, such as  
 - [ ] [3]1.3.1. Posters can edit and provide contact details  
 - [ ] [3]1.3.1.1. Phone number  
 - [ ] [3]1.3.1.2. Email  
 - [ ] [3]1.3.1.3. Name  
 - [ ] [3]1.3.1.4. Address  
-- [ ] [3]2.2.9. additional provision of crockery/glasses/cutlery/chairs  
-- [ ] [3]3.3.1. Bidder must have a profile  
+- [x] [3]2.2.9. additional provision of crockery/glasses/cutlery/chairs  
+- [x] [3]3.3.1. Bidder must have a profile  
 - [ ] [3]3.3.1.1. Bidder can edit its own profile // only bidder and poster can  
 - [ ] [3]3.3.1.2. including contact details  
 - [ ] [3]3.3.1.3. including the information of restaurant (if applicable)  

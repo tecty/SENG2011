@@ -154,6 +154,14 @@ export default new Vuex.Store({
       commit("API_FINISHED");
       return ret;
     },
+    async cancelPostById({commit},id){
+      commit("API_WAITING");
+      let ret = await axios
+        .delete(`posts/${id}/`)
+        .catch(err => commit("API_ERROR", err));
+      commit("API_FINISHED");
+      return ret;
+    },
     async createEvent({ commit }, data) {
       commit("API_WAITING");
       let ret = await axios
@@ -176,23 +184,34 @@ export default new Vuex.Store({
         .catch(err => commit("API_ERROR", err));
       return ret;
     },
-    async chooseBidById({ commit }, postId, bidId) {
-      commit("API_WAITING");
+    async chooseBidById({ commit }, { postId, bidId }) {
       let ret = await axios
         .post(`posts/${postId}/choose/`, {
           id: bidId
         })
         .catch(err => commit("API_ERROR", err));
-      commit("API_FINISHED");
       return ret;
     },
     async deleteBidById({ commit }, bidId) {
-      commit("API_WAITING");
       // send the actual delete
       let ret = await axios
         .delete(`bids/${bidId}/`)
         .catch(err => commit("API_ERROR", err));
-      commit("API_FINISHED");
+      return ret;
+    },
+    async finishBidById({ commit }, postId) {
+      let ret = await axios
+        .get(`posts/${postId}/finish/`)
+        .catch(err => commit("API_ERROR", err));
+      return ret;
+    },
+    async rateBidder({ commit }, { postId, rate }) {
+      let ret = await axios
+        // post the rate to backend
+        .post(`posts/${postId}/rate/`, {
+          rate: rate
+        })
+        .catch(err => commit("API_ERROR", err));
       return ret;
     }
   },

@@ -6,19 +6,20 @@
     <div v-else>
       <!-- content of the post  -->
       <v-layout row wrap>
-        <v-flex xs11>
-          <h3 class="display-1 primary--text">
-            <span class="grey--text">#{{ post.id }}</span> {{post.title}}
-          </h3>
-        </v-flex>
-        <v-flex xs1 v-if="post.event.owner.username == username">
+        <h3 class="display-1 primary--text">
+          <span class="grey--text">#{{ post.id }}</span> {{post.title}}
+        </h3>
+        <v-spacer></v-spacer>
+        <div v-if="canEdit">
+          <v-btn color="error" @click="cancel">Cancel</v-btn>
           <v-btn color="primary" :to="{
             name:'PostEdit',
             params: {
               postId:post.id,
             }
           }">Edit</v-btn>
-        </v-flex>
+
+        </div>
       </v-layout>
       <p>{{ post.state | stateToText}}</p>
       <h5 class="headline primary--text ">Issuer:</h5>
@@ -36,10 +37,12 @@
       </h5>
       <p>${{post.budget}}</p>
       <parmCard :criteria="post.extraParameter" />
+      <h5 class="headline primary--text ">Event Address:</h5>
+      <p>{{ post.event.location.address }}</p>
       <h5 class="headline primary--text ">
         Message
       </h5>
-      <msgBox :msg="post.msg" />
+      <msgBox :msg="post.msg" class="mb-3"/>
       <v-layout>
         <v-flex xs12>
           <h5 class="headline primary--text ">
@@ -57,11 +60,10 @@
           <!-- cards of bids -->
           <v-flex xs12 md6 lg4 v-for="bid in post.bid_set" :key="bid.id">
             <bid-card :bid="bid" :post="post" @requireRefresh="()=> refreshContent()" />
-            <br/>
           </v-flex>
           <!-- card for bidding -->
         <v-flex xs12 md6 lg4>
-          <CreateCard v-if="canBid()" :postId="post.id" @requireRefresh="()=> refreshContent()" />
+          <CreateCard v-if="canBid" :postId="post.id" @requireRefresh="()=> refreshContent()" />
         </v-flex>
       </v-layout>
     </div>
@@ -92,7 +94,7 @@ export default {
           text: "Offer Price",
           value: {
             id: 1,
-            f: (a, b) => parseInt(a.price, 10) - parseInt(b.price, 10)
+            f: (a, b) => -(parseInt(a.price, 10) - parseInt(b.price, 10))
           }
         },
         {
@@ -116,10 +118,7 @@ export default {
     ...mapState({
       api_state: "api_state",
       username: state => state.username
-    })
-  },
-  methods: {
-    ...mapActions(["refreshAll", "getPostById"]),
+    }),
     canBid() {
       return (
         this.api_state == "READY" &&
@@ -127,6 +126,16 @@ export default {
         this.post.state == "BD"
       );
     },
+    canEdit() {
+      return (
+        this.post.event.owner.username == this.username &&
+        this.post.state == "BD"
+      );
+    }
+  },
+  methods: {
+    ...mapActions(["refreshAll", "getPostById", "cancelPostById"]),
+
     refreshContent() {
       this.refreshAll().then(() => {
         // assign the new post object
@@ -134,6 +143,9 @@ export default {
         // declear the page is re-rendered
         this.$store.commit("API_READY");
       });
+    },
+    cancel(){
+      this.cancelPostById(this.post.id).then(()=> this.$router.push('/'));
     }
   },
   mounted() {

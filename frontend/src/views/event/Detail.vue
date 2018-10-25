@@ -46,9 +46,12 @@ export default {
       event: {}
     };
   },
-  computed: mapState(["api_state", "username"]),
+  computed: {
+    ...mapState(["api_state", "username", "posts"])
+  },
   mounted() {
     this.$store.dispatch("requireExtraParams");
+
     this.$store
       .dispatch("getEventById", this.$route.params.eventId)
       .then(res => {

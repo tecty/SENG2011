@@ -79,6 +79,11 @@ class Event(models.Model):
     def __str__(self):
         return self.__unicode__()
 
+
+
+"""
+Verified At state.dfy
+"""
 class Post(models.Model):
     # Parent of the post model have neccessary infomation 
     # Move majority information that would have collesion to Event model 
@@ -161,6 +166,8 @@ class Post(models.Model):
         selected.bidderReceivedPoints = rate_to_bidder
         selected.save()
 
+        
+
 
 class Bid(models.Model):
     # which post is this bid for 
@@ -203,7 +210,13 @@ class Bid(models.Model):
         proof by Dafny
         '''
         bidset = Bid.objects\
-            .filter(owner = self.owner,state = "FN")\
+            .filter(
+                owner = self.owner,
+                state = "FN"
+            )\
+            .exclude(
+                bidderReceivedPoints=0
+            )\
             .aggregate(
                 Avg('bidderReceivedPoints')
             )['bidderReceivedPoints__avg']

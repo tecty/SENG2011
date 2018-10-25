@@ -28,13 +28,20 @@ export default {
     mergeSort() {
       // console.log(this.compareFunc)
       // call the merge sort
-      this.$emit("input", this.mergeSortRecu(
-        this.value,
-        0,
-        this.value.length - 1,
-        this.compareFunc
-      ));
+      this.$emit(
+        "input",
+        this.mergeSortRecu(
+          this.value,
+          0,
+          this.value.length - 1,
+          this.compareFunc
+        )
+      );
     },
+    /**
+     * Recursive call of merge sort
+     * Verified at MergeSort.dfy
+     */
     mergeSortRecu(list, lo, hi, compareFunc) {
       var newList = list.slice();
       if (lo < hi) {
@@ -45,6 +52,10 @@ export default {
       }
       return newList;
     },
+    /**
+     * Merge of two array
+     * Verified at MergeSort.dfy
+     */
     merge(newList, lo, mid, hi, compareFunc) {
       var buffer = newList.slice();
       // console.log(buffer);

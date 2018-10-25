@@ -1,11 +1,18 @@
 <template>
   <v-container fluid grid-list-md>
-    <v-flex xs12 sm8 md6 lg3>
-      <sortingSelector v-model="events" :sortBy="sortParameter" />
-    </v-flex>
+    <v-layout row wrap>
+      <v-flex xs12 sm8 md6 lg3>
+        <sortingSelector v-model="events" :sortBy="sortParameter" />
+      </v-flex>
+      <v-flex xs12 sm8 md6 lg3>
+        <!-- filter selector will do the filtering -->
+        <filter-selector v-model="events" :filterBy="filterBy" />
+      </v-flex>
+    </v-layout>
     <v-data-iterator :items="events"
       content-tag="v-layout" row wrap
-      v-if="api_state != 'WAIT'"
+      :rows-per-page-items="[12]"
+      v-if="api_state == 'READY'"
     >
       <v-flex slot="item" slot-scope="props" sm12 sm6 md4 lg3 >
         <!-- actual data is iterating at this v-flex layer -->
@@ -21,12 +28,21 @@
 
 
 <script>
+import filterSelector from "@/components/helper/filter.vue";
 import sortingSelector from "@/components/helper/mergeSort.vue";
 import EventCard from "@/components/event/Card";
 import { mapState } from "vuex";
 export default {
   data() {
     return {
+      events: [],
+      filterBy:[
+        {text:"Current Valid",value: {
+            id: 1,
+            f: el =>
+              Date.parse(el.eventTime) >= Date.now()
+          }}
+      ],
       sortParameter: [
         {
           text: "Bid Ending time",
@@ -68,17 +84,22 @@ export default {
     };
   },
   computed: {
-    ...mapState(["api_state","events"])
+    ...mapState(["api_state"])
   },
-  methods: {
-  },
+  methods: {},
   mounted() {
     // fetch the latest events
-    this.$store.dispatch("refreshAll");
+    this.$store.dispatch("refreshAll").then(() => {
+      this.events = this.$store.state.events.filter(
+        el => el.owner.username == this.$store.state.username
+      );
+      this.$store.commit("API_READY");
+    });
   },
   components: {
     EventCard,
-    sortingSelector
+    sortingSelector,
+    filterSelector
   }
 };
 </script>

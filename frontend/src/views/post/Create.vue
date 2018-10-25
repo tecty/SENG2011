@@ -79,7 +79,13 @@ export default {
         // in this way, the vuetify selector will show
         // properly
         return state.events
-          .filter(el => el.owner.username == state.username)
+          .filter(
+            el =>
+              // the event owner must be the logined user
+              el.owner.username == state.username &&
+              // The event must be valid to create another post
+              Date.parse(el.bidClosingTime) > Date.now()
+          )
           .map(el => {
             let ret = {};
             ret.text = el.title;
@@ -138,6 +144,8 @@ export default {
         this.form = r.data;
         this.$store.commit("API_READY");
       });
+    } else {
+      this.$store.commit("API_READY");
     }
   },
   components: {

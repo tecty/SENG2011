@@ -18,13 +18,13 @@
       <v-list-tile>
         <v-list-tile-content>Event Time:</v-list-tile-content>
         <v-list-tile-content class="align-end">
-          {{ event.eventTime }}
+          {{ event.eventTime | showDateTime }}
         </v-list-tile-content>
       </v-list-tile>
       <v-list-tile>
         <v-list-tile-content>Bid End:</v-list-tile-content>
         <v-list-tile-content class="align-end">
-          {{ event.bidClosingTime }}
+          {{ event.bidClosingTime | showDateTime }}
         </v-list-tile-content>
       </v-list-tile>
       <v-list-tile>

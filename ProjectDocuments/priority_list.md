@@ -1,43 +1,43 @@
-- [ ] [1]1.1. Posters can post one or more requests of food provision  
-- [ ] [1]1.1.1. Posters must specify basic parameters for requests  
-- [ ] [1]1.1.1.1. name and message of the request  
-- [ ] [1]1.1.1.2. number of people  
+- [x] [1]1.1. Posters can post one or more requests of food provision  
+- [x] [1]1.1.1. Posters must specify basic parameters for requests  
+- [x] [1]1.1.1.1. name and message of the request  
+- [x] [1]1.1.1.2. number of people  
 - [ ] [1]1.1.1.3. location  
 - [ ] [1]1.1.1.4. date and time  
 - [ ] [1]1.1.1.5. food types  
-- [ ] [1]1.1.1.7. budget for whole event  
-- [ ] [1]1.1.1.8. status of the request // change by the progress (incl.  
-- [ ] [1]1.2. Posters can view requests they posted // Even if it is finished  
+- [x] [1]1.1.1.7. budget for whole event  
+- [x] [1]1.1.1.8. status of the request // change by the progress (incl.  
+- [x] [1]1.2. Posters can view requests they posted // Even if it is finished  
 - [ ] [1]1.2.1. Posters can view all requests they posted in a list // sorted by status  
-- [ ] [1]1.2.2. Posters can choose bidders for an open request // change state  
-- [ ] [1]1.2.3. Posters can manage his posts  
+- [x] [1]1.2.2. Posters can choose bidders for an open request // change state  
+- [x] [1]1.2.3. Posters can manage his posts  
 - [ ] [1]1.2.3.1. Posters can cancel a processing or deal state request which  
-- [ ] [1]1.3. Posters can register and log in  
-- [ ] [1]2.1. Parameters can only be CRUD (Change Read Update Delete) by admin  
+- [x] [1]1.3. Posters can register and log in  
+- [x] [1]2.1. Parameters can only be CRUD (Change Read Update Delete) by admin  
 - [ ] [1]2.1.1. Parameters cannot be hard deleted // need to verify, implement by a  
-- [ ] [1]3.1. Bidders can view a list of posted requests  
-- [ ] [1]3.2. Bidders can place bids on requests  
-- [ ] [1]3.2.1. Bid need to provide the offer budget and leave some comments  
-- [ ] [1]3.3. Bidders can register and log in  
+- [x] [1]3.1. Bidders can view a list of posted requests  
+- [x] [1]3.2. Bidders can place bids on requests  
+- [x] [1]3.2.1. Bid need to provide the offer budget and leave some comments  
+- [x] [1]3.3. Bidders can register and log in  
 - [ ] [2]1.1.1.6. the closing time of bids //couldn’t be later than event time  
-- [ ] [2]1.1.2. Posters can specify some other parametes  
-- [ ] [2]1.1.2.1. A post can only select one parameter value for a field  
-- [ ] [2]1.1.2.2. Poster can see all the provided parameters  
+- [x] [2]1.1.2. Posters can specify some other parametes  
+- [x] [2]1.1.2.1. A post can only select one parameter value for a field  
+- [x] [2]1.1.2.2. Poster can see all the provided parameters  
 - [ ] [2]1.2.1.2. Posters can filter requests by their status  
 - [ ] [2]1.2.2.1. bidders will be sorted based on their bidding price and  
-- [ ] [2]1.2.2.2. Poster can see all bidders’ comments written by previous  
+- [x] [2]1.2.2.2. Poster can see all bidders’ comments written by previous  
 - [ ] [2]1.2.2.4. When a request is overdue, it should be automatically  
-- [ ] [2]1.2.3.2. Posters can edit details of a request created by themselves  
+- [x] [2]1.2.3.2. Posters can edit details of a request created by themselves  
 - [ ] [2]1.2.3.3. Posters can regret for selecting a bidder 6 hours prior the  
-- [ ] [2]2.2. Parameter is a key-value pair, including // created admin  
-- [ ] [2]2.2.1. nature of event  
-- [ ] [2]2.2.2. level of food quality  
-- [ ] [2]2.2.3. special diet  
-- [ ] [2]2.2.4. religious restriction  
-- [ ] [2]2.2.5. provision of alcohol  
-- [ ] [2]2.2.6. age profile  
-- [ ] [2]2.2.7. kitchen size  
-- [ ] [2]2.2.8. indoor/outdoor  
+- [x] [2]2.2. Parameter is a key-value pair, including // created admin  
+- [x] [2]2.2.1. nature of event  
+- [x] [2]2.2.2. level of food quality  
+- [x] [2]2.2.3. special diet  
+- [x] [2]2.2.4. religious restriction  
+- [x] [2]2.2.5. provision of alcohol  
+- [x] [2]2.2.6. age profile  
+- [x] [2]2.2.7. kitchen size  
+- [x] [2]2.2.8. indoor/outdoor  
 - [ ] [2]3.1.1. Default list is sorted by relevant rate // need to verify  
 - [ ] [2]3.1.2. Bidders can sort requests  
 - [ ] [2]3.1.2.1. sort by latest bidding price  
@@ -79,7 +79,7 @@
 - [ ] [3]4.4. Admin can CRUD all Parameters  
 - [ ] [4]1.2.1.3. Posters can sort the requests by the latest bid  
 - [ ] [4]1.2.1.4. Posters can filter requests by some other parameters  
-- [ ] [4]1.2.2.5.4. Posters can write comments to this bidder  
+- [x] [4]1.2.2.5.4. Posters can write comments to this bidder  
 - [ ] [4]1.3.1.5. Additional information  
 - [ ] [4]3.1.4. Bidders can only see requests with food types they can provide  
 - [ ] [4]3.2.2. get notification when a bid updates  

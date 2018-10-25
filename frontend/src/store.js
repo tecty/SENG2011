@@ -162,19 +162,23 @@ export default new Vuex.Store({
       let ret = await axios.post("msg/", data);
       return ret;
     },
-    async chooseBidById({ commit }, postId, bidId) {
-      commit("API_WAITING");
+    async chooseBidById({ commit }, { postId, bidId }) {
       let ret = await axios.post(`posts/${postId}/choose/`, {
         id: bidId
       });
-      commit("API_FINISHED");
       return ret;
     },
     async deleteBidById({ commit }, bidId) {
-      commit("API_WAITING");
       // send the actual delete
       let ret = await axios.delete(`bids/${bidId}/`);
-      commit("API_FINISHED");
+      return ret;
+    },
+    async finishBidById({ commit }, postId) {
+      let ret = await axios.get(`posts/${postId}/finish/`);
+      return ret;
+    },
+    async rateBidder({ commit }, postId) {
+      let ret = await axios.get(`posts/${postId}/finish/`);
       return ret;
     }
   },

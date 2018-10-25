@@ -12,7 +12,13 @@ const s = {
     ADD_SELECTED: (state, data) => {
       state.selected[data.index] = data.id;
     },
-    SET_SELECTED: (state, selected) => (state.selected = selected),
+    SET_SELECTED: (state, selected) => {
+      if (selected) {
+        state.selected = selected;
+      } else {
+        state.selected = [];
+      }
+    },
     SET_EP_LIST: (state, list) => (state.epList = list)
   },
   actions: {

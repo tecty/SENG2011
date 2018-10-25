@@ -11,7 +11,7 @@
             <span class="grey--text">#{{ post.id }}</span> {{post.title}}
           </h3>
         </v-flex>
-        <v-flex xs1 v-if="post.event.owner.username == username">
+        <v-flex xs1 v-if="canEdit">
           <v-btn color="primary" :to="{
             name:'PostEdit',
             params: {
@@ -36,10 +36,12 @@
       </h5>
       <p>${{post.budget}}</p>
       <parmCard :criteria="post.extraParameter" />
+      <h5 class="headline primary--text ">Event Address:</h5>
+      <p>{{ post.event.location.address }}</p>
       <h5 class="headline primary--text ">
         Message
       </h5>
-      <msgBox :msg="post.msg" />
+      <msgBox :msg="post.msg" class="mb-3"/>
       <v-layout>
         <v-flex xs12>
           <h5 class="headline primary--text ">
@@ -107,6 +109,16 @@ export default {
         this.post.state == "BD"
       );
     },
+    canEdit() {
+      return (
+        this.post.event.owner.username == this.username &&
+        this.post.state == "BD"
+      );
+    }
+  },
+  methods: {
+    ...mapActions(["refreshAll", "getPostById"]),
+
     refreshContent() {
       this.refreshAll().then(() => {
         // assign the new post object

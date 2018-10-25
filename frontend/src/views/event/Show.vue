@@ -1,6 +1,8 @@
 <template>
   <v-container fluid grid-list-md>
-      <sortingSelector :sortBy="sortParameter" :list="events" @sorted="sortEvents"/>
+    <v-flex xs12 sm8 md6 lg3>
+      <sortingSelector v-model="events" :sortBy="sortParameter" />
+    </v-flex>
     <v-data-iterator :items="events"
       content-tag="v-layout" row wrap
       v-if="api_state != 'WAIT'"
@@ -26,11 +28,42 @@ export default {
   data() {
     return {
       sortParameter: [
-        "Sort by Bid Ending time",
-        "Sort by Event time",
-        "Sort by Number of Posts under an Event",
-        "Sort by Event owner Name",
-        "Default"
+        {
+          text: "Sort by Bid Ending time",
+          value: {
+            id: 1,
+            f: (a, b) =>
+              Date.parse(a.bidClosingTime) - Date.parse(b.bidClosingTime)
+          }
+        },
+        {
+          text: "Sort by Event time",
+          value: {
+            id: 2,
+            f: (a, b) => Date.parse(a.eventTime) - Date.parse(b.eventTime)
+          }
+        },
+        {
+          text: "Sort by Number of Posts under an Event",
+          value: {
+            id: 3,
+            f: (a, b) => a.post_set.length - b.post_set.length
+          }
+        },
+        {
+          text: "Sort by Event owner Name",
+          value: {
+            id: 4,
+            f: (a, b) => a.owner.username.localeCompare(b.owner.username)
+          }
+        },
+        {
+          text: "Default",
+          value: {
+            id: 5,
+            f: (a, b) => a.id - b.id
+          }
+        }
       ]
     };
   },

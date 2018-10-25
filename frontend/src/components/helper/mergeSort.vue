@@ -1,30 +1,24 @@
 <template>
-  <v-layout mb-1>
-    <v-flex>
-      <div>
-        <v-select
-          v-model="selected"
-          :items="sortBy"
-          label="Sort by"
-          @change="mergeSort"
-        ></v-select>
-      </div>
-    </v-flex>
-  </v-layout>
+  <v-select
+    v-model="selected"
+    :items="sortBy"
+    label="Sort by"
+    @change="mergeSort"
+  ></v-select>
 </template>
 
 <script>
 export default {
   name: "sortingSelector",
-  props: ["sortBy", "list"],
+  props: ["value", "sortBy", "list"],
   data() {
     return {
-      // default callback is id descding 
-      selected:{f:(a,b)=>(a.id -b.id)}
+      // default callback is id descding
+      selected: { f: (a, b) => a.id - b.id }
     };
   },
-  computed:{
-    compareFunc(){
+  computed: {
+    compareFunc() {
       // return the call back provided
       // as an function
       return this.selected.f;
@@ -126,14 +120,15 @@ export default {
     //   this.mergeSort();
     // },
     mergeSort() {
-      // call the merge sort 
+      // console.log(this.compareFunc)
+      // call the merge sort
       var temp = this.mergeSortRecu(
-        this.list,
+        this.value,
         0,
-        this.list.length - 1,
+        this.value.length - 1,
         this.compareFunc
       );
-      this.$emit("sorted", temp);
+      this.$emit("input", temp);
       return temp;
     },
     mergeSortRecu(list, lo, hi, compareFunc) {

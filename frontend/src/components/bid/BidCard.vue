@@ -1,26 +1,24 @@
-<template>
-  <v-layout row wrap>
-    <v-flex xs12>
-      <v-card color="blue-grey darken-2" class="white--text">
-        <v-card-title primary-title>
-          <span class="headline">{{bid.owner.username}}</span>
-          <br><v-spacer></v-spacer>
-          <span> offer ${{bid.offer}}</span>
-        </v-card-title>
-       <v-card-text>
-        <msgCard :msg="bid.msg" />
-       </v-card-text>
-        <v-card-actions>
-          <div v-if="post.event.owner.username == currUser && post.state == 'BD'">
-            <v-btn flat dark @click="chooseBid()">Choose</v-btn>
-          </div>
-          <div v-if="bid.owner.username == currUser">
-            <v-btn flat dark @click="deleteBid()">Delete</v-btn>
-          </div>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
-  </v-layout>
+<template >
+  <div class="ml-0 mr-4 mb-2">
+    <v-card color="blue-grey darken-2" class="white--text">
+      <v-card-title primary-title>
+        <span class="headline">{{bid.owner.username}}</span>
+        <br><v-spacer></v-spacer>
+        <span> offer ${{bid.offer}}</span>
+      </v-card-title>
+      <v-card-text>
+      <msgCard :msg="bid.msg" />
+      </v-card-text>
+      <v-card-actions>
+        <div v-if="post.event.owner.username == currUser && post.state == 'BD'">
+          <v-btn flat dark @click="chooseBid()">Choose</v-btn>
+        </div>
+        <div v-if="bid.owner.username == currUser">
+          <v-btn flat dark @click="deleteBid()">Delete</v-btn>
+        </div>
+      </v-card-actions>
+    </v-card>
+  </div>
 </template>
 
 <script>

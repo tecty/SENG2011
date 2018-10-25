@@ -45,14 +45,22 @@
           <h5 class="headline primary--text ">
             Bid
           </h5>
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap>
+        <v-flex xs12 sm8 md6 lg3>
+          <sortingSelector :sortBy="sortParameter" v-model="post.bid_set" :list="bidsShow" @sorted="sortbidsShow" />
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap>
           <!-- select sorting parameter  -->
-          <sortingSelector :sortBy="sortParameter" :list="bidsShow" @sorted="sortbidsShow" />
           <!-- cards of bids -->
-          <div v-for="bid in bidsShow" :key="bid.id">
+          <v-flex xs12 md6 lg4 v-for="bid in post.bid_set" :key="bid.id">
             <bid-card :bid="bid" :post="post" @requireRefresh="()=> refreshContent()" />
             <br/>
-          </div>
+          </v-flex>
           <!-- card for bidding -->
+        <v-flex xs12 md6 lg4>
           <CreateCard v-if="canBid()" :postId="post.id" @requireRefresh="()=> refreshContent()" />
         </v-flex>
       </v-layout>

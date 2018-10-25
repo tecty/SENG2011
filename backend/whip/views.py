@@ -29,7 +29,7 @@ class UserViewSet(viewsets.ModelViewSet):
     # only for test use 
     # permission_classes = [permissions.AllowAny]
     
-    permission_classes = [GuestCreateOnly,OwnerUpdateOnly]
+    permission_classes = [OwnerUpdateOnly,]
 
 
 class ParameterViewSet(viewsets.ModelViewSet):

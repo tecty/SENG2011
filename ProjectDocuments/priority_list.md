@@ -2,9 +2,9 @@
 - [x] [1]1.1.1. Posters must specify basic parameters for requests  
 - [x] [1]1.1.1.1. name and message of the request  
 - [x] [1]1.1.1.2. number of people  
-- [ ] [1]1.1.1.3. location  
-- [ ] [1]1.1.1.4. date and time  
-- [ ] [1]1.1.1.5. food types  
+- [x] [1]1.1.1.3. location  
+- [x] [1]1.1.1.4. date and time  
+- [x] [1]1.1.1.5. food types  
 - [x] [1]1.1.1.7. budget for whole event  
 - [x] [1]1.1.1.8. status of the request // change by the progress (incl.  
 - [x] [1]1.2. Posters can view requests they posted // Even if it is finished  
@@ -73,10 +73,10 @@
 - [ ] [3]3.3.1.6. including their prefer time for service provision (help to  
 - [ ] [3]3.3.2. Bidders can view posters’ contact information when they have been  
 - [ ] [3]3.3.2.1. Only can vidw the detail at Deal state of the corresponding  
-- [ ] [3]4.1. Admin can log into a system different from bidder and poster  
-- [ ] [3]4.2. Admin can delete the account of bidders and posters  
-- [ ] [3]4.3. Admin can CRUD all Post and Bid  
-- [ ] [3]4.4. Admin can CRUD all Parameters  
+- [x] [3]4.1. Admin can log into a system different from bidder and poster  
+- [x] [3]4.2. Admin can delete the account of bidders and posters  
+- [x] [3]4.3. Admin can CRUD all Post and Bid  
+- [x] [3]4.4. Admin can CRUD all Parameters  
 - [ ] [4]1.2.1.3. Posters can sort the requests by the latest bid  
 - [ ] [4]1.2.1.4. Posters can filter requests by some other parameters  
 - [x] [4]1.2.2.5.4. Posters can write comments to this bidder  

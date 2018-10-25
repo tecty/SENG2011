@@ -161,6 +161,8 @@ class Post(models.Model):
         selected.bidderReceivedPoints = rate_to_bidder
         selected.save()
 
+        
+
 
 class Bid(models.Model):
     # which post is this bid for 

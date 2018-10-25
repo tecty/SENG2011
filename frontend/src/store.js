@@ -123,75 +123,57 @@ export default new Vuex.Store({
     },
     async getPostById({ commit }, id) {
       commit("API_WAITING");
-      let ret = await axios
-        .get(`posts/${id}/`)
-        .catch(err => commit("API_ERROR", err));
+      let ret = await axios.get(`posts/${id}/`);
       commit("API_FINISHED");
       return ret;
     },
     async getEventById({ commit }, id) {
       commit("API_WAITING");
-      let ret = await axios
-        .get(`events/${id}/`)
-        .catch(err => commit("API_ERROR", err));
+      let ret = await axios.get(`events/${id}/`);
       commit("API_FINISHED");
       return ret;
     },
 
     async createPost({ commit }, data) {
       commit("API_WAITING");
-      let ret = await axios
-        .post("posts/", data)
-        .catch(err => commit("API_ERROR", err));
+      let ret = await axios.post("posts/", data);
       commit("API_FINISHED");
       return ret;
     },
     async editPost({ commit }, data) {
       commit("API_WAITING");
-      let ret = await axios
-        .put(`posts/${data.id}/`, data)
-        .catch(err => commit("API_ERROR", err));
+      let ret = await axios.put(`posts/${data.id}/`, data);
       commit("API_FINISHED");
       return ret;
     },
     async createEvent({ commit }, data) {
       commit("API_WAITING");
-      let ret = await axios
-        .post("events/", data)
-        .catch(err => commit("API_ERROR", err));
+      let ret = await axios.post("events/", data);
       commit("API_FINISHED");
       return ret;
     },
     async editEvent({ commit }, data) {
       commit("API_WAITING");
-      let ret = await axios
-        .put(`events/${data.id}/`, data)
-        .catch(err => commit("API_ERROR", err));
+      let ret = await axios.put(`events/${data.id}/`, data);
       commit("API_FINISHED");
       return ret;
     },
     async createMsg({ commit }, data) {
-      let ret = await axios
-        .post("msg/", data)
-        .catch(err => commit("API_ERROR", err));
+      let ret = await axios.post("msg/", data);
       return ret;
     },
     async chooseBidById({ commit }, postId, bidId) {
       commit("API_WAITING");
-      let ret = await axios
-        .post(`posts/${postId}/choose/`, {
-          id: bidId
-        })
-        .catch(err => commit("API_ERROR", err));
+      let ret = await axios.post(`posts/${postId}/choose/`, {
+        id: bidId
+      });
       commit("API_FINISHED");
       return ret;
     },
     async deleteBidById({ commit }, bidId) {
       commit("API_WAITING");
       // send the actual delete
-      let ret = await axios
-        .delete(`bids/${bidId}/`)
-        .catch(err => commit("API_ERROR", err));
+      let ret = await axios.delete(`bids/${bidId}/`);
       commit("API_FINISHED");
       return ret;
     }

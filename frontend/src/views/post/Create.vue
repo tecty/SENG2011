@@ -127,7 +127,10 @@ export default {
           });
           return res;
         })
-        .catch(err => (this.error = err));
+        .catch(err => {
+          this.error = err;
+          this.$store.commit("API_READY");
+        });
     }
   },
   mounted() {

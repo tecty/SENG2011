@@ -1,6 +1,7 @@
 <template>
   <v-layout row wrap mb-3>
     <v-flex xs12>
+      {{bid}}
       <v-card color="blue-grey darken-2" class="white--text">
         <v-card-title primary-title>
           <span class="headline">
@@ -15,10 +16,20 @@
        </v-card-text>
         <v-card-actions>
           <div v-if="isPoster">
-            {{bid.state}}
-            <v-btn v-if="bid.state == 'BD'" flat dark @click="chooseBid">Choose</v-btn>
-            <v-btn v-if="bid.state == 'SD'" flat dark @click="finishBid">Finished</v-btn>
-            <v-btn v-if="bid.state == 'FN'" flat dark @click="finishBid">Finished</v-btn>
+            <v-btn v-if="bid.state == 'BD'"
+              flat dark @click="chooseBid">
+                Choose
+            </v-btn>
+            <v-btn v-if="bid.state == 'SD'"
+              flat dark @click="finishBid">
+                Finished
+            </v-btn>
+            <div v-if="bid.state == 'FN'" class="ml-2">
+              <star-rating  v-model="rate" @click="finishBid" 
+                :read-only="! canRate" :star-size="23" 
+                :padding="1" :show-rating="false" :inline="true"/>
+              <v-btn flat dark @click="SendRateOfBidder">Rate</v-btn>
+            </div>
           </div>
           <div v-if="isDeletable">
             <v-btn flat dark @click="deleteBid">Delete</v-btn>
@@ -31,6 +42,8 @@
 
 <script>
 import msgCard from "@/components/helper/messageBox.vue";
+import StarRating from 'vue-star-rating';
+
 import { mapState, mapActions } from "vuex";
 export default {
   // the data of this post
@@ -38,7 +51,7 @@ export default {
   data() {
     return {
       // one of the rate box will bind to this property
-      rate: 0
+      tmpRate:0,
     };
   },
   computed: {
@@ -50,6 +63,24 @@ export default {
     },
     isPoster() {
       return this.post.event.owner.username == this.currUser;
+    },
+    canRate(){
+      return this.bid.bidderReceivedPoints == 0;
+    },
+    rate:{
+      get(){
+        if(this.canRate){
+          return this.tmpRate;
+        }
+        // if this bidder have receive the point, 
+        // then alway show the received point
+        return this.bid.bidderReceivedPoints;
+      },
+      set(newVal){
+        if(this.canRate){
+          this.tmpRate == newVal;
+        }
+      }
     }
   },
   methods: {
@@ -68,16 +99,22 @@ export default {
       });
     },
     finishBid() {
+      this.finishBidById(this.post.id).then(() => {
+        this.$emit("requireRefresh");
+      });
+    },
+    SendRateOfBidder(){
       this.finishBidById({
         postId: this.post.id,
-        bidId: this.bid.id
+        rate: this.rate
       }).then(() => {
         this.$emit("requireRefresh");
       });
     }
   },
   components: {
-    msgCard
+    msgCard,
+    StarRating
   },
   mounted() {}
 };

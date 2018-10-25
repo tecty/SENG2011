@@ -11,7 +11,7 @@
             <span class="grey--text">#{{ post.id }}</span> {{post.title}}
           </h3>
         </v-flex>
-        <v-flex xs1 v-if="canEdit">
+        <v-flex xs1 :v-if="canEdit">
           <v-btn color="primary" :to="{
             name:'PostEdit',
             params: {
@@ -55,7 +55,7 @@
             <br/>
           </div>
           <!-- card for bidding -->
-          <CreateCard v-if="canBid()" :postId="post.id" @requireRefresh="()=> refreshContent()" />
+          <CreateCard :v-if="canBid" :postId="post.id" @requireRefresh="()=> refreshContent()" />
         </v-flex>
       </v-layout>
     </div>
@@ -114,11 +114,7 @@ export default {
         this.post.event.owner.username == this.username &&
         this.post.state == "BD"
       );
-    }
-  },
-  methods: {
-    ...mapActions(["refreshAll", "getPostById"]),
-
+    },
     refreshContent() {
       this.refreshAll().then(() => {
         // assign the new post object
@@ -128,6 +124,7 @@ export default {
       });
     }
   },
+
   mounted() {
     this.$store.dispatch("refreshAll").then(() => {
       this.post = this.$store.state.posts.find(el => {

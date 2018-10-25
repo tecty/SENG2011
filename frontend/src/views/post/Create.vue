@@ -3,19 +3,18 @@
     <div v-if="api_state != 'READY' && api_state != 'ERROR'" class="text-xs-center">
       <v-progress-circular indeterminate color="primary" />
     </div>
-    <v-form v-else ref="form" @submit.prevent="submit">
+    <form v-else ref="form" @submit.prevent="submit">
         <v-layout row wrap>
           <v-flex xs12 sm6>
-            <v-text-field v-model="form.title" 
-              label="Title *" required autofocus/>
+            <v-text-field v-model="form.title"  v-validate="'required'" data-vv-name="title"  :error-messages="errors.collect('title')"
+              label="Title *" autofocus/>
           </v-flex>
           <v-flex xs12 sm6 v-if="!isEdit">
             <v-select
               v-model="form.event"
               :items="events"
-              :rules="[v => !!v || 'Event is required']"
+              v-validate="'required'" data-vv-name="event"  :error-messages="errors.collect('event')"
               label="Event"
-              required
             ></v-select>
           </v-flex>
         </v-layout>
@@ -28,11 +27,11 @@
             </v-textarea>
           </v-flex>
           <v-flex xs12 sm6>
-            <v-text-field v-model="form.peopleCount" 
-              label="Number of people *" required />
+            <v-text-field v-model="form.peopleCount" v-validate="'required|min_value:1'" data-vv-name="number of people"  :error-messages="errors.collect('number of people')"
+              label="Number of people *" />
           </v-flex>
           <v-flex xs12 sm6>
-            <v-text-field v-model="form.budget" label="Budget *" required></v-text-field>
+            <v-text-field v-model="form.budget" v-validate="'required|min_value:1'" data-vv-name="budegt" :error-messages="errors.collect('budegt')" label="Budget *" ></v-text-field>
           </v-flex>
         </v-layout>
         <v-layout row wrap>
@@ -46,7 +45,7 @@
           <v-btn pa-0 color="primary" type="submit">Post</v-btn>
         </v-layout>
         <!-- <v-btn @click="resetForm">Clear</v-btn> -->
-    </v-form>
+    </form>
   </v-container>
 </template>
 
@@ -63,7 +62,24 @@ export default {
         budget: "",
         peopleCount: "",
         location: {},
-        extraParam: []
+        extraParam: [],
+        //dictionary for vee-vaildator
+        dictionary: {
+          attributes: {
+            email: "E-mail Address"
+            // custom attributes
+          },
+          custom: {
+            name: {
+              required: () => "Name can not be empty",
+              max: "The name field may not be greater than 10 characters"
+              // custom messages
+            },
+            select: {
+              required: "Select field is required"
+            }
+          }
+        }
       },
       // this might implement later
       snackbar: false,
@@ -96,41 +112,45 @@ export default {
   },
   methods: {
     submit() {
-      let data = {
-        title: this.form.title,
-        message: this.form.message,
-        budget: this.form.budget,
-        peopleCount: this.form.peopleCount,
-        extraParameter: this.form.extraParameter,
-        event: this.form.event
-      };
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          let data = {
+            title: this.form.title,
+            message: this.form.message,
+            budget: this.form.budget,
+            peopleCount: this.form.peopleCount,
+            extraParameter: this.form.extraParameter,
+            event: this.form.event
+          };
 
-      // to store the promise object from vuex
-      let promise;
-      if (!this.isEdit) {
-        // only the create mode can have capability to change event
-        // perform the create event action
-        promise = this.$store.dispatch("createPost", data);
-      } else {
-        // edit mode will require an id of the post
-        data.id = this.form.id;
-        // perfrom the edit action by vuex
-        promise = this.$store.dispatch("editPost", data);
-      }
-      promise
-        .then(res => {
-          this.$router.push({
-            name: "PostDetail",
-            params: {
-              postId: res.data.id
-            }
-          });
-          return res;
-        })
-        .catch(err => {
-          this.error = err;
-          this.$store.commit("API_READY");
-        });
+          // to store the promise object from vuex
+          let promise;
+          if (!this.isEdit) {
+            // only the create mode can have capability to change event
+            // perform the create event action
+            promise = this.$store.dispatch("createPost", data);
+          } else {
+            // edit mode will require an id of the post
+            data.id = this.form.id;
+            // perfrom the edit action by vuex
+            promise = this.$store.dispatch("editPost", data);
+          }
+          promise
+            .then(res => {
+              this.$router.push({
+                name: "PostDetail",
+                params: {
+                  postId: res.data.id
+                }
+              });
+              return res;
+            })
+            .catch(err => {
+              this.error = err;
+              this.$store.commit("API_READY");
+            });
+        }
+      });
     }
   },
   mounted() {

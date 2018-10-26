@@ -65,6 +65,11 @@ export default {
           icon: "group",
           text: "Event",
           href: "/event"
+        },
+        {
+          icon: "assignment_ind",
+          text: "Profile",
+          href: "/profile/edit"
         }
       ]
     };

@@ -18,7 +18,14 @@
         </v-flex>
       </v-layout>
       <h5 class="headline primary--text ">Owner:</h5>
-      <p>{{ event.owner.username }}</p>
+      <router-link :to="{
+        name:'ProfileDetail',
+        params: {
+          user:event.owner
+        }
+      }">
+        <p>{{ event.owner.username }}</p>
+      </router-link>
       <h5 class="headline primary--text ">
         Location
       </h5>

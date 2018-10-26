@@ -79,7 +79,7 @@ export default {
       error: "",
       snackbar: false,
       snackbarColor: "error",
-      snackText: "Error: please input correctly"
+      snackText: "Error: please fill all fields correctly"
     };
   },
   computed: {
@@ -136,10 +136,8 @@ export default {
             });
           }
           promise.catch(err => {
-            if (!this.location) {
-              this.snackText = "please select a correct address";
-            } else {
-              this.snackText = "sorry, this user name has been taken";
+            if (err.response.data.username) {
+              this.snackText = err.response.data.username[0];
             }
             this.snackbar = true;
             this.snackbarColor = "error";

@@ -1,50 +1,47 @@
 <template>
-  <v-container grid-list-xl >
+  <v-container grid-list-xl>
     <div v-if="api_state != 'READY' && api_state != 'ERROR'" class="text-xs-center">
       <v-progress-circular indeterminate color="primary" />
     </div>
     <form v-else ref="form" @submit.prevent="submit">
-        <v-layout row wrap>
-          <v-flex xs12 sm6>
-            <v-text-field v-model="form.title"  v-validate="'required'" data-vv-name="title"  :error-messages="errors.collect('title')"
-              label="Title *" autofocus/>
-          </v-flex>
-          <v-flex xs12 sm6 v-if="!isEdit">
-            <v-select
-              v-model="form.event"
-              :items="events"
-              v-validate="'required'" data-vv-name="event"  :error-messages="errors.collect('event')"
-              label="Event"
-            ></v-select>
-          </v-flex>
-        </v-layout>
-        <v-layout row wrap>
-          <v-flex xs12 v-if="!isEdit">
-            <v-textarea v-model="form.message" color="teal">
-              <div slot="label">
-                Description
-              </div>
-            </v-textarea>
-          </v-flex>
-          <v-flex xs12 sm6>
-            <v-text-field v-model="form.peopleCount" v-validate="'required|min_value:1'" data-vv-name="number of people"  :error-messages="errors.collect('number of people')"
-              label="Number of people *" />
-          </v-flex>
-          <v-flex xs12 sm6>
-            <v-text-field v-model="form.budget" v-validate="'required|min_value:1'" data-vv-name="budegt" :error-messages="errors.collect('budegt')" label="Budget *" ></v-text-field>
-          </v-flex>
-        </v-layout>
-        <v-layout row wrap>
-          <v-flex xs12>
-            <!-- the selection box of extraparams -->
-            <extraParamSelector v-model="form.extraParameter"/>
-          </v-flex>
-          <v-flex xs12 sm6 v-for="(item, index) in error" :key="index">
-            {{index}} {{item}}
-          </v-flex>
-          <v-btn pa-0 color="primary" type="submit">Post</v-btn>
-        </v-layout>
-        <!-- <v-btn @click="resetForm">Clear</v-btn> -->
+      <v-layout row wrap>
+        <v-flex xs12 sm6>
+          <v-text-field v-model="form.title" v-validate="'required'" data-vv-name="title" :error-messages="errors.collect('title')"
+            label="Title *" autofocus/>
+        </v-flex>
+        <v-flex xs12 sm6 v-if="!isEdit">
+          <v-select v-model="form.event" :items="events" v-validate="'required'" data-vv-name="event" :error-messages="errors.collect('event')"
+            label="Event"></v-select>
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap>
+        <v-flex xs12 v-if="!isEdit">
+          <v-textarea v-model="form.message" color="teal">
+            <div slot="label">
+              Description
+            </div>
+          </v-textarea>
+        </v-flex>
+        <v-flex xs12 sm6>
+          <v-text-field v-model="form.peopleCount" v-validate="'required|min_value:1'" data-vv-name="number of people" :error-messages="errors.collect('number of people')"
+            label="Number of people *" />
+        </v-flex>
+        <v-flex xs12 sm6>
+          <v-text-field v-model="form.budget" v-validate="'required|min_value:1'" data-vv-name="budegt" :error-messages="errors.collect('budegt')"
+            label="Budget *"></v-text-field>
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap>
+        <v-flex xs12>
+          <!-- the selection box of extraparams -->
+          <extraParamSelector v-model="form.extraParameter" />
+        </v-flex>
+        <v-flex xs12 sm6 v-for="(item, index) in error" :key="index">
+          {{index}} {{item}}
+        </v-flex>
+        <v-btn pa-0 color="primary" type="submit">Post</v-btn>
+      </v-layout>
+      <!-- <v-btn @click="resetForm">Clear</v-btn> -->
     </form>
   </v-container>
 </template>

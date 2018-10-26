@@ -47,7 +47,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     # whether it is is the  trusted 
     is_trusted = serializers.BooleanField(
         source = "profile.is_trusted", read_only = True)
-
     """
     validation codes  
     """
@@ -66,7 +65,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = (
-            'url',
+            'id',
             'username',
             "password",
             "password_again",

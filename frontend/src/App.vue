@@ -60,7 +60,7 @@ export default {
           text: "Post",
           href: "/post"
         },
-        {heading:"My"},
+        { heading: "My" },
         {
           icon: "group",
           text: "Event",
@@ -70,7 +70,7 @@ export default {
           icon: "assignment_ind",
           text: "Profile",
           href: "/event"
-        },
+        }
       ]
     };
   },

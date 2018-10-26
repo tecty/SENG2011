@@ -144,8 +144,8 @@ export default {
         this.$store.commit("API_READY");
       });
     },
-    cancel(){
-      this.cancelPostById(this.post.id).then(()=> this.$router.push('/'));
+    cancel() {
+      this.cancelPostById(this.post.id).then(() => this.$router.push("/"));
     }
   },
   mounted() {

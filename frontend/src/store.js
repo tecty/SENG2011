@@ -154,7 +154,7 @@ export default new Vuex.Store({
       commit("API_FINISHED");
       return ret;
     },
-    async cancelPostById({commit},id){
+    async cancelPostById({ commit }, id) {
       commit("API_WAITING");
       let ret = await axios
         .delete(`posts/${id}/`)

@@ -6,9 +6,11 @@ from .serializers import UserSerializer, User, \
     Location, LocationSerializer,\
     Message, MessageSerializer,\
     Event, EventSerializer
-from rest_framework import viewsets,permissions
+from rest_framework import viewsets,permissions, status
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied, NotAuthenticated
 
 
 # Own premission  
@@ -27,10 +29,45 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     # only for test use 
-    # permission_classes = [permissions.AllowAny]
-    
     permission_classes = [OwnerUpdateOnly,]
 
+    
+    """
+    Get method could only get the element of current user
+    """
+    def list(self, request):
+        if request.user and request.user.is_authenticated:
+            serializer = UserSerializer(request.user)
+            return Response(serializer.data)
+        # else: not authenticated 
+        # raise not authenticated
+        raise NotAuthenticated()
+    def retrieve(self, request, pk=None):
+        return self.list(request)
+
+    """
+    Update method will only point to current user 
+    """
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        # the instance will only point to current user 
+        instance = request.user
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+
+
+    """ Prevent destory """
+    def destroy(self):
+        # not been able to destory
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 class ParameterViewSet(viewsets.ModelViewSet):
     queryset = Parameter.objects.all()

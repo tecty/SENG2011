@@ -9,6 +9,6 @@ export default [
     path: "/profile/edit",
     name: "ProfileEdit",
     component: () => import("@/views/profile/Edit.vue"),
-    param: { id:true }
+    param: { id: true }
   }
 ];

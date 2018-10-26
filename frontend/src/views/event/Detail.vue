@@ -39,22 +39,25 @@
 </template>
 
 <script>
-  import { mapState } from "vuex";
-  export default {
-    data() {
-      return {
-        event: {}
-      };
-    },
-    computed: mapState(["api_state", "username"]),
-    mounted() {
-      this.$store.dispatch("requireExtraParams");
-      this.$store
-        .dispatch("getEventById", this.$route.params.eventId)
-        .then(res => {
-          this.event = res.data;
-          this.$store.commit("API_READY");
-        });
-    }
-  };
+import { mapState } from "vuex";
+export default {
+  data() {
+    return {
+      event: {}
+    };
+  },
+  computed: {
+    ...mapState(["api_state", "username", "posts"])
+  },
+  mounted() {
+    this.$store.dispatch("requireExtraParams");
+
+    this.$store
+      .dispatch("getEventById", this.$route.params.eventId)
+      .then(res => {
+        this.event = res.data;
+        this.$store.commit("API_READY");
+      });
+  }
+};
 </script>

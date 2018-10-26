@@ -6,19 +6,20 @@
     <div v-else>
       <!-- content of the post  -->
       <v-layout row wrap>
-        <v-flex xs11>
-          <h3 class="display-1 primary--text">
-            <span class="grey--text">#{{ post.id }}</span> {{post.title}}
-          </h3>
-        </v-flex>
-        <v-flex xs1 :v-if="canEdit">
+        <h3 class="display-1 primary--text">
+          <span class="grey--text">#{{ post.id }}</span> {{post.title}}
+        </h3>
+        <v-spacer></v-spacer>
+        <div v-if="canEdit">
+          <v-btn color="error" @click="cancel">Cancel</v-btn>
           <v-btn color="primary" :to="{
             name:'PostEdit',
             params: {
               postId:post.id,
             }
           }">Edit</v-btn>
-        </v-flex>
+
+        </div>
       </v-layout>
       <p>{{ post.state | stateToText}}</p>
       <h5 class="headline primary--text ">Issuer:</h5>
@@ -47,14 +48,21 @@
           <h5 class="headline primary--text ">
             Bid
           </h5>
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap>
+        <v-flex xs12 sm8 md6 lg3>
+          <sortingSelector :sortBy="sortParameter" v-model="post.bid_set" />
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap>
           <!-- select sorting parameter  -->
-          <sortingSelector :sortBy="sortParameter" :list="bidsShow" @sorted="sortbidsShow" />
           <!-- cards of bids -->
-          <div v-for="bid in bidsShow" :key="bid.id">
+          <v-flex xs12 md6 lg4  v-for="bid in bidsShow" :key="bid.id">
             <bid-card :bid="bid" :post="post" @requireRefresh="()=> refreshContent()" />
-            <br/>
-          </div>
+          </v-flex>
           <!-- card for bidding -->
+        <v-flex xs12 md6 lg4>
           <CreateCard :v-if="canBid" :postId="post.id" @requireRefresh="()=> refreshContent()" />
         </v-flex>
       </v-layout>
@@ -75,10 +83,34 @@ export default {
     return {
       post: {},
       sortParameter: [
-        "Lastest",
-        "Sort by offer price",
-        "Sort by bidder name",
-        "Default"
+        {
+          text: "Lastest",
+          value: {
+            id: 0,
+            f: (a, b) => a.id - b.id
+          }
+        },
+        {
+          text: "Offer Price",
+          value: {
+            id: 1,
+            f: (a, b) => -(parseInt(a.price, 10) - parseInt(b.price, 10))
+          }
+        },
+        {
+          text: "Bidder Name",
+          value: {
+            id: 2,
+            f: (a, b) => a.owner.username.localeCompare(b.owner.username)
+          }
+        },
+        {
+          text: "Default",
+          value: {
+            id: 3,
+            f: (a, b) => a.id - b.id
+          }
+        }
       ]
     };
   },
@@ -98,7 +130,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions(["refreshAll", "getPostById"]),
+    ...mapActions(["refreshAll", "getPostById", "cancelPostById"]),
     sortbidsShow(sortedList) {
       this.bidsShow = sortedList;
     },
@@ -122,6 +154,9 @@ export default {
         // declear the page is re-rendered
         this.$store.commit("API_READY");
       });
+    },
+    cancel() {
+      this.cancelPostById(this.post.id).then(() => this.$router.push("/"));
     }
   },
 

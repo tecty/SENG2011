@@ -1,9 +1,18 @@
 <template>
   <v-container fluid grid-list-md>
-      <sortingSelector :sortBy="sortParameter" :list="events" @sorted="sortEvents"/>
+    <v-layout row wrap>
+      <v-flex xs12 sm8 md6 lg3>
+        <sortingSelector v-model="events" :sortBy="sortParameter" />
+      </v-flex>
+      <v-flex xs12 sm8 md6 lg3>
+        <!-- filter selector will do the filtering -->
+        <filter-selector v-model="events" :filterBy="filterBy" />
+      </v-flex>
+    </v-layout>
     <v-data-iterator :items="events"
       content-tag="v-layout" row wrap
-      v-if="api_state != 'WAIT'"
+      :rows-per-page-items="[12]"
+      v-if="api_state == 'READY'"
     >
       <v-flex slot="item" slot-scope="props" sm12 sm6 md4 lg3 >
         <!-- actual data is iterating at this v-flex layer -->
@@ -19,44 +28,78 @@
 
 
 <script>
+import filterSelector from "@/components/helper/filter.vue";
 import sortingSelector from "@/components/helper/mergeSort.vue";
 import EventCard from "@/components/event/Card";
 import { mapState } from "vuex";
 export default {
   data() {
     return {
+      events: [],
+      filterBy:[
+        {text:"Current Valid",value: {
+            id: 1,
+            f: el =>
+              Date.parse(el.eventTime) >= Date.now()
+          }}
+      ],
       sortParameter: [
-        "Sort by Bid Ending time",
-        "Sort by Event time",
-        "Sort by Number of Posts under an Event",
-        "Sort by Event owner Name",
-        "Default"
+        {
+          text: "Bid Ending time",
+          value: {
+            id: 1,
+            f: (a, b) =>
+              Date.parse(a.bidClosingTime) - Date.parse(b.bidClosingTime)
+          }
+        },
+        {
+          text: "Event time",
+          value: {
+            id: 2,
+            f: (a, b) => Date.parse(a.eventTime) - Date.parse(b.eventTime)
+          }
+        },
+        {
+          text: "Number of Posts under an Event",
+          value: {
+            id: 3,
+            f: (a, b) => a.post_set.length - b.post_set.length
+          }
+        },
+        {
+          text: "Event owner Name",
+          value: {
+            id: 4,
+            f: (a, b) => a.owner.username.localeCompare(b.owner.username)
+          }
+        },
+        {
+          text: "Default",
+          value: {
+            id: 5,
+            f: (a, b) => a.id - b.id
+          }
+        }
       ]
     };
   },
   computed: {
-    events: {
-      get() {
-        return this.$store.state.events;
-      },
-      set(newList) {
-        return this.$store.commit("SET_EVENTS", newList);
-      }
-    },
     ...mapState(["api_state"])
   },
-  methods: {
-    sortEvents(list) {
-      this.events = list;
-    }
-  },
+  methods: {},
   mounted() {
     // fetch the latest events
-    this.$store.dispatch("refreshAll");
+    this.$store.dispatch("refreshAll").then(() => {
+      this.events = this.$store.state.events.filter(
+        el => el.owner.username == this.$store.state.username
+      );
+      this.$store.commit("API_READY");
+    });
   },
   components: {
     EventCard,
-    sortingSelector
+    sortingSelector,
+    filterSelector
   }
 };
 </script>

@@ -67,6 +67,17 @@ class BidViewSet(viewsets.ModelViewSet):
         # return back this bid detail 
         return Response(serializer.data)
 
+    """
+    Overwritten the DestroyModelMixin's function
+    """
+    def perform_destroy(self, instance):
+        # perform soft destory 
+        instance.state = "CL"
+        instance.save()
+ 
+
+    
+
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -114,3 +125,11 @@ class PostViewSet(viewsets.ModelViewSet):
 
         # return back this post detail 
         return Response(serializer.data) 
+
+    """
+    Overwritten the DestroyModelMixin's function
+    """
+    def perform_destroy(self, instance):
+        # perform soft destory 
+        instance.state = "CL"
+        instance.save()

@@ -1,124 +1,47 @@
 <template>
-  <v-layout mb-1>
-    <v-flex>
-      <div>
-        <v-select
-          :items="sortBy"
-          label="Sort by"
-          @change="selecteSortBy"
-        ></v-select>
-      </div>
-    </v-flex>
-  </v-layout>
+  <v-select
+    v-model="selected"
+    :items="sortBy"
+    label="Sort by"
+    @change="mergeSort"
+  ></v-select>
 </template>
 
 <script>
 export default {
   name: "sortingSelector",
-  props: ["sortBy", "list"],
+  props: ["value", "sortBy", "list"],
   data() {
     return {
-      selectVal: ""
+      // default callback is id descding
+      selected: { f: (a, b) => a.id - b.id }
     };
   },
+  computed: {
+    compareFunc() {
+      // return the call back provided
+      // as an function
+      return this.selected.f;
+    }
+  },
   methods: {
-    matchSortParameter() {
-      var compareFunc = (a, b) => {
-        return a.id - b.id;
-      };
-      switch (this.selectVal) {
-        case "Sort by offer price":
-          compareFunc = (a, b) => {
-            return parseInt(a.price, 10) - parseInt(b.price, 10);
-          };
-          break;
-        case "Lastest":
-          compareFunc = (a, b) => {
-            return a.id - b.id;
-          };
-          break;
-        case "Sort by bidder name":
-          compareFunc = (a, b) => {
-            return a.owner.username.localeCompare(b.owner.username);
-          };
-          break;
-        case "Sort by issuer name":
-          compareFunc = (a, b) => {
-            return a.event.owner.username.localeCompare(b.event.owner.username);
-          };
-          break;
-        case "Sort by Event owner Name":
-          compareFunc = (a, b) => {
-            return a.owner.username.localeCompare(b.owner.username);
-          };
-          break;
-        case "Sort by Budget":
-          compareFunc = (a, b) => {
-            return parseInt(a.budget, 10) - parseInt(b.budget, 10);
-          };
-          break;
-        case "Sort by Number of bids":
-          compareFunc = (a, b) => {
-            return a.bid_set.length - b.bid_set.length;
-          };
-          break;
-        case "Sort by Number of people":
-          compareFunc = (a, b) => {
-            return a.peopleCount - b.peopleCount;
-          };
-          break;
-        case "Sort by Number of Posts under an Event":
-          compareFunc = (a, b) => {
-            return a.post_set.length - b.post_set.length;
-          };
-          break;
-        case "Sort by Event time":
-          compareFunc = (a, b) => {
-            let da;
-            let db;
-            if (a.event) {
-              da = new Date(a.event.eventTime);
-              db = new Date(b.event.eventTime);
-            } else {
-              da = new Date(a.eventTime);
-              db = new Date(b.eventTime);
-            }
-            return da - db;
-          };
-          break;
-        case "Sort by Bid Ending time":
-          compareFunc = (a, b) => {
-            let da;
-            let db;
-            if (a.event) {
-              da = new Date(a.event.bidClosingTime);
-              db = new Date(b.event.bidClosingTime);
-            } else {
-              da = new Date(a.bidClosingTime);
-              db = new Date(b.bidClosingTime);
-            }
-            return da - db;
-          };
-
-          break;
-
-        default:
-          this.$emit("sorted", this.list);
-          return;
-          break;
-      }
-      let sorted = this.mergeSort(this.list, compareFunc);
-      this.$emit("sorted", sorted);
+    mergeSort() {
+      // console.log(this.compareFunc)
+      // call the merge sort
+      this.$emit(
+        "input",
+        this.mergeSortRecu(
+          this.value,
+          0,
+          this.value.length - 1,
+          this.compareFunc
+        )
+      );
     },
-    selecteSortBy(label) {
-      console.log(label);
-      this.selectVal = label;
-      this.matchSortParameter();
-    },
-    mergeSort(list, compareFunc) {
-      var temp = this.mergeSortRecu(list, 0, list.length - 1, compareFunc);
-      return temp;
-    },
+    /**
+     * Recursive call of merge sort
+     * Verified at MergeSort.dfy
+     */
     mergeSortRecu(list, lo, hi, compareFunc) {
       var newList = list.slice();
       if (lo < hi) {
@@ -129,6 +52,10 @@ export default {
       }
       return newList;
     },
+    /**
+     * Merge of two array
+     * Verified at MergeSort.dfy
+     */
     merge(newList, lo, mid, hi, compareFunc) {
       var buffer = newList.slice();
       // console.log(buffer);

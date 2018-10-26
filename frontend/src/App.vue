@@ -10,9 +10,6 @@
                 {{ item.heading }}
               </v-subheader>
             </v-flex>
-            <v-flex xs6 class="text-xs-right">
-              <v-btn small flat>edit</v-btn>
-            </v-flex>
           </v-layout>
           <v-divider v-else-if="item.divider" :key="i" dark class="my-3"></v-divider>
           <v-list-tile :to="item.href" v-else :key="i">
@@ -58,17 +55,17 @@ export default {
           text: "Home",
           href: "/"
         },
-        { divider: true },
+        {
+          icon: "restaurant",
+          text: "Post",
+          href: "/post"
+        },
+        {heading:"My"},
         {
           icon: "group",
           text: "Event",
           href: "/event"
         },
-        {
-          icon: "restaurant",
-          text: "Post",
-          href: "/post"
-        }
       ]
     };
   },

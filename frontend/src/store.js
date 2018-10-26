@@ -146,6 +146,14 @@ export default new Vuex.Store({
       commit("API_FINISHED");
       return ret;
     },
+    async cancelPostById({ commit }, id) {
+      commit("API_WAITING");
+      let ret = await axios
+        .delete(`posts/${id}/`)
+        .catch(err => commit("API_ERROR", err));
+      commit("API_FINISHED");
+      return ret;
+    },
     async createEvent({ commit }, data) {
       commit("API_WAITING");
       let ret = await axios.post("events/", data);
@@ -177,8 +185,13 @@ export default new Vuex.Store({
       let ret = await axios.get(`posts/${postId}/finish/`);
       return ret;
     },
-    async rateBidder({ commit }, postId) {
-      let ret = await axios.get(`posts/${postId}/finish/`);
+    async rateBidder({ commit }, { postId, rate }) {
+      let ret = await axios
+        // post the rate to backend
+        .post(`posts/${postId}/rate/`, {
+          rate: rate
+        })
+        .catch(err => commit("API_ERROR", err));
       return ret;
     }
   },

@@ -22,6 +22,7 @@
         ></v-text-field>
         <v-date-picker v-model="date" 
           @input="dateChanged"
+          :allowed-dates="allowDates" 
           landscape />
       </v-menu>
     </v-flex>
@@ -63,6 +64,12 @@ export default {
     }
   },
   methods: {
+    allowDates(val) {
+      let d1 = new Date();
+      let d2 = new Date(val);
+      d2.setDate(d2.getDate() + 1);
+      return d2 >= d1;
+    },
     emitEvent() {
       if (this.date && this.time) {
         // there are inputed date and time

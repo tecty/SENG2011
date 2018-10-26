@@ -3,7 +3,14 @@
     <div v-if="api_state != 'READY' && api_state != 'ERROR'" class="text-xs-center">
       <v-progress-circular indeterminate color="primary" />
     </div>
+
     <form ref="form" @submit.prevent="submit" v-else>
+          <v-snackbar
+      v-model="snackbar"
+    >
+      {{snackText}}
+      <v-btn flat color="error" @click.native="snackbar = false">Close</v-btn>
+    </v-snackbar>
       <v-layout wrap>
         <v-flex xs12 sm6>
           <v-text-field v-model="form.title"
@@ -20,7 +27,6 @@
 
         <v-flex xs12>
           <dateTime v-model="form.eventTime" 
-          v-validate="'required'" data-vv-name="event date and time"  :error-messages="errors.collect('event date and time')"
           title="Event"/>
         </v-flex>
         <v-flex xs12>
@@ -37,6 +43,7 @@
 <script>
 import addr from "@/components/helper/addressInput.vue";
 import dateTime from "@/components/helper/dataTimePicker";
+import snackBar from "@/components/helper/snackbar";
 
 import { mapActions, mapState } from "vuex";
 export default {
@@ -51,7 +58,8 @@ export default {
       // TODO: may be antoher model
       snackbar: false,
       snackbarColor: "error",
-      snackText: "Error You must complete all fields with *"
+      snackText:
+        "Error: You must complete all fields with * and choose correct time and address"
     };
   },
   computed: {
@@ -65,7 +73,6 @@ export default {
     submit() {
       this.$validator.validateAll().then(result => {
         if (result) {
-          console.log("it's oging");
           if (this.isEdit) {
             this.editEvent(this.form).then(ret => {
               this.$router.push({
@@ -93,11 +100,20 @@ export default {
                 });
               })
               .catch(err => {
-                // TODO: just a way to implement the snack bar
+                if (!this.form.location) {
+                  this.snackText = "please select a correct address";
+                } else if (!this.form.eventTime || !this.form.bidClosingTime) {
+                  this.snackText = "please input correct time and date";
+                } else {
+                  let d1 = Date.parse(this.form.eventTime);
+                  let d2 = Date.parse(this.form.bidClosingTime);
+                  if (d2 > d1) {
+                    this.snackText =
+                      "bids must close later than now, and event should start after bid close ";
+                  }
+                }
                 this.snackbar = true;
                 this.snackbarColor = "error";
-                // TODO improve err looking.
-                this.snackText = "Error: " + JSON.stringify(err.response.data);
                 this.$store.commit("API_READY");
               });
           }

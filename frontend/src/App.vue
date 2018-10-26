@@ -60,12 +60,12 @@ export default {
           text: "Post",
           href: "/post"
         },
-        {heading:"My"},
+        { heading: "My" },
         {
           icon: "group",
           text: "Event",
           href: "/event"
-        },
+        }
       ]
     };
   },

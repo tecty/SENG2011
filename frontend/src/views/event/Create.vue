@@ -37,102 +37,101 @@
 </template>
 
 <script>
-  import addr from "@/components/helper/addressInput.vue";
-  import dateTime from "@/components/helper/dataTimePicker";
-  import snackBar from "@/components/helper/snackbar";
+import addr from "@/components/helper/addressInput.vue";
+import dateTime from "@/components/helper/dataTimePicker";
 
-  import { mapActions, mapState } from "vuex";
-  export default {
-    data() {
-      return {
-        form: {
-          title: "",
-          location: {},
-          eventTime: null,
-          bidClosingTime: null
-        },
-        // TODO: may be antoher model
-        snackbar: false,
-        snackbarColor: "error",
-        snackText:
-          "Error: You must complete all fields with * and choose correct time and address"
-      };
-    },
-    computed: {
-      ...mapState(["api_state"]),
-      isEdit() {
-        return this.$route.name == "EventEdit";
-      }
-    },
-    methods: {
-      ...mapActions(["createEvent", "editEvent"]),
-      submit() {
-        this.$validator.validateAll().then(result => {
-          if (result) {
-            if (this.isEdit) {
-              this.editEvent(this.form).then(ret => {
+import { mapActions, mapState } from "vuex";
+export default {
+  data() {
+    return {
+      form: {
+        title: "",
+        location: {},
+        eventTime: null,
+        bidClosingTime: null
+      },
+      // TODO: may be antoher model
+      snackbar: false,
+      snackbarColor: "error",
+      snackText:
+        "Error: You must complete all fields with * and choose correct time and address"
+    };
+  },
+  computed: {
+    ...mapState(["api_state"]),
+    isEdit() {
+      return this.$route.name == "EventEdit";
+    }
+  },
+  methods: {
+    ...mapActions(["createEvent", "editEvent"]),
+    submit() {
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          if (this.isEdit) {
+            this.editEvent(this.form).then(ret => {
+              this.$router.push({
+                name: "EventDetail",
+                params: {
+                  eventId: ret.data.id
+                }
+              });
+            });
+          } else {
+            // create the event
+            this.createEvent({
+              title: this.form.title,
+              location: this.form.location,
+              eventTime: this.form.eventTime,
+              bidClosingTime: this.form.bidClosingTime
+            })
+              .then(res => {
+                let eventId = res.data.id;
                 this.$router.push({
                   name: "EventDetail",
                   params: {
-                    eventId: ret.data.id
+                    eventId: eventId
                   }
                 });
-              });
-            } else {
-              // create the event
-              this.createEvent({
-                title: this.form.title,
-                location: this.form.location,
-                eventTime: this.form.eventTime,
-                bidClosingTime: this.form.bidClosingTime
               })
-                .then(res => {
-                  let eventId = res.data.id;
-                  this.$router.push({
-                    name: "EventDetail",
-                    params: {
-                      eventId: eventId
-                    }
-                  });
-                })
-                .catch(err => {
-                  if (!this.form.location) {
-                    this.snackText = "please select a correct address";
-                  } else if (!this.form.eventTime || !this.form.bidClosingTime) {
-                    this.snackText = "please input correct time and date";
-                  } else {
-                    let d1 = Date.parse(this.form.eventTime);
-                    let d2 = Date.parse(this.form.bidClosingTime);
-                    if (d2 > d1) {
-                      this.snackText =
-                        "bids must close later than now, and event should start after bid close ";
-                    }
+              .catch(() => {
+                if (!this.form.location) {
+                  this.snackText = "please select a correct address";
+                } else if (!this.form.eventTime || !this.form.bidClosingTime) {
+                  this.snackText = "please input correct time and date";
+                } else {
+                  let d1 = Date.parse(this.form.eventTime);
+                  let d2 = Date.parse(this.form.bidClosingTime);
+                  if (d2 > d1) {
+                    this.snackText =
+                      "bids must close later than now, and event should start after bid close ";
                   }
-                  this.snackbar = true;
-                  this.snackbarColor = "error";
-                  this.$store.commit("API_READY");
-                });
-            }
+                }
+                this.snackbar = true;
+                this.snackbarColor = "error";
+                this.$store.commit("API_READY");
+              });
           }
-        });
-      }
-    },
-    mounted() {
-      // assign the detail from vuex
-      if (this.isEdit) {
-        // handy event id fetch from route
-        let eventId = this.$route.params.eventId;
-        this.$store.dispatch("getEventById", eventId).then(res => {
-          this.form = res.data;
-          this.$store.commit("API_READY");
-        });
-      } else {
-        this.$store.commit("API_READY");
-      }
-    },
-    components: {
-      addr,
-      dateTime
+        }
+      });
     }
-  };
+  },
+  mounted() {
+    // assign the detail from vuex
+    if (this.isEdit) {
+      // handy event id fetch from route
+      let eventId = this.$route.params.eventId;
+      this.$store.dispatch("getEventById", eventId).then(res => {
+        this.form = res.data;
+        this.$store.commit("API_READY");
+      });
+    } else {
+      this.$store.commit("API_READY");
+    }
+  },
+  components: {
+    addr,
+    dateTime
+  }
+};
 </script>

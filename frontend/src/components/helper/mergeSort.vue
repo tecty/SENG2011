@@ -10,7 +10,7 @@
 <script>
 export default {
   name: "sortingSelector",
-  props: ["value", "sortBy", "list"],
+  props: ["value", "sortBy"],
   data() {
     return {
       // default callback is id descding

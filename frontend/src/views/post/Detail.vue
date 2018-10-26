@@ -129,11 +129,11 @@ export default {
       }
     },
     canBid() {
-      console.log((
+      console.log(
         this.api_state == "READY" &&
-        this.post.event.owner.username != this.username &&
-        this.post.state == "BD"
-      ))
+          this.post.event.owner.username != this.username &&
+          this.post.state == "BD"
+      );
       return (
         this.api_state == "READY" &&
         this.post.event.owner.username != this.username &&
@@ -145,7 +145,7 @@ export default {
         this.post.event.owner.username == this.username &&
         this.post.state == "BD"
       );
-    },
+    }
   },
   methods: {
     ...mapActions(["refreshAll", "getPostById", "cancelPostById"]),

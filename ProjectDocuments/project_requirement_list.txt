@@ -1,6 +1,3 @@
-1. Poster
-A poster is someone who want to post a task on PartyWhip and choose the tasker
-they want.
 1.1. [1] Posters can post one or more requests of food provision
 1.1.1. [1] Posters must specify basic parameters for requests
 1.1.1.1. [1] name and message of the request
@@ -15,31 +12,32 @@ they want.
 1.1.2.1. [2] A post can only select one parameter value for a field (Couldn’t have multiple parameters with one field)
 1.1.2.2. [2] Poster can see all the provided parameters
 1.2. [1] Posters can view requests they posted // Even if it is finished
-1.2.1. [1] Posters can view all requests they posted in a list 
+1.2.1. [1] Posters can view all requests they posted in a list // sorted by status
 1.2.1.1. [3] Posters can sort the requests by the date
 1.2.1.2. [2] Posters can filter requests by their status
 1.2.1.3. [4] Posters can sort the requests by the latest bid
 1.2.1.4. [4] Posters can filter requests by some other parameters
 1.2.2. [3] Posters can chat with a bidder under the created post or its bids
 1.2.2.1. [3] Posters can add message under the bidder’s bids
+26/10/2018 SENG2011 System Report - Google ⽂档
+https://docs.google.com/document/d/1_Sy7GPuJ0AvA61JojV2rSlhW7RJkEKTj1WQVW7M5fRY/edit# 5/23
 1.2.2.2. [3] Posters can reply to the message added by bidder
 1.2.2.3. [3] These messages can be viewed by everyone
 1.2.3. [1] Posters can choose bidders for an open request // change state
-1.2.3.1. [2] bidders will be sorted based on their bidding price and bidding time // sorting
-1.2.3.2. [2] Poster can see all bidders’ comments written by previous posters.
+1.2.3.1. [2] bidders can be sorted based on their bidding price and bidding time // sorting
+1.2.3.2. [4] Poster can see all bidders’ comments written by previous posters.
 1.2.3.3. [3] Poster can view bidders’ information on bidders’ profile // Only bidders who bid this post and the post is not in state Finished or Cancelled
-1.2.3.4. [2] When a request is overdue, it should be automatically cancelled // changing the state
+1.2.3.4. [3] When a request is overdue, it should be automatically cancelled // changing the state
 1.2.3.5. [3] Posters can evaluate a bidder after a request is completed
-1.2.3.5.1. [3] Poster can only rate his post
+1.2.3.5.1. [3] Poster can only rate the bidder of his post
 1.2.3.5.2. [3] The rate should be one to five stars in intergers
-1.2.3.5.3. [3] Posters can rate the bidder for this request
-1.2.3.5.4. [4] Posters can write comments to this bidder
+1.2.3.5.3. [4] Posters can write comments to this bidder
 1.2.3.6. [3] Poster will see the recommend stars of all the bidders who bid the post.
 1.2.3.6.1. [3] The recommend starts is base on the rate of other posters’ rate to this bidder
 1.2.3.6.2. [3] The recommend starts is base on the parameters of this posts.
 1.2.3.6.3. [3] Appear 0 rate if these rules are not applied, such as there’s no rate to this bidder, this bidder has done nothing about the given parameter of this post.
 1.2.4. [1] Posters can manage his posts
-1.2.4.1. [1] Posters can cancel a processing or deal state request which created by themselves // change state, need to verify
+1.2.4.1. [1] Posters can cancel a processing request which created by themselves // change state, need to verify
 1.2.4.2. [2] Posters can edit details of a request created by themselves and not in state Finished or Cancelled // change states of bidders needs to verify
 1.2.4.3. [2] Posters can regret for selecting a bidder 6 hours prior the service requesting time
 1.3. [1] Posters can register and log in
@@ -51,9 +49,11 @@ they want.
 1.3.1.5. [4] Additional information
 2. Parameter
 Parameter is the key value pair help poster to specify extra nature of the event.
+26/10/2018 SENG2011 System Report - Google ⽂档
+https://docs.google.com/document/d/1_Sy7GPuJ0AvA61JojV2rSlhW7RJkEKTj1WQVW7M5fRY/edit# 6/23
 2.1. [1] Parameters can only be CRUD (Change Read Update Delete) by admin
 2.1.1. [1] Parameters cannot be hard deleted // need to verify, implement by a deleted state in Parameters
-2.2. [2] Parameter is a key-value pair, including // created admin
+2.2. [2] Parameter is a key-value pair, including: // created admin
 2.2.1. [2] nature of event
 2.2.2. [2] level of food quality
 2.2.3. [2] special diet
@@ -68,14 +68,14 @@ Bidder is who want to bid a task and finish the post when he choose by the poste
 3.1. [1] Bidders can view a list of posted requests
 3.1.1. [2] Default list is sorted by relevant rate // need to verify
 3.1.2. [2] Bidders can sort requests
-3.1.2.1. [2] sort by latest bidding price
-3.1.2.2. [2] sort by latest bidding time
+3.1.2.1. [2] sort by number of bids
+3.1.2.2. [2] sort by budget
 3.1.2.3. [2] sort by relevance
-3.1.3. [3] Bidders can filter requests
+3.1.3. [2] Bidders can filter requests
 3.1.3.1. [3] filter by food type
 3.1.3.2. [3] filter by region
 3.1.3.3. [3] filter by due time
-3.1.3.4. [4] filter by other parameters
+3.1.3.4. [3] filter by other parameters
 3.1.4. [4] Bidders can only see requests with food types they can provide
 3.2. [1] Bidders can place bids on requests
 3.2.1. [1] Bid need to provide the offer budget and leave some comments
@@ -88,6 +88,8 @@ Bidder is who want to bid a task and finish the post when he choose by the poste
 3.3. [2] Bidders can delete their own bids
 3.3.1. [3] Bids that have been chosen by the poster cannot be deleted
 3.4. [1] Bidders can register and log in
+26/10/2018 SENG2011 System Report - Google ⽂档
+https://docs.google.com/document/d/1_Sy7GPuJ0AvA61JojV2rSlhW7RJkEKTj1WQVW7M5fRY/edit# 7/23
 3.4.1. [3] Bidder must have a profile
 3.4.1.1. [3] Bidder can edit its own profile // only bidder and poster can edit
 3.4.1.2. [3] including contact details
@@ -96,9 +98,10 @@ Bidder is who want to bid a task and finish the post when he choose by the poste
 3.4.1.5. [3] including past photos of catering services they provided
 3.4.1.6. [3] including their prefer time for service provision (help to match the post more effectively)
 3.4.2. [3] Bidders can view posters’ contact information when they have been selected for the posters’ requests
-3.4.2.1. [3] Only can vidw the detail at Deal state of the corresponding post
+3.4.2.1. [3] Only can view the detail at Deal state of the corresponding post
 4. Admin
-Admin can access all the necessary data to manage the website and provide customer service.
+Admin can access all the necessary data to manage the website and provide
+customer service.
 4.1. [3] Admin can log into a system different from bidder and poster
 4.2. [3] Admin can delete the account of bidders and posters
 4.3. [3] Admin can CRUD all Post and Bid

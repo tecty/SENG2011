@@ -80,12 +80,12 @@ export default {
   },
   methods: {
     // map the login action from vuex
-    ...mapActions(["registerByUser","editUser"]),
+    ...mapActions(["registerByUser", "editUser"]),
     register() {
       // store the promise instance
       let promise;
       if (this.isEdit) {
-        // edit mode 
+        // edit mode
         promise = this.editUser({
           id: this.id,
           username: this.username,
@@ -93,17 +93,16 @@ export default {
           password_again: this.passwordAgain,
           location: this.location,
           tel: this.tel
-        }).then((res) => {
-          // go to the detail page 
+        }).then(res => {
+          // go to the detail page
           // redirect request from another view
           this.$router.push({
-            name:"ProfileDetail",
+            name: "ProfileDetail",
             // pass with user's data
-            params:{user: res.data}
+            params: { user: res.data }
           });
-        })
-      }
-      else{
+        });
+      } else {
         // register mode
         promise = this.registerByUser({
           username: this.username,
@@ -120,26 +119,24 @@ export default {
             // go to previous page, if it's user direct to login
             this.$router.go(-2);
           }
-        })
-      }
-        promise.catch(err => {
-          this.error = err.response.data;
         });
+      }
+      promise.catch(err => {
+        this.error = err.response.data;
+      });
     }
   },
   mounted() {
     if (this.isEdit) {
-      this.$store
-        .dispatch("getUserDetail")
-        .then((res) => {
-          // map these inpo to the input area
-          this.username = res.data.username;
-          this.location = res.data.location;
-          this.tel = res.data.tel;
-          this.id = res.data.id;
-          // and let this page could be render
-          this.$store.commit("API_READY");
-        });
+      this.$store.dispatch("getUserDetail").then(res => {
+        // map these inpo to the input area
+        this.username = res.data.username;
+        this.location = res.data.location;
+        this.tel = res.data.tel;
+        this.id = res.data.id;
+        // and let this page could be render
+        this.$store.commit("API_READY");
+      });
     } else {
       // and let this page could be render
       this.$store.commit("API_READY");

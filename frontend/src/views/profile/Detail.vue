@@ -21,9 +21,9 @@
 
 <script>
 export default {
-  data(){
+  data() {
     return {
-      user:{}
+      user: {}
     };
   },
   mounted() {
@@ -31,7 +31,7 @@ export default {
     // hence, in this way, we wont have another
     //  request to server
     this.user = this.$route.params.user;
-  },
+  }
 };
 </script>
 

@@ -8,27 +8,35 @@
         <v-flex md10 offset-md1 xs12 offset-xs0 lg6 offset-lg3 >
           <h1 v-if="!isEdit">Sign Up</h1>
           <h1 v-else>Edit Profile</h1>
-          <v-form v-model="valid" @submit.prevent="register">
+
+          <form @submit.prevent="register">
+          <v-snackbar v-model="snackbar">
+              {{snackText}}
+             <v-btn flat color="error" @click.native="snackbar = false">Close</v-btn>
+          </v-snackbar>
             <v-text-field
               v-model="username" label="Username" required autofocus 
+               v-validate="'required'" data-vv-name="username" :error-messages="errors.collect('username')"
               autocomplete
             />
             <v-text-field 
               v-model="password" :type="show? 'text':'password'" label="Password" 
               :append-icon= "show ? 'visibility' : 'visibility_off'"
+               v-validate="'required'" ref="password" data-vv-name="password" :error-messages="errors.collect('password')"
               autocomplete @click:append="show = !show" 
               required 
             />
             <v-text-field 
               v-model="passwordAgain" :type="show? 'text':'password'" label="Password Again" 
+               v-validate="'required|confirmed:password'" data-vv-name="password confirm" :error-messages="errors.collect('password confirm')"
               :append-icon= "show ? 'visibility' : 'visibility_off'"
               autocomplete @click:append="show = !show" 
               required 
             />
             <v-text-field 
               v-model="tel" type="text" label="Telephone" 
+               v-validate="'required|numeric'" data-vv-name="Telephone" :error-messages="errors.collect('Telephone')"
               autocomplete 
-              required 
             />
             <addr 
               @confirmLocation="
@@ -42,10 +50,9 @@
               hint="Where's your address?"
             ></addr>
             <p></p>
-            <p>{{error}}</p>
-            <v-btn type="submit" v-if="!isEdit" >Login</v-btn>
+            <v-btn type="submit" v-if="!isEdit" >Register</v-btn>
             <v-btn type="submit" v-else >Save</v-btn>
-          </v-form>
+          </form>
         </v-flex>
       </v-layout>
     </div>
@@ -69,7 +76,10 @@ export default {
       // if show == true, show the password
       show: false,
       tel: "",
-      error: ""
+      error: "",
+      snackbar: false,
+      snackbarColor: "error",
+      snackText: "Error: please fill all fields correctly"
     };
   },
   computed: {
@@ -84,46 +94,57 @@ export default {
     ...mapActions(["registerByUser", "editUser"]),
     register() {
       // store the promise instance
-      let promise;
-      if (this.isEdit) {
-        // edit mode
-        promise = this.editUser({
-          id: this.id,
-          username: this.username,
-          password: this.password,
-          password_again: this.passwordAgain,
-          location: this.location,
-          tel: this.tel
-        }).then(res => {
-          // go to the detail page
-          // redirect request from another view
-          this.$router.push({
-            name: "ProfileDetail",
-            // pass with user's data
-            params: { user: res.data }
-          });
-        });
-      } else {
-        // register mode
-        promise = this.registerByUser({
-          username: this.username,
-          password: this.password,
-          password_again: this.passwordAgain,
-          location: this.location,
-          tel: this.tel
-        }).then(() => {
-          // go to main page
-          if (this.$route.query.redirect) {
-            // redirect request from another view
-            this.$router.push(this.$route.query.redirect);
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          let promise;
+          if (this.isEdit) {
+            // edit mode
+            promise = this.editUser({
+              id: this.id,
+              username: this.username,
+              password: this.password,
+              password_again: this.passwordAgain,
+              location: this.location,
+              tel: this.tel
+            }).then(res => {
+              // go to the detail page
+              // redirect request from another view
+              this.$router.push({
+                name: "ProfileDetail",
+                // pass with user's data
+                params: { user: res.data }
+              });
+            });
           } else {
-            // go to previous page, if it's user direct to login
-            this.$router.go(-2);
+            // register mode
+            promise = this.registerByUser({
+              username: this.username,
+              password: this.password,
+              password_again: this.passwordAgain,
+              location: this.location,
+              tel: this.tel
+            }).then(() => {
+              // go to main page
+              console.log(this);
+              if (this.$route.query.redirect) {
+                // redirect request from another view
+                this.$router.push(this.$route.query.redirect);
+              } else {
+                // go to previous page, if it's user direct to login
+                this.$router.go(-2);
+              }
+            });
           }
-        });
-      }
-      promise.catch(err => {
-        this.error = err.response.data;
+          promise.catch(err => {
+            if (err.response.data.username) {
+              this.snackText = err.response.data.username[0];
+            }
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.error = err.response.data;
+            this.$store.commit("API_READY");
+          });
+        }
       });
     }
   },

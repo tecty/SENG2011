@@ -49,7 +49,7 @@
       <h5 class="headline primary--text ">
         Message
       </h5>
-      <msgBox :msg="post.msg" class="mb-3"/>
+      <msgBox :msg="post.msg" class="mb-3  mr-4"/>
       <v-layout>
         <v-flex xs12>
           <h5 class="headline primary--text ">
@@ -65,12 +65,12 @@
       <v-layout row wrap>
           <!-- select sorting parameter  -->
           <!-- cards of bids -->
-          <v-flex xs12 md6 lg4 v-for="bid in post.bid_set" :key="bid.id">
+          <v-flex xs12 md6 lg4  v-for="bid in bidsShow" :key="bid.id">
             <bid-card :bid="bid" :post="post" @requireRefresh="()=> refreshContent()" />
           </v-flex>
           <!-- card for bidding -->
-        <v-flex xs12 md6 lg4>
-          <CreateCard v-if="canBid" :postId="post.id" @requireRefresh="()=> refreshContent()" />
+        <v-flex xs12 md6 lg4 v-if="canBid">
+          <CreateCard :postId="post.id" @requireRefresh="()=> refreshContent()" />
         </v-flex>
       </v-layout>
     </div>
@@ -126,7 +126,21 @@ export default {
       api_state: "api_state",
       username: state => state.username
     }),
+    bidsShow: {
+      get: function() {
+        return this.post.bid_set;
+      },
+      // setter
+      set: function(newList) {
+        this.post.bid_set = newList;
+      }
+    },
     canBid() {
+      console.log(
+        this.api_state == "READY" &&
+          this.post.event.owner.username != this.username &&
+          this.post.state == "BD"
+      );
       return (
         this.api_state == "READY" &&
         this.post.event.owner.username != this.username &&
@@ -152,7 +166,9 @@ export default {
   },
   methods: {
     ...mapActions(["refreshAll", "getPostById", "cancelPostById"]),
-
+    sortbidsShow(sortedList) {
+      this.bidsShow = sortedList;
+    },
     refreshContent() {
       this.refreshAll().then(() => {
         // assign the new post object
@@ -165,6 +181,7 @@ export default {
       this.cancelPostById(this.post.id).then(() => this.$router.push("/"));
     }
   },
+
   mounted() {
     this.$store.dispatch("refreshAll").then(() => {
       this.post = this.$store.state.posts.find(el => {

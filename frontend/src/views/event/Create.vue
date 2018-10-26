@@ -1,12 +1,18 @@
 <template>
-  <v-container grid-list-xl >
+  <v-container grid-list-xl>
     <div v-if="api_state != 'READY' && api_state != 'ERROR'" class="text-xs-center">
       <v-progress-circular indeterminate color="primary" />
     </div>
-    <v-form ref="form" @submit.prevent="submit" v-else>
+
+    <form ref="form" @submit.prevent="submit" v-else>
+      <v-snackbar v-model="snackbar">
+        {{snackText}}
+        <v-btn flat color="error" @click.native="snackbar = false">Close</v-btn>
+      </v-snackbar>
       <v-layout wrap>
         <v-flex xs12 sm6>
-          <v-text-field v-model="form.title" label="Title *" required></v-text-field>
+          <v-text-field v-model="form.title" v-validate="'required'" data-vv-name="title" :error-messages="errors.collect('title')"
+            label="Title *"></v-text-field>
         </v-flex>
         <addr @confirmLocation="
             loc => {
@@ -14,19 +20,19 @@
               // this property 
               form.location = loc;
             }
-          " :address="form.location.address"  hint="Where this event be held?"/>
+          " :address="form.location.address" hint="Where this event be held?" />
 
         <v-flex xs12>
-          <dateTime v-model="form.eventTime" title="Event"/>
+          <dateTime v-model="form.eventTime" title="Event" />
         </v-flex>
         <v-flex xs12>
-          <dateTime v-model="form.bidClosingTime" title="Bid Clossing"/>
+          <dateTime v-model="form.bidClosingTime" title="Bid Clossing" />
         </v-flex>
         <v-flex xs1 ma-0 pa-0>
           <v-btn color="success" type="submit">Submit</v-btn>
         </v-flex>
       </v-layout>
-    </v-form>
+    </form>
   </v-container>
 </template>
 
@@ -44,10 +50,10 @@ export default {
         eventTime: null,
         bidClosingTime: null
       },
-      // TODO: may be antoher model
       snackbar: false,
       snackbarColor: "error",
-      snackText: "Error You must complete all fields with *"
+      snackText:
+        "Error: You must complete all fields with * and choose correct time and address"
     };
   },
   computed: {
@@ -59,40 +65,54 @@ export default {
   methods: {
     ...mapActions(["createEvent", "editEvent"]),
     submit() {
-      if (this.isEdit) {
-        this.editEvent(this.form).then(ret => {
-          this.$router.push({
-            name: "EventDetail",
-            params: {
-              eventId: ret.data.id
-            }
-          });
-        });
-      } else {
-        // create the event
-        this.createEvent({
-          title: this.form.title,
-          location: this.form.location,
-          eventTime: this.form.eventTime,
-          bidClosingTime: this.form.bidClosingTime
-        })
-          .then(res => {
-            let eventId = res.data.id;
-            this.$router.push({
-              name: "EventDetail",
-              params: {
-                eventId: eventId
-              }
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          if (this.isEdit) {
+            this.editEvent(this.form).then(ret => {
+              this.$router.push({
+                name: "EventDetail",
+                params: {
+                  eventId: ret.data.id
+                }
+              });
             });
-          })
-          .catch(err => {
-            // TODO: just a way to implement the snack bar
-            this.snackbar = true;
-            this.snackbarColor = "error";
-            // TODO improve err looking.
-            this.snackText = "Error: " + JSON.stringify(err.response.data);
-          });
-      }
+          } else {
+            // create the event
+            this.createEvent({
+              title: this.form.title,
+              location: this.form.location,
+              eventTime: this.form.eventTime,
+              bidClosingTime: this.form.bidClosingTime
+            })
+              .then(res => {
+                let eventId = res.data.id;
+                this.$router.push({
+                  name: "EventDetail",
+                  params: {
+                    eventId: eventId
+                  }
+                });
+              })
+              .catch(() => {
+                if (!this.form.location) {
+                  this.snackText = "please select a correct address";
+                } else if (!this.form.eventTime || !this.form.bidClosingTime) {
+                  this.snackText = "please input correct time and date";
+                } else {
+                  let d1 = Date.parse(this.form.eventTime);
+                  let d2 = Date.parse(this.form.bidClosingTime);
+                  if (d2 > d1) {
+                    this.snackText =
+                      "bids must close later than now, and event should start after bid close ";
+                  }
+                }
+                this.snackbar = true;
+                this.snackbarColor = "error";
+                this.$store.commit("API_READY");
+              });
+          }
+        }
+      });
     }
   },
   mounted() {

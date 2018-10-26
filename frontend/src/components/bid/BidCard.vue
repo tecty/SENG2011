@@ -140,6 +140,6 @@ export default {
 
 <style scoped>
 a {
-  color:white;
+  color: white;
 }
 </style>

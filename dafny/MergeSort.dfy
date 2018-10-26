@@ -43,7 +43,6 @@ method mergesort(a1:array<int>, l:int, u:int) returns (a:array<int>)
   ensures sortedBetween(a,l,u);
   ensures forall q:: (0 <= q < l || u < q < a.Length) ==> a[q] == a1[q];
   ensures permutation(a[l..u+1], a1[l..u+1]);
-  // ensures multiset(a[l..u+1]) == multiset(a1[l..u+1]);
   ensures a[0..l] == a1[0..l];
   ensures a[u+1..] == a1[u+1..];
   decreases u-l;

@@ -23,7 +23,14 @@
       </v-layout>
       <p>{{ post.state | stateToText}}</p>
       <h5 class="headline primary--text ">Issuer:</h5>
-      <p>{{ post.event.owner.username }}</p>
+      <router-link :to="{
+        name:'ProfileDetail',
+        params: {
+          user:post.event.owner
+        }
+      }">
+        <p>{{ post.event.owner.username }}</p>
+      </router-link>
       <h5 class="headline primary--text ">Event Time:</h5>
       <p>{{ post.event.eventTime | showDateTime }}</p>
       <h5 class="headline primary--text ">Bid End:</h5>
@@ -144,8 +151,8 @@ export default {
         this.$store.commit("API_READY");
       });
     },
-    cancel(){
-      this.cancelPostById(this.post.id).then(()=> this.$router.push('/'));
+    cancel() {
+      this.cancelPostById(this.post.id).then(() => this.$router.push("/"));
     }
   },
   mounted() {

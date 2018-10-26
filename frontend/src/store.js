@@ -77,6 +77,18 @@ export default new Vuex.Store({
         password: user.password
       });
     },
+    async editUser({ commit }, user) {
+      commit("API_WAITING");
+      let ret = await axios.put(`users/${user.id}/`, user);
+      commit("API_FINISHED");
+      return ret;
+    },
+    async getUserDetail({ commit }) {
+      commit("API_WAITING");
+      let ret = await axios.get("users/");
+      commit("API_FINISHED");
+      return ret;
+    },
     logout({ commit }) {
       // remove the record in vuex
       commit("REMOVE_TOKEN_AND_USER");
@@ -154,7 +166,7 @@ export default new Vuex.Store({
       commit("API_FINISHED");
       return ret;
     },
-    async cancelPostById({commit},id){
+    async cancelPostById({ commit }, id) {
       commit("API_WAITING");
       let ret = await axios
         .delete(`posts/${id}/`)

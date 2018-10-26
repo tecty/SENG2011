@@ -60,12 +60,17 @@ export default {
           text: "Post",
           href: "/post"
         },
-        {heading:"My"},
+        { heading: "My" },
         {
           icon: "group",
           text: "Event",
           href: "/event"
         },
+        {
+          icon: "assignment_ind",
+          text: "Profile",
+          href: "/profile/edit"
+        }
       ]
     };
   },

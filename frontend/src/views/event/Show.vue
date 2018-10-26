@@ -36,12 +36,14 @@ export default {
   data() {
     return {
       events: [],
-      filterBy:[
-        {text:"Current Valid",value: {
+      filterBy: [
+        {
+          text: "Current Valid",
+          value: {
             id: 1,
-            f: el =>
-              Date.parse(el.eventTime) >= Date.now()
-          }}
+            f: el => Date.parse(el.eventTime) >= Date.now()
+          }
+        }
       ],
       sortParameter: [
         {

@@ -47,7 +47,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     # whether it is is the  trusted 
     is_trusted = serializers.BooleanField(
         source = "profile.is_trusted", read_only = True)
-
     """
     validation codes  
     """
@@ -66,7 +65,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = (
-            'url',
+            'id',
             'username',
             "password",
             "password_again",
@@ -89,8 +88,14 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
         # push back the location object 
         profile_data['location'] = location
-        # create this user 
+        # update this user 
         user = super(UserSerializer, self).update(instance,validated_data)
+
+        # set the password by a delicate function 
+        # In this way, the password will encrypt and save correctly
+        user.set_password(validated_data["password"])
+        # save this model 
+        user.save()
 
         # user profile_data serializer to update 
         ProfileSerializer().update(user.profile,validated_data=profile_data)

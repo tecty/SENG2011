@@ -277,10 +277,15 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
         )
 
     def update(self, instance,validated_data):
-        # and owner only can change the offer 
-        instance.offer = validated_data["offer"];
-        # push the change to database 
-        instance.save();
+        # only can change offer in these stage
+        if (instance in ["BD","CL"]):
+            # and owner only can change the offer 
+            instance.offer = validated_data["offer"];
+            # update the state to BD
+            instance.state = "BD"
+
+            # push the change to database 
+            instance.save();
         return instance
 
     def create(self, validated_data):

@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card mr-4>
     <v-card-text>
       <form @submit.prevent="submit">
         <v-text-field v-validate="'required|decimal:3'" data-vv-name="price" 

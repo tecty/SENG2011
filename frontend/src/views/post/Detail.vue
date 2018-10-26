@@ -42,7 +42,7 @@
       <h5 class="headline primary--text ">
         Message
       </h5>
-      <msgBox :msg="post.msg" class="mb-3"/>
+      <msgBox :msg="post.msg" class="mb-3  mr-4"/>
       <v-layout>
         <v-flex xs12>
           <h5 class="headline primary--text ">
@@ -62,8 +62,8 @@
             <bid-card :bid="bid" :post="post" @requireRefresh="()=> refreshContent()" />
           </v-flex>
           <!-- card for bidding -->
-        <v-flex xs12 md6 lg4>
-          <CreateCard :v-if="canBid" :postId="post.id" @requireRefresh="()=> refreshContent()" />
+        <v-flex xs12 md6 lg4 v-if="canBid">
+          <CreateCard :postId="post.id" @requireRefresh="()=> refreshContent()" />
         </v-flex>
       </v-layout>
     </div>
@@ -115,6 +115,10 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      api_state: "api_state",
+      username: state => state.username
+    }),
     bidsShow: {
       get: function() {
         return this.post.bid_set;
@@ -124,17 +128,12 @@ export default {
         this.post.bid_set = newList;
       }
     },
-    ...mapState({
-      api_state: "api_state",
-      username: state => state.username
-    })
-  },
-  methods: {
-    ...mapActions(["refreshAll", "getPostById", "cancelPostById"]),
-    sortbidsShow(sortedList) {
-      this.bidsShow = sortedList;
-    },
     canBid() {
+      console.log((
+        this.api_state == "READY" &&
+        this.post.event.owner.username != this.username &&
+        this.post.state == "BD"
+      ))
       return (
         this.api_state == "READY" &&
         this.post.event.owner.username != this.username &&
@@ -146,6 +145,12 @@ export default {
         this.post.event.owner.username == this.username &&
         this.post.state == "BD"
       );
+    },
+  },
+  methods: {
+    ...mapActions(["refreshAll", "getPostById", "cancelPostById"]),
+    sortbidsShow(sortedList) {
+      this.bidsShow = sortedList;
     },
     refreshContent() {
       this.refreshAll().then(() => {

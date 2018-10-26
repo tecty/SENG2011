@@ -69,7 +69,7 @@ export default {
         {
           icon: "assignment_ind",
           text: "Profile",
-          href: "/event"
+          href: "/profile/edit"
         }
       ]
     };

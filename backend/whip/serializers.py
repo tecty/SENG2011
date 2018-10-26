@@ -88,8 +88,14 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
         # push back the location object 
         profile_data['location'] = location
-        # create this user 
+        # update this user 
         user = super(UserSerializer, self).update(instance,validated_data)
+
+        # set the password by a delicate function 
+        # In this way, the password will encrypt and save correctly
+        user.set_password(validated_data["password"])
+        # save this model 
+        user.save()
 
         # user profile_data serializer to update 
         ProfileSerializer().update(user.profile,validated_data=profile_data)

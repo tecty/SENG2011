@@ -46,8 +46,8 @@ Authorization: {{auth}}
 
 {
     "username": "ttt",
-    "password": "apdle123",
-    "password_again": "apdle123",
+    "password": "apple123",
+    "password_again": "apple123",
     "location": {
         "address": "a simpel location",
         "lat": 125,

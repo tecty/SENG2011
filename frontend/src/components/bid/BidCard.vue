@@ -6,7 +6,14 @@
             ${{bid.offer}} | {{ bid.state | stateToText }}
           </span>
           <v-spacer />
-          <span>by {{bid.owner.username}} </span>
+          <router-link :to="{
+            name:'ProfileDetail',
+            params: {
+              user:post.event.owner
+            }
+          }">
+            <span>by {{bid.owner.username}} </span>
+          </router-link>
           <i class="material-icons ml-2">star</i>{{ bid.rateOfBidder }}
         </v-card-title>
        <v-card-text>
@@ -130,3 +137,9 @@ export default {
   mounted() {}
 };
 </script>
+
+<style scoped>
+a {
+  color:white;
+}
+</style>

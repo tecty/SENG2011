@@ -43,7 +43,8 @@
             ></addr>
             <p></p>
             <p>{{error}}</p>
-            <v-btn type="submit" >Login</v-btn>
+            <v-btn type="submit" v-if="!isEdit" >Login</v-btn>
+            <v-btn type="submit" v-else >Save</v-btn>
           </v-form>
         </v-flex>
       </v-layout>

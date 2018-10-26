@@ -14,6 +14,7 @@ lemma  MutisetAddingLemma(a: array<int>,low:int, mid: int, upper:int)
     assert a[low..mid] + a[mid..upper+1] == a[low..upper+1];
 }
 
+//array is sorted between start and end
 predicate sortedBetween(a :array<int>, start : int, end : int)
   reads a;
   requires 0<= start < a.Length
@@ -22,6 +23,7 @@ predicate sortedBetween(a :array<int>, start : int, end : int)
   forall i,j:: start <= i < j <= end ==> a[i] <= a[j]
 }
 
+//whole array is sorted 
 predicate Sorted(a :array<int>)
   reads a;
 {
@@ -36,6 +38,7 @@ method MergeSort(a1:array<int>) returns (a:array<int>)
   a := mergesort(a1, 0, a1.Length-1);
 }
 
+//recursive merge sort function
 method mergesort(a1:array<int>, low:int, upper:int) returns (a:array<int>)
   requires a1.Length > 0;
   requires 0 <= low <= upper < a1.Length;
@@ -51,9 +54,9 @@ method mergesort(a1:array<int>, low:int, upper:int) returns (a:array<int>)
   copyArray(a1, a);
   if (low <  upper){
     var mid:int := (low + upper) / 2;
-    a := mergesort(a1, low, mid);
+    a := mergesort(a1, low, mid);//sort the a[low..mid] part
     assert a[mid+1..upper+1] == a1[mid+1..upper+1];
-    a := mergesort(a, mid+1, upper);
+    a := mergesort(a, mid+1, upper);//sort the a[mid+1..upper] part
 
     assert permutation(a[low..mid+1], a1[low..mid+1]);
     assert permutation(a[mid+1..upper+1],a1[mid+1..upper+1]);
@@ -61,7 +64,7 @@ method mergesort(a1:array<int>, low:int, upper:int) returns (a:array<int>)
     MutisetAddingLemma(a1,low,mid+1,upper);
     assert multiset(a[low..upper+1]) == multiset(a1[low..upper+1]);
 
-    a := merge(a, low, mid, upper);
+    a := merge(a, low, mid, upper);//at last merge two parts, and whole array become sorted
   }
 }
 //this method copy array from a into b
@@ -70,7 +73,6 @@ method copyArray(a: array<int>, b: array<int>)
   requires a.Length  == b.Length
   ensures a.Length == b.Length
   ensures a[..] == b[..]
-  // ensures forall k:: 0 <= k < a.Length ==> a[k] == b[k];
 {
   var index:= 0;
   while (index < a.Length)
@@ -85,6 +87,8 @@ method copyArray(a: array<int>, b: array<int>)
   }
 }
 
+
+//merge arrays a[low..mid+1] and a[mid+1..upper] into new array buf
 method merge(a:array<int>, low:int, mid:int, upper:int) returns (buf:array<int>)
   requires a.Length > 0;
   requires 0 <= low <= mid < upper < a.Length;
@@ -95,7 +99,7 @@ method merge(a:array<int>, low:int, mid:int, upper:int) returns (buf:array<int>)
   ensures sortedBetween(buf,low,upper);
   ensures forall i:: (0 <= i < low || upper < i < buf.Length) ==> buf[i] == a[i];
 {
-  buf := new int[a.Length];
+  buf := new int[a.Length];//buffer stores array that is merged
   copyArray(a, buf);
 
 
@@ -124,6 +128,8 @@ method merge(a:array<int>, low:int, mid:int, upper:int) returns (buf:array<int>)
     invariant forall q,r:: low <= q < r <= k+low-1 ==>  buf[q] <= buf[r]; 
     invariant forall q,r:: low <= q < low+k && (i <= r <= mid || j <= r <= upper) ==> buf[q] <= a[r];
   {
+    //when one part of array runs out of elements, 
+    //the rest spaces of the buffer should store elements from other part
     if (i > mid)
     {
       buf[low+k] := a[j];
@@ -134,6 +140,7 @@ method merge(a:array<int>, low:int, mid:int, upper:int) returns (buf:array<int>)
       buf[low+k] := a[i];
       i := i + 1;
     }
+    //place the smaller element from 2 array parts into the buffer array first
     else if (a[i] <= a[j])
     {
       buf[low+k] := a[i];
@@ -152,9 +159,11 @@ method merge(a:array<int>, low:int, mid:int, upper:int) returns (buf:array<int>)
   assert  a[..low] + a[low..upper+1] + a[upper+1..] == a[..];
   assert multiset(buf[0..low]) + multiset(buf[low..upper+1]) + multiset(buf[upper+1..]) == multiset(buf[..]);
   assert multiset(a[0..low]) + multiset(a[low..upper+1]) + multiset(a[upper+1..]) == multiset(a[..]);
+  //three parts of buffer array contain the same elements as a
   assert multiset(buf[upper+1..]) == multiset(a[upper+1..]);
   assert multiset(buf[0..low]) == multiset(a[0..low]);
   assert multiset(buf[low..upper+1]) == multiset(a[low..upper+1]);
+  //so they are permutation
   assert multiset(buf[..]) == multiset(a[..]);
 }
 

@@ -108,9 +108,11 @@ class BidViewSet(viewsets.ModelViewSet):
     Overwritten the DestroyModelMixin's function
     """
     def perform_destroy(self, instance):
-        # perform soft destory 
-        instance.state = "CL"
-        instance.save()
+        if instance.state in ["BD", "US"]:
+            # only perform destory at bidding state
+            # perform soft destory 
+            instance.state = "CL"
+            instance.save()
  
 
     

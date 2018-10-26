@@ -138,6 +138,16 @@ export default {
         this.post.event.owner.username == this.username &&
         this.post.state == "BD"
       );
+    },
+    isUserSelected(){
+      // this is prepare for condition link - 3.4.2
+      // the bid of current user 
+      let bid = this.post.bid_set.find(b=> b.owner.username == this.username);
+      if(bid && bid.state == "SD"){
+        // this bidder is selected
+        return true;
+      }
+      return false;
     }
   },
   methods: {

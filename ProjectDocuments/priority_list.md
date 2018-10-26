@@ -8,7 +8,7 @@
 - [x] [1]1.1.1.7.  budget for whole event  
 - [x] [1]1.1.1.8.  status of the request // change by the progress (incl. Processing, Deal, Finished, Cancelled)  
 - [x] [1]1.2.  Posters can view requests they posted // Even if it is finished  
-- [x] [1]1.2.1.  Posters can view all requests they posted in a list // sorted by status  
+- [x] [1]1.2.1.  Posters can view all requests they posted in a list  
 - [x] [1]1.2.3.  Posters can choose bidders for an open request // change state  
 - [x] [1]1.2.4.  Posters can manage his posts  
 - [x] [1]1.2.4.1.  Posters can cancel a processing or deal state request which created by themselves // change state, need to verify  
@@ -24,7 +24,7 @@
 - [x] [2]1.1.2.1.  A post can only select one parameter value for a field (Couldn’t have multiple parameters with one field)  
 - [x] [2]1.1.2.2.  Poster can see all the provided parameters  
 - [x] [2]1.2.1.2.  Posters can filter requests by their status  
-- [x] [2]1.2.3.1.  bidders can be sorted based on their bidding price and bidding time // sorting  
+- [x] [2]1.2.3.1.  bidders will be sorted based on their bidding price and bidding time // sorting  
 - [ ] [2]1.2.3.2.  Poster can see all bidders’ comments written by previous posters.  
 - [ ] [2]1.2.3.4.  When a request is overdue, it should be automatically cancelled // changing the state  
 - [x] [2]1.2.4.2.  Posters can edit details of a request created by themselves and not in state Finished or Cancelled // change states of bidders needs to verify  
@@ -43,18 +43,13 @@
 - [ ] [2]3.1.2.1.  sort by latest bidding price  
 - [ ] [2]3.1.2.2.  sort by latest bidding time  
 - [ ] [2]3.1.2.3.  sort by relevance  
-- [x] [2]3.1.3.  Bidders can filter requests  
-- [ ] [2]3.1.3.1.  filter by food type  
-- [ ] [2]3.1.3.2.  filter by region  
-- [x] [2]3.1.3.3.  filter by due time  
-- [ ] [2]3.1.3.4.  filter by other parameters  
 - [x] [2]3.3.  Bidders can delete their own bids  
 - [x] [3]1.2.1.1.  Posters can sort the requests by the date  
 - [x] [3]1.2.2.  Posters can chat with a bidder under the created post or its bids  
 - [x] [3]1.2.2.1.  Posters can add message under the bidder’s bids  
 - [x] [3]1.2.2.2.  Posters can reply to the message added by bidder  
 - [x] [3]1.2.2.3.  These messages can be viewed by everyone  
-- [ ] [3]1.2.3.3.  Poster can view bidders’ information on bidders’ profile // Only bidders who bid this post and the post is not in state Finished or Cancelled  
+- [x] [3]1.2.3.3.  Poster can view bidders’ information on bidders’ profile // Only bidders who bid this post and the post is not in state Finished or Cancelled  
 - [x] [3]1.2.3.5.  Posters can evaluate a bidder after a request is completed  
 - [x] [3]1.2.3.5.1.  Poster can only rate his post  
 - [x] [3]1.2.3.5.2.  The rate should be one to five stars in intergers  
@@ -63,12 +58,16 @@
 - [x] [3]1.2.3.6.1.  The recommend starts is base on the rate of other posters’ rate to this bidder  
 - [ ] [3]1.2.3.6.2.  The recommend starts is base on the parameters of this posts.  
 - [x] [3]1.2.3.6.3.  Appear 0 rate if these rules are not applied, such as there’s no rate to this bidder, this bidder has done nothing about the given parameter of this post.  
-- [ ] [3]1.3.1.  Posters can edit and provide contact details  
-- [ ] [3]1.3.1.1.  Phone number  
+- [x] [3]1.3.1.  Posters can edit and provide contact details  
+- [x] [3]1.3.1.1.  Phone number  
 - [ ] [3]1.3.1.2.  Email  
-- [ ] [3]1.3.1.3.  Name  
-- [ ] [3]1.3.1.4.  Address  
+- [x] [3]1.3.1.3.  Name  
+- [x] [3]1.3.1.4.  Address  
 - [x] [3]2.2.9.  additional provision of crockery/glasses/cutlery/chairs  
+- [x] [3]3.1.3.  Bidders can filter requests  
+- [ ] [3]3.1.3.1.  filter by food type  
+- [ ] [3]3.1.3.2.  filter by region  
+- [x] [3]3.1.3.3.  filter by due time  
 - [x] [3]3.2.2.  Bidder can chat with posters and other bidders  
 - [x] [3]3.2.2.1.  Bidder can chat under the poster’s request to obtain more information about the occasion  
 - [x] [3]3.2.2.2.  Bidder can chat under another bidder’s bid about the specific bid  
@@ -76,21 +75,22 @@
 - [x] [3]3.2.2.4.  These chats can be viewed by everyone  
 - [x] [3]3.3.1.  Bids that have been chosen by the poster cannot be deleted  
 - [x] [3]3.4.1.  Bidder must have a profile  
-- [ ] [3]3.4.1.1.  Bidder can edit its own profile // only bidder and poster can edit  
-- [ ] [3]3.4.1.2.  including contact details  
+- [x] [3]3.4.1.1.  Bidder can edit its own profile // only bidder and poster can edit  
+- [x] [3]3.4.1.2.  including contact details  
 - [ ] [3]3.4.1.3.  including the information of restaurant (if applicable)  
 - [ ] [3]3.4.1.4.  including food types they can provide  
 - [ ] [3]3.4.1.5.  including past photos of catering services they provided  
 - [ ] [3]3.4.1.6.  including their prefer time for service provision (help to match the post more effectively)  
 - [ ] [3]3.4.2.  Bidders can view posters’ contact information when they have been selected for the posters’ requests  
-- [ ] [3]3.4.2.1.  Only can view the detail at Deal state of the corresponding post  
+- [ ] [3]3.4.2.1.  Only can vidw the detail at Deal state of the corresponding post  
 - [x] [3]4.1.  Admin can log into a system different from bidder and poster  
 - [x] [3]4.2.  Admin can delete the account of bidders and posters  
 - [x] [3]4.3.  Admin can CRUD all Post and Bid  
 - [x] [3]4.4.  Admin can CRUD all Parameters  
-- [ ] [4]1.2.1.3.  Posters can sort the requests by the latest bid  
+- [x] [4]1.2.1.3.  Posters can sort the requests by the latest bid  
 - [ ] [4]1.2.1.4.  Posters can filter requests by some other parameters  
 - [x] [4]1.2.3.5.4.  Posters can write comments to this bidder  
 - [x] [4]1.3.1.5.  Additional information  
+- [ ] [4]3.1.3.4.  filter by other parameters  
 - [ ] [4]3.1.4.  Bidders can only see requests with food types they can provide  
 - [ ] [4]3.2.3.  get notification when a bid updates  

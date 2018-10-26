@@ -8,7 +8,12 @@
         <v-flex md10 offset-md1 xs12 offset-xs0 lg6 offset-lg3 >
           <h1 v-if="!isEdit">Sign Up</h1>
           <h1 v-else>Edit Profile</h1>
+
           <form @submit.prevent="register">
+          <v-snackbar v-model="snackbar">
+              {{snackText}}
+             <v-btn flat color="error" @click.native="snackbar = false">Close</v-btn>
+          </v-snackbar>
             <v-text-field
               v-model="username" label="Username" required autofocus 
                v-validate="'required'" data-vv-name="username" :error-messages="errors.collect('username')"
@@ -17,7 +22,7 @@
             <v-text-field 
               v-model="password" :type="show? 'text':'password'" label="Password" 
               :append-icon= "show ? 'visibility' : 'visibility_off'"
-               v-validate="'required|target:password'" ref="password" data-vv-name="password" :error-messages="errors.collect('password')"
+               v-validate="'required'" ref="password" data-vv-name="password" :error-messages="errors.collect('password')"
               autocomplete @click:append="show = !show" 
               required 
             />
@@ -42,12 +47,10 @@
                 }
               "
               :address="location.address"
-               v-validate="'required'" data-vv-name="address" :error-messages="errors.collect('address')"
-
               hint="Where's your address?"
             ></addr>
             <p></p>
-            <v-btn type="submit" v-if="!isEdit" >Login</v-btn>
+            <v-btn type="submit" v-if="!isEdit" >Register</v-btn>
             <v-btn type="submit" v-else >Save</v-btn>
           </form>
         </v-flex>
@@ -73,7 +76,10 @@ export default {
       // if show == true, show the password
       show: false,
       tel: "",
-      error: ""
+      error: "",
+      snackbar: false,
+      snackbarColor: "error",
+      snackText: "Error: please input correctly"
     };
   },
   computed: {
@@ -119,6 +125,7 @@ export default {
               tel: this.tel
             }).then(() => {
               // go to main page
+              console.log(this);
               if (this.$route.query.redirect) {
                 // redirect request from another view
                 this.$router.push(this.$route.query.redirect);
@@ -129,7 +136,15 @@ export default {
             });
           }
           promise.catch(err => {
+            if (!this.location) {
+              this.snackText = "please select a correct address";
+            } else {
+              this.snackText = "sorry, this user name has been taken";
+            }
+            this.snackbar = true;
+            this.snackbarColor = "error";
             this.error = err.response.data;
+            this.$store.commit("API_READY");
           });
         }
       });

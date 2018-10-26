@@ -50,7 +50,6 @@ export default {
         eventTime: null,
         bidClosingTime: null
       },
-      // TODO: may be antoher model
       snackbar: false,
       snackbarColor: "error",
       snackText:
